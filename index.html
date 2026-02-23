@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Milimar v3 | Oficina Virtual</title>
-    <!-- FUENTES: Puedes cambiar la del título aquí. Por defecto usamos Poppins (moderna). Si quieres Mistrully, busca si está en Google Fonts y reemplaza 'Poppins' por 'Mistrully' o el nombre exacto. -->
+    <!-- Fuentes -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* Estilo Aurora OSCURO - degradado más profundo */
+        /* Estilo Aurora OSCURO */
         body {
             background: linear-gradient(125deg, #0a0f1a 0%, #0f2a3a 35%, #1a3f3a 70%, #4a3a1a 100%);
             background-size: 400% 400%;
@@ -22,7 +22,7 @@
             100% { background-position: 0% 50%; }
         }
         h1, h2, h3, .font-display {
-            font-family: 'Poppins', sans-serif; /* CAMBIA AQUÍ LA FUENTE DEL TÍTULO (ej. 'Mistrully') */
+            font-family: 'Poppins', sans-serif;
             font-weight: 900;
             letter-spacing: -0.02em;
         }
@@ -64,6 +64,7 @@
             right: 20px;
             z-index: 1000;
             transition: opacity 0.3s;
+            max-width: 300px;
         }
         .btn {
             @apply font-black py-3 px-6 rounded-xl transition-all transform hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed;
@@ -72,14 +73,45 @@
         .tutorial-step {
             @apply bg-white/10 p-3 rounded-lg mb-2 text-sm border border-white/20;
         }
-        .emergency-badge {
-            background: rgba(220, 38, 38, 0.2);
-            border: 1px solid #ef4444;
-            color: #fecaca;
+        .price-badge {
+            background: rgba(251, 191, 36, 0.2);
+            border: 1px solid #fbbf24;
+            color: #fbbf24;
+            @apply px-3 py-1 rounded-full text-xs font-bold;
+        }
+        /* Botón de Telegram flotante */
+        .telegram-button {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 50;
+            background: linear-gradient(145deg, #2AABEE, #229ED9);
+            padding: 12px 24px;
+            border-radius: 50px;
+            color: white;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 20px rgba(42, 171, 238, 0.5);
+            transition: all 0.3s;
+            font-family: 'Poppins', sans-serif;
+            border: 1px solid rgba(255,255,255,0.3);
+            text-decoration: none;
+        }
+        .telegram-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 25px rgba(42, 171, 238, 0.7);
         }
     </style>
 </head>
 <body class="text-white antialiased p-4 min-h-screen relative">
+
+    <!-- Botón flotante de Telegram -->
+    <a id="telegramLink" href="https://t.me/+z7wwfx0ocho1NzI5" target="_blank" class="telegram-button hidden">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.02-.15-.05-.22-.07-.07-.18-.05-.26-.03-.11.02-1.85 1.17-5.22 3.45-.5.34-.95.5-1.36.49-.45-.01-1.3-.25-1.94-.46-.78-.26-1.4-.4-1.35-.85.03-.23.27-.47.74-.72 2.91-1.27 4.86-2.11 5.83-2.52 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.08-.02.25-.04.4z"/></svg>
+        <span>Grupo Oficial Milimar</span>
+    </a>
 
     <div id="toast" class="toast glass-card p-4 hidden">
         <p id="toastMsg" class="text-sm"></p>
@@ -87,9 +119,11 @@
 
     <div class="max-w-3xl mx-auto">
         <header class="text-center py-8">
-            <!-- Título con la fuente que elijas (por defecto Poppins) -->
-            <h1 class="text-6xl font-black text-white drop-shadow-2xl mb-2 tracking-tighter" style="text-shadow: 0 0 20px rgba(251,191,36,0.5);">MILIMAR v3</h1>
-            <p class="text-sm text-white/80 uppercase tracking-[0.3em] font-light">Oficina Virtual · BSC · Precio 10 USDT</p>
+            <div class="flex items-center justify-center gap-4">
+                <h1 class="text-6xl font-black text-white drop-shadow-2xl tracking-tighter" style="text-shadow: 0 0 20px rgba(251,191,36,0.5);">MILIMAR V3</h1>
+                <span class="price-badge">10 USDT</span>
+            </div>
+            <p class="text-sm text-white/80 uppercase tracking-[0.3em] font-light mt-2">Oficina Virtual · BSC</p>
         </header>
 
         <div id="conBox" class="glass-card p-10 text-center mb-6">
@@ -117,11 +151,15 @@
                 </div>
             </div>
 
-            <!-- Fondo de Solidaridad y Modo Emergencia -->
-            <div class="grid grid-cols-2 gap-3">
+            <!-- Fondos: Solidaridad y Pool Liderazgo + Emergencia -->
+            <div class="grid grid-cols-3 gap-3">
                 <div class="glass-card p-3 text-center">
                     <p class="text-[10px] text-white/60 uppercase font-bold">Fondo Solidaridad</p>
-                    <p id="fondoSolidaridad" class="text-lg font-black text-emerald-300">0.00 USDT</p>
+                    <p id="fondoSolidaridad" class="text-lg font-black text-emerald-300">0.00</p>
+                </div>
+                <div class="glass-card p-3 text-center">
+                    <p class="text-[10px] text-white/60 uppercase font-bold">Pool Liderazgo</p>
+                    <p id="poolLiderazgo" class="text-lg font-black text-yellow-300">0.00</p>
                 </div>
                 <div class="glass-card p-3 text-center" id="emergencyContainer">
                     <p class="text-[10px] text-white/60 uppercase font-bold">Modo Emergencia</p>
@@ -129,10 +167,10 @@
                 </div>
             </div>
 
-            <!-- Botón de retiro de emergencia (solo visible si está activo) -->
+            <!-- Botón de retiro de emergencia -->
             <button id="btnEmergencyWithdraw" class="hidden w-full bg-red-700 text-white font-bold py-3 rounded-xl hover:bg-red-600 transition">🚨 RETIRO DE EMERGENCIA</button>
 
-            <!-- Visualización de 5 niveles de red -->
+            <!-- Visualización de 5 niveles -->
             <div class="glass-card p-6 text-center">
                 <p class="text-white text-sm font-bold mb-4 drop-shadow">📊 TUS 5 NIVELES DE RED</p>
                 <div class="flex flex-wrap justify-center gap-2">
@@ -145,7 +183,7 @@
                 <p class="text-[10px] text-white/50 mt-4">Cada círculo muestra la cantidad de personas en ese nivel.</p>
             </div>
 
-            <!-- Detalles por nivel y ganancias (con botón recargar) -->
+            <!-- Detalles por nivel y ganancias -->
             <div class="grid md:grid-cols-2 gap-4">
                 <div class="glass-card p-4">
                     <div class="flex justify-between items-center mb-2">
@@ -166,12 +204,12 @@
             <!-- Botones de acción -->
             <div class="grid grid-cols-2 gap-3">
                 <button id="btnApprove" class="btn bg-blue-600 text-white hover:bg-blue-500">1. AUTORIZAR USDT</button>
-                <button id="btnJoin" class="btn bg-yellow-500 text-black hover:bg-yellow-400">2. ACTIVAR (10 USDT)</button>
+                <button id="btnJoin" class="btn bg-yellow-500 text-black hover:bg-yellow-400">2. ACTIVAR</button>
                 <button id="btnRenew" class="btn bg-indigo-600 text-white hover:bg-indigo-500">RENOVAR</button>
                 <button id="btnWithdraw" class="btn bg-green-600 text-white hover:bg-green-500">RETIRAR</button>
             </div>
 
-            <!-- Panel Admin (solo visible para admin) -->
+            <!-- Panel Admin -->
             <div id="adminSection" class="hidden glass-card p-4 border border-yellow-500/50">
                 <h2 class="text-white font-bold mb-3 text-sm uppercase tracking-wider drop-shadow">⚙️ Panel Admin</h2>
                 <div class="grid grid-cols-2 gap-2">
@@ -183,7 +221,19 @@
                 <div class="mt-2 text-[10px] text-white/50">Usa estas funciones con responsabilidad.</div>
             </div>
 
-            <!-- Enlace de invitación con botón copiar -->
+            <!-- Sección de comunidad visible para todos -->
+            <div class="glass-card p-4 text-center">
+                <h3 class="text-white font-bold mb-2 text-sm drop-shadow">📢 COMUNIDAD OFICIAL</h3>
+                <p class="text-xs text-white/70 mb-3">Accede a nuestro grupo privado de Telegram para soporte, novedades y conectar con otros líderes.</p>
+                <a href="https://t.me/+z7wwfx0ocho1NzI5" target="_blank" class="inline-block bg-[#2AABEE] text-white font-bold py-3 px-6 rounded-full hover:scale-105 transition shadow-lg hover:shadow-[#2AABEE]/50">
+                    <span class="flex items-center gap-2">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.02-.15-.05-.22-.07-.07-.18-.05-.26-.03-.11.02-1.85 1.17-5.22 3.45-.5.34-.95.5-1.36.49-.45-.01-1.3-.25-1.94-.46-.78-.26-1.4-.4-1.35-.85.03-.23.27-.47.74-.72 2.91-1.27 4.86-2.11 5.83-2.52 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.08-.02.25-.04.4z"/></svg>
+                        Ir al Grupo Oficial
+                    </span>
+                </a>
+            </div>
+
+            <!-- Enlace de invitación -->
             <div class="glass-card p-4 text-center">
                 <p class="text-[10px] text-white/50 mb-1 uppercase font-bold">TU ENLACE DE INVITACIÓN</p>
                 <div class="flex items-center gap-2">
@@ -193,7 +243,7 @@
                 <p id="copyMsg" class="text-[10px] text-green-300 mt-2 hidden">¡Link copiado!</p>
             </div>
 
-            <!-- Tutoriales rápidos -->
+            <!-- Tutoriales -->
             <div class="glass-card p-4">
                 <details class="cursor-pointer">
                     <summary class="text-white font-bold text-sm list-none flex justify-between items-center drop-shadow">
@@ -228,13 +278,13 @@
     </div>
 
     <script>
-        // 🟢 CONFIGURACIÓN PARA MILIMAR V3
+        // Configuración
+        const TELEGRAM_GRUPO = "https://t.me/+z7wwfx0ocho1NzI5";
         const CONTRACT_ADDR = "0x00D019DF3fD2dbe8A597Cd9d98ca54D2e9bb9353";
         const USDT_ADDR = "0x55d398326f99059fF775485246999027B3197955";
         const BSC_CHAIN_ID = 56;
-        const PRECIO_SUSCRIPCION = 10; // 10 USDT
 
-        // ABIs (incluye las nuevas funciones)
+        // ABI completo con todas las funciones (incluyendo poolLiderazgo)
         const abi = [
             "function consultarEstado(address) view returns (uint256,uint256,uint256,uint256,uint256,uint256,bool)",
             "function unirse(address)",
@@ -248,6 +298,7 @@
             "function premiarLider(address,uint256)",
             "function recuperarTokenExterno(address,uint256)",
             "function fondoSolidaridad() view returns (uint256)",
+            "function poolLiderazgo() view returns (uint256)",
             "function emergencyMode() view returns (bool)",
             "function emergencyWithdraw()",
             "function activateEmergencyMode()",
@@ -255,28 +306,34 @@
         ];
         const usdtAbi = ["function approve(address spender, uint256 amount) returns (bool)"];
 
+        // Estado
         let provider, signer, userAddress, contract, usdtContract;
         let isAdmin = false;
         let toastTimeout;
 
+        // Elementos DOM
         const toast = document.getElementById('toast');
         const toastMsg = document.getElementById('toastMsg');
         const copyLinkBtn = document.getElementById('copyLinkBtn');
         const refLink = document.getElementById('refLink');
         const copyMsg = document.getElementById('copyMsg');
+        const telegramLink = document.getElementById('telegramLink');
         const fondoElem = document.getElementById('fondoSolidaridad');
+        const poolElem = document.getElementById('poolLiderazgo');
         const emergencyStatus = document.getElementById('emergencyStatus');
         const emergencyContainer = document.getElementById('emergencyContainer');
         const btnEmergency = document.getElementById('btnEmergencyWithdraw');
 
+        // Mostrar toast
         function showToast(msg, isError = false) {
             clearTimeout(toastTimeout);
             toast.classList.remove('hidden');
             toastMsg.innerText = msg;
-            toast.style.backgroundColor = isError ? 'rgba(127, 29, 29, 0.9)' : 'rgba(6, 78, 59, 0.9)';
+            toast.style.backgroundColor = isError ? 'rgba(127,29,29,0.9)' : 'rgba(6,78,59,0.9)';
             toastTimeout = setTimeout(() => toast.classList.add('hidden'), 4000);
         }
 
+        // Copiar link
         copyLinkBtn.addEventListener('click', () => {
             refLink.select();
             refLink.setSelectionRange(0, 99999);
@@ -286,6 +343,7 @@
             }).catch(() => showToast('Error al copiar', true));
         });
 
+        // Verificar red BSC
         async function checkNetwork() {
             const network = await provider.getNetwork();
             if (network.chainId !== BSC_CHAIN_ID) {
@@ -299,6 +357,7 @@
             return true;
         }
 
+        // Cargar detalles de red y ganancias
         async function loadRedYGanancias(intentos = 3) {
             for (let i = 0; i < intentos; i++) {
                 try {
@@ -334,6 +393,7 @@
             }
         }
 
+        // Cargar datos del usuario y fondos
         async function loadUserData() {
             try {
                 const data = await contract.consultarEstado(userAddress);
@@ -343,9 +403,11 @@
                 document.getElementById('valDias').innerText = data[5].toString();
                 await loadRedYGanancias();
 
-                // Cargar fondo de solidaridad y modo emergencia
+                // Fondos globales
                 const fondo = await contract.fondoSolidaridad();
                 fondoElem.innerText = ethers.utils.formatUnits(fondo, 18) + ' USDT';
+                const pool = await contract.poolLiderazgo();
+                poolElem.innerText = ethers.utils.formatUnits(pool, 18) + ' USDT';
                 const emergency = await contract.emergencyMode();
                 emergencyStatus.innerText = emergency ? 'ACTIVO' : 'INACTIVO';
                 if (emergency) {
@@ -361,6 +423,7 @@
             }
         }
 
+        // Conectar wallet
         async function connect() {
             if (!window.ethereum) return showToast('Instala MetaMask/OKX Wallet', true);
             try {
@@ -376,6 +439,7 @@
 
                 document.getElementById('conBox').classList.add('hidden');
                 document.getElementById('dash').classList.remove('hidden');
+                telegramLink.classList.remove('hidden');
                 refLink.value = window.location.origin + window.location.pathname + "?ref=" + userAddress;
 
                 const adminAddr = await contract.admin();
@@ -383,11 +447,23 @@
                 if (isAdmin) document.getElementById('adminSection').classList.remove('hidden');
 
                 await loadUserData();
+
+                // Escuchar eventos para notificaciones
+                contract.on("RegistroGlobal", (usuario, patrocinador, fecha) => {
+                    showToast(`🎉 Nuevo registro: ${usuario.slice(0,6)}...${usuario.slice(-4)}`);
+                });
+                contract.on("BonoNivel3Alcanzado", (usuario, fecha) => {
+                    showToast(`🏆 Bono nivel 3 alcanzado por ${usuario.slice(0,6)}...${usuario.slice(-4)}`);
+                });
+                contract.on("RetiroExitoso", (usuario, monto) => {
+                    showToast(`💰 Retiro de ${ethers.utils.formatUnits(monto,18)} USDT por ${usuario.slice(0,6)}...${usuario.slice(-4)}`);
+                });
             } catch (e) {
                 showToast('Error conectando: ' + e.message, true);
             }
         }
 
+        // Event listeners
         document.getElementById('btnConnect').onclick = connect;
 
         document.getElementById('btnApprove').onclick = async () => {
@@ -438,18 +514,6 @@
         document.getElementById('btnReloadDetails').onclick = loadRedYGanancias;
         document.getElementById('btnReloadGanancias').onclick = loadRedYGanancias;
 
-        // Botón de emergencia
-        btnEmergency.onclick = async () => {
-            if (!confirm('¿Estás seguro de retirar todos tus fondos en modo de emergencia?')) return;
-            try {
-                const tx = await contract.emergencyWithdraw();
-                showToast('Procesando retiro de emergencia...');
-                await tx.wait();
-                showToast('✅ Retiro de emergencia completado');
-                await loadUserData();
-            } catch (e) { showToast('Error: ' + e.message, true); }
-        };
-
         // Admin functions
         document.getElementById('btnPausa').onclick = async () => {
             if (!isAdmin || !confirm('¿Cambiar estado de pausa?')) return;
@@ -474,10 +538,22 @@
             try { await (await contract.recuperarTokenExterno(token, ethers.utils.parseUnits(cant, 18))).wait(); showToast('✅ Tokens recuperados'); } catch (e) { showToast('Error: ' + e.message, true); }
         };
 
+        btnEmergency.onclick = async () => {
+            if (!confirm('¿Estás seguro de retirar todos tus fondos en modo de emergencia?')) return;
+            try {
+                const tx = await contract.emergencyWithdraw();
+                showToast('Procesando retiro de emergencia...');
+                await tx.wait();
+                showToast('✅ Retiro de emergencia completado');
+                await loadUserData();
+            } catch (e) { showToast('Error: ' + e.message, true); }
+        };
+
+        // Auto-conectar si hay wallet conectada
         window.addEventListener('load', () => {
             if (window.ethereum && window.ethereum.selectedAddress) connect();
         });
     </script>
     <footer class="text-center text-[10px] text-gray-500 mt-4">Milimar v3 Protocol · Precio 10 USDT · BSC</footer>
 </body>
-</html>
+    </html>
