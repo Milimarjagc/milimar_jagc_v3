@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Milimar v3 | Oficina Virtual</title>
+    <!-- FUENTES: Puedes cambiar la del título aquí. Por defecto usamos Poppins (moderna). Si quieres Mistrully, busca si está en Google Fonts y reemplaza 'Poppins' por 'Mistrully' o el nombre exacto. -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Estilo Aurora OSCURO - degradado más profundo */
+        body {
+            background: linear-gradient(125deg, #0a0f1a 0%, #0f2a3a 35%, #1a3f3a 70%, #4a3a1a 100%);
+            background-size: 400% 400%;
+            animation: aurora 15s ease infinite;
+            font-family: 'Inter', sans-serif;
+        }
+        @keyframes aurora {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        h1, h2, h3, .font-display {
+            font-family: 'Poppins', sans-serif; /* CAMBIA AQUÍ LA FUENTE DEL TÍTULO (ej. 'Mistrully') */
+            font-weight: 900;
+            letter-spacing: -0.02em;
+        }
+        .glass-card {
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            border-radius: 1.5rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+        .node {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: bold;
+            transition: 0.3s;
+            margin: 0 4px;
+            font-family: 'Poppins', sans-serif;
+        }
+        .node-filled {
+            background: linear-gradient(145deg, #fbbf24, #f59e0b);
+            color: black;
+            border: 2px solid white;
+            box-shadow: 0 0 20px #fbbf24;
+        }
+        .node-empty {
+            border: 2px dashed rgba(255, 215, 0, 0.3);
+            color: rgba(255, 255, 255, 0.5);
+            background: transparent;
+        }
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            transition: opacity 0.3s;
+        }
+        .btn {
+            @apply font-black py-3 px-6 rounded-xl transition-all transform hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed;
+            font-family: 'Poppins', sans-serif;
+        }
+        .tutorial-step {
+            @apply bg-white/10 p-3 rounded-lg mb-2 text-sm border border-white/20;
+        }
+        .emergency-badge {
+            background: rgba(220, 38, 38, 0.2);
+            border: 1px solid #ef4444;
+            color: #fecaca;
+        }
+    </style>
+</head>
+<body class="text-white antialiased p-4 min-h-screen relative">
+
+    <div id="toast" class="toast glass-card p-4 hidden">
+        <p id="toastMsg" class="text-sm"></p>
+    </div>
+
+    <div class="max-w-3xl mx-auto">
+        <header class="text-center py-8">
+            <!-- Título con la fuente que elijas (por defecto Poppins) -->
+            <h1 class="text-6xl font-black text-white drop-shadow-2xl mb-2 tracking-tighter" style="text-shadow: 0 0 20px rgba(251,191,36,0.5);">MILIMAR v3</h1>
+            <p class="text-sm text-white/80 uppercase tracking-[0.3em] font-light">Oficina Virtual · BSC · Precio 10 USDT</p>
+        </header>
+
+        <div id="conBox" class="glass-card p-10 text-center mb-6">
+            <button id="btnConnect" class="btn bg-white text-black w-full max-w-md mx-auto hover:bg-yellow-300 transition">CONECTAR BILLETERA</button>
+        </div>
+
+        <div id="dash" class="hidden space-y-6">
+            <!-- Tarjetas de resumen -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                <div class="glass-card p-4 border-l-4 border-green-400">
+                    <p class="text-[10px] text-white/60 uppercase font-bold">Saldo Pendiente</p>
+                    <p id="valSaldo" class="text-xl font-black text-green-300">0.00</p>
+                </div>
+                <div class="glass-card p-4 border-r-4 border-yellow-400 text-right">
+                    <p class="text-[10px] text-white/60 uppercase font-bold">Red Total</p>
+                    <p id="valRed" class="text-xl font-black text-yellow-300">0</p>
+                </div>
+                <div class="glass-card p-4 border-l-4 border-blue-400">
+                    <p class="text-[10px] text-white/60 uppercase font-bold">Directos</p>
+                    <p id="valDir" class="text-xl font-black text-blue-300">0</p>
+                </div>
+                <div class="glass-card p-4 border-r-4 border-purple-400 text-right">
+                    <p class="text-[10px] text-white/60 uppercase font-bold">Días activo</p>
+                    <p id="valDias" class="text-xl font-black text-purple-300">0</p>
+                </div>
+            </div>
+
+            <!-- Fondo de Solidaridad y Modo Emergencia -->
+            <div class="grid grid-cols-2 gap-3">
+                <div class="glass-card p-3 text-center">
+                    <p class="text-[10px] text-white/60 uppercase font-bold">Fondo Solidaridad</p>
+                    <p id="fondoSolidaridad" class="text-lg font-black text-emerald-300">0.00 USDT</p>
+                </div>
+                <div class="glass-card p-3 text-center" id="emergencyContainer">
+                    <p class="text-[10px] text-white/60 uppercase font-bold">Modo Emergencia</p>
+                    <p id="emergencyStatus" class="text-lg font-black text-red-300">INACTIVO</p>
+                </div>
+            </div>
+
+            <!-- Botón de retiro de emergencia (solo visible si está activo) -->
+            <button id="btnEmergencyWithdraw" class="hidden w-full bg-red-700 text-white font-bold py-3 rounded-xl hover:bg-red-600 transition">🚨 RETIRO DE EMERGENCIA</button>
+
+            <!-- Visualización de 5 niveles de red -->
+            <div class="glass-card p-6 text-center">
+                <p class="text-white text-sm font-bold mb-4 drop-shadow">📊 TUS 5 NIVELES DE RED</p>
+                <div class="flex flex-wrap justify-center gap-2">
+                    <div id="n1" class="node node-empty">N1<br><span class="text-[10px]">0</span></div>
+                    <div id="n2" class="node node-empty">N2<br><span class="text-[10px]">0</span></div>
+                    <div id="n3" class="node node-empty">N3<br><span class="text-[10px]">0</span></div>
+                    <div id="n4" class="node node-empty">N4<br><span class="text-[10px]">0</span></div>
+                    <div id="n5" class="node node-empty">N5<br><span class="text-[10px]">0</span></div>
+                </div>
+                <p class="text-[10px] text-white/50 mt-4">Cada círculo muestra la cantidad de personas en ese nivel.</p>
+            </div>
+
+            <!-- Detalles por nivel y ganancias (con botón recargar) -->
+            <div class="grid md:grid-cols-2 gap-4">
+                <div class="glass-card p-4">
+                    <div class="flex justify-between items-center mb-2">
+                        <h3 class="text-white font-bold text-sm drop-shadow">📊 SOCIOS POR NIVEL</h3>
+                        <button id="btnReloadDetails" class="text-xs bg-white/20 hover:bg-white/30 px-2 py-1 rounded transition">⟳ Recargar</button>
+                    </div>
+                    <div id="redNiveles" class="space-y-1 text-xs"><p class="text-white/50">Cargando...</p></div>
+                </div>
+                <div class="glass-card p-4">
+                    <div class="flex justify-between items-center mb-2">
+                        <h3 class="text-white font-bold text-sm drop-shadow">💰 GANANCIAS ACUMULADAS</h3>
+                        <button id="btnReloadGanancias" class="text-xs bg-white/20 hover:bg-white/30 px-2 py-1 rounded transition">⟳ Recargar</button>
+                    </div>
+                    <div id="gananciasNiveles" class="space-y-1 text-xs"><p class="text-white/50">Cargando...</p></div>
+                </div>
+            </div>
+
+            <!-- Botones de acción -->
+            <div class="grid grid-cols-2 gap-3">
+                <button id="btnApprove" class="btn bg-blue-600 text-white hover:bg-blue-500">1. AUTORIZAR USDT</button>
+                <button id="btnJoin" class="btn bg-yellow-500 text-black hover:bg-yellow-400">2. ACTIVAR (10 USDT)</button>
+                <button id="btnRenew" class="btn bg-indigo-600 text-white hover:bg-indigo-500">RENOVAR</button>
+                <button id="btnWithdraw" class="btn bg-green-600 text-white hover:bg-green-500">RETIRAR</button>
+            </div>
+
+            <!-- Panel Admin (solo visible para admin) -->
+            <div id="adminSection" class="hidden glass-card p-4 border border-yellow-500/50">
+                <h2 class="text-white font-bold mb-3 text-sm uppercase tracking-wider drop-shadow">⚙️ Panel Admin</h2>
+                <div class="grid grid-cols-2 gap-2">
+                    <button id="btnPausa" class="btn bg-red-600 text-white text-sm py-2 hover:bg-red-500">PAUSAR/REANUDAR</button>
+                    <button id="btnCupos" class="btn bg-purple-600 text-white text-sm py-2 hover:bg-purple-500">OTORGAR CUPOS</button>
+                    <button id="btnPremiar" class="btn bg-pink-600 text-white text-sm py-2 hover:bg-pink-500">PREMIAR LÍDER</button>
+                    <button id="btnRecuperar" class="btn bg-orange-600 text-white text-sm py-2 hover:bg-orange-500">RECUPERAR TOKEN</button>
+                </div>
+                <div class="mt-2 text-[10px] text-white/50">Usa estas funciones con responsabilidad.</div>
+            </div>
+
+            <!-- Enlace de invitación con botón copiar -->
+            <div class="glass-card p-4 text-center">
+                <p class="text-[10px] text-white/50 mb-1 uppercase font-bold">TU ENLACE DE INVITACIÓN</p>
+                <div class="flex items-center gap-2">
+                    <input id="refLink" readonly class="w-full bg-white/10 border border-white/30 rounded-lg p-2 text-center text-white text-xs outline-none">
+                    <button id="copyLinkBtn" class="bg-white text-black font-bold py-2 px-4 rounded-lg text-sm hover:bg-yellow-300 transition">Copiar</button>
+                </div>
+                <p id="copyMsg" class="text-[10px] text-green-300 mt-2 hidden">¡Link copiado!</p>
+            </div>
+
+            <!-- Tutoriales rápidos -->
+            <div class="glass-card p-4">
+                <details class="cursor-pointer">
+                    <summary class="text-white font-bold text-sm list-none flex justify-between items-center drop-shadow">
+                        📘 TUTORIALES RÁPIDOS
+                        <span class="text-xs text-white/60">(clic para expandir)</span>
+                    </summary>
+                    <div class="mt-4 space-y-3">
+                        <div class="tutorial-step">
+                            <p class="font-bold text-yellow-300">🔹 Autorizar USDT</p>
+                            <p class="text-xs text-white/80">1. Asegúrate de tener USDT en tu wallet.<br>2. Haz clic en "AUTORIZAR USDT".<br>3. Confirma la transacción (solo gas).</p>
+                        </div>
+                        <div class="tutorial-step">
+                            <p class="font-bold text-yellow-300">🔹 Activar suscripción</p>
+                            <p class="text-xs text-white/80">1. Después de autorizar, haz clic en "ACTIVAR".<br>2. Ingresa la dirección de tu patrocinador (si no viene por link).<br>3. Confirma la transacción (10 USDT + gas).</p>
+                        </div>
+                        <div class="tutorial-step">
+                            <p class="font-bold text-yellow-300">🔹 Renovar</p>
+                            <p class="text-xs text-white/80">Paga 10 USDT para extender tu membresía 30 días más.</p>
+                        </div>
+                        <div class="tutorial-step">
+                            <p class="font-bold text-yellow-300">🔹 Retirar ganancias</p>
+                            <p class="text-xs text-white/80">Solo cuando tengas al menos 4 directos y saldo ≥10 USDT.</p>
+                        </div>
+                        <div class="tutorial-step">
+                            <p class="font-bold text-yellow-300">🔹 Invitar</p>
+                            <p class="text-xs text-white/80">Comparte tu link de invitación. Cuando alguien se registre con él, será tu referido directo.</p>
+                        </div>
+                    </div>
+                </details>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 🟢 CONFIGURACIÓN PARA MILIMAR V3
+        const CONTRACT_ADDR = "0x00D019DF3fD2dbe8A597Cd9d98ca54D2e9bb9353";
+        const USDT_ADDR = "0x55d398326f99059fF775485246999027B3197955";
+        const BSC_CHAIN_ID = 56;
+        const PRECIO_SUSCRIPCION = 10; // 10 USDT
+
+        // ABIs (incluye las nuevas funciones)
+        const abi = [
+            "function consultarEstado(address) view returns (uint256,uint256,uint256,uint256,uint256,uint256,bool)",
+            "function unirse(address)",
+            "function renovarSuscripcion()",
+            "function retirarGanancias()",
+            "function verDetalleRed(address) view returns (uint256[5] memory)",
+            "function verDetalleGanancias(address) view returns (uint256[5] memory)",
+            "function admin() view returns (address)",
+            "function togglePausa()",
+            "function otorgarCuposExtra(address,uint256)",
+            "function premiarLider(address,uint256)",
+            "function recuperarTokenExterno(address,uint256)",
+            "function fondoSolidaridad() view returns (uint256)",
+            "function emergencyMode() view returns (bool)",
+            "function emergencyWithdraw()",
+            "function activateEmergencyMode()",
+            "function usarFondoSolidaridad(address,uint256,string)"
+        ];
+        const usdtAbi = ["function approve(address spender, uint256 amount) returns (bool)"];
+
+        let provider, signer, userAddress, contract, usdtContract;
+        let isAdmin = false;
+        let toastTimeout;
+
+        const toast = document.getElementById('toast');
+        const toastMsg = document.getElementById('toastMsg');
+        const copyLinkBtn = document.getElementById('copyLinkBtn');
+        const refLink = document.getElementById('refLink');
+        const copyMsg = document.getElementById('copyMsg');
+        const fondoElem = document.getElementById('fondoSolidaridad');
+        const emergencyStatus = document.getElementById('emergencyStatus');
+        const emergencyContainer = document.getElementById('emergencyContainer');
+        const btnEmergency = document.getElementById('btnEmergencyWithdraw');
+
+        function showToast(msg, isError = false) {
+            clearTimeout(toastTimeout);
+            toast.classList.remove('hidden');
+            toastMsg.innerText = msg;
+            toast.style.backgroundColor = isError ? 'rgba(127, 29, 29, 0.9)' : 'rgba(6, 78, 59, 0.9)';
+            toastTimeout = setTimeout(() => toast.classList.add('hidden'), 4000);
+        }
+
+        copyLinkBtn.addEventListener('click', () => {
+            refLink.select();
+            refLink.setSelectionRange(0, 99999);
+            navigator.clipboard.writeText(refLink.value).then(() => {
+                copyMsg.classList.remove('hidden');
+                setTimeout(() => copyMsg.classList.add('hidden'), 2000);
+            }).catch(() => showToast('Error al copiar', true));
+        });
+
+        async function checkNetwork() {
+            const network = await provider.getNetwork();
+            if (network.chainId !== BSC_CHAIN_ID) {
+                try {
+                    await window.ethereum.request({ method: 'wallet_switchEthereumChain', params: [{ chainId: '0x38' }] });
+                } catch {
+                    showToast('Cambia a BSC Mainnet en tu wallet', true);
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        async function loadRedYGanancias(intentos = 3) {
+            for (let i = 0; i < intentos; i++) {
+                try {
+                    const red = await contract.verDetalleRed(userAddress);
+                    const ganancias = await contract.verDetalleGanancias(userAddress);
+                    for (let j = 0; j < 5; j++) {
+                        const node = document.getElementById('n' + (j+1));
+                        const cantidad = red[j].toNumber();
+                        node.innerHTML = `N${j+1}<br><span class="text-[10px]">${cantidad}</span>`;
+                        if (cantidad > 0) {
+                            node.classList.add('node-filled');
+                            node.classList.remove('node-empty');
+                        } else {
+                            node.classList.add('node-empty');
+                            node.classList.remove('node-filled');
+                        }
+                    }
+                    let redHtml = '', ganHtml = '';
+                    for (let j = 0; j < 5; j++) {
+                        redHtml += `<div class="flex justify-between"><span>Nivel ${j+1}:</span><span class="font-bold">${red[j].toString()}</span></div>`;
+                        ganHtml += `<div class="flex justify-between"><span>Nivel ${j+1}:</span><span class="font-bold">${ethers.utils.formatUnits(ganancias[j], 18)} USDT</span></div>`;
+                    }
+                    document.getElementById('redNiveles').innerHTML = redHtml;
+                    document.getElementById('gananciasNiveles').innerHTML = ganHtml;
+                    return;
+                } catch (e) {
+                    if (i === intentos - 1) {
+                        document.getElementById('redNiveles').innerHTML = '<p class="text-red-400">Error al cargar. Intenta recargar manualmente.</p>';
+                        document.getElementById('gananciasNiveles').innerHTML = '<p class="text-red-400">Error al cargar.</p>';
+                        showToast('No se pudieron cargar los detalles de la red', true);
+                    } else await new Promise(r => setTimeout(r, 1000));
+                }
+            }
+        }
+
+        async function loadUserData() {
+            try {
+                const data = await contract.consultarEstado(userAddress);
+                document.getElementById('valSaldo').innerText = ethers.utils.formatUnits(data[0], 18);
+                document.getElementById('valDir').innerText = data[3].toString();
+                document.getElementById('valRed').innerText = data[4].toString();
+                document.getElementById('valDias').innerText = data[5].toString();
+                await loadRedYGanancias();
+
+                // Cargar fondo de solidaridad y modo emergencia
+                const fondo = await contract.fondoSolidaridad();
+                fondoElem.innerText = ethers.utils.formatUnits(fondo, 18) + ' USDT';
+                const emergency = await contract.emergencyMode();
+                emergencyStatus.innerText = emergency ? 'ACTIVO' : 'INACTIVO';
+                if (emergency) {
+                    emergencyContainer.classList.add('border-2', 'border-red-500');
+                    btnEmergency.classList.remove('hidden');
+                } else {
+                    emergencyContainer.classList.remove('border-2', 'border-red-500');
+                    btnEmergency.classList.add('hidden');
+                }
+            } catch (e) {
+                console.error('Error en consultarEstado:', e);
+                showToast('Error al cargar datos básicos', true);
+            }
+        }
+
+        async function connect() {
+            if (!window.ethereum) return showToast('Instala MetaMask/OKX Wallet', true);
+            try {
+                provider = new ethers.providers.Web3Provider(window.ethereum);
+                await provider.send("eth_requestAccounts", []);
+                signer = provider.getSigner();
+                userAddress = await signer.getAddress();
+
+                if (!await checkNetwork()) return;
+
+                contract = new ethers.Contract(CONTRACT_ADDR, abi, signer);
+                usdtContract = new ethers.Contract(USDT_ADDR, usdtAbi, signer);
+
+                document.getElementById('conBox').classList.add('hidden');
+                document.getElementById('dash').classList.remove('hidden');
+                refLink.value = window.location.origin + window.location.pathname + "?ref=" + userAddress;
+
+                const adminAddr = await contract.admin();
+                isAdmin = (adminAddr.toLowerCase() === userAddress.toLowerCase());
+                if (isAdmin) document.getElementById('adminSection').classList.remove('hidden');
+
+                await loadUserData();
+            } catch (e) {
+                showToast('Error conectando: ' + e.message, true);
+            }
+        }
+
+        document.getElementById('btnConnect').onclick = connect;
+
+        document.getElementById('btnApprove').onclick = async () => {
+            try {
+                const tx = await usdtContract.approve(CONTRACT_ADDR, ethers.utils.parseUnits("100", 18));
+                showToast('Autorizando...');
+                await tx.wait();
+                showToast('✅ USDT autorizado');
+            } catch (e) { showToast('Error: ' + e.message, true); }
+        };
+
+        document.getElementById('btnJoin').onclick = async () => {
+            try {
+                const urlParams = new URLSearchParams(window.location.search);
+                let sponsor = urlParams.get('ref');
+                if (!sponsor || sponsor === userAddress) {
+                    sponsor = prompt('Dirección del patrocinador:');
+                    if (!sponsor) return;
+                }
+                const tx = await contract.unirse(sponsor);
+                showToast('Activando...');
+                await tx.wait();
+                showToast('✅ Registro exitoso');
+                await loadUserData();
+            } catch (e) { showToast('Error: ' + e.message, true); }
+        };
+
+        document.getElementById('btnRenew').onclick = async () => {
+            try {
+                const tx = await contract.renovarSuscripcion();
+                showToast('Renovando...');
+                await tx.wait();
+                showToast('✅ Suscripción renovada');
+                await loadUserData();
+            } catch (e) { showToast('Error: ' + e.message, true); }
+        };
+
+        document.getElementById('btnWithdraw').onclick = async () => {
+            try {
+                const tx = await contract.retirarGanancias();
+                showToast('Retirando...');
+                await tx.wait();
+                showToast('✅ Retiro exitoso');
+                await loadUserData();
+            } catch (e) { showToast('Error: ' + e.message, true); }
+        };
+
+        document.getElementById('btnReloadDetails').onclick = loadRedYGanancias;
+        document.getElementById('btnReloadGanancias').onclick = loadRedYGanancias;
+
+        // Botón de emergencia
+        btnEmergency.onclick = async () => {
+            if (!confirm('¿Estás seguro de retirar todos tus fondos en modo de emergencia?')) return;
+            try {
+                const tx = await contract.emergencyWithdraw();
+                showToast('Procesando retiro de emergencia...');
+                await tx.wait();
+                showToast('✅ Retiro de emergencia completado');
+                await loadUserData();
+            } catch (e) { showToast('Error: ' + e.message, true); }
+        };
+
+        // Admin functions
+        document.getElementById('btnPausa').onclick = async () => {
+            if (!isAdmin || !confirm('¿Cambiar estado de pausa?')) return;
+            try { await (await contract.togglePausa()).wait(); showToast('✅ Pausa cambiada'); } catch (e) { showToast('Error: ' + e.message, true); }
+        };
+        document.getElementById('btnCupos').onclick = async () => {
+            if (!isAdmin) return;
+            const lider = prompt('Dirección del líder:'); const cant = prompt('Cantidad de cupos:');
+            if (!lider || !cant) return;
+            try { await (await contract.otorgarCuposExtra(lider, cant)).wait(); showToast('✅ Cupos otorgados'); } catch (e) { showToast('Error: ' + e.message, true); }
+        };
+        document.getElementById('btnPremiar').onclick = async () => {
+            if (!isAdmin) return;
+            const lider = prompt('Dirección del líder:'); const monto = prompt('Monto en USDT:');
+            if (!lider || !monto) return;
+            try { await (await contract.premiarLider(lider, ethers.utils.parseUnits(monto, 18))).wait(); showToast('✅ Premio enviado'); } catch (e) { showToast('Error: ' + e.message, true); }
+        };
+        document.getElementById('btnRecuperar').onclick = async () => {
+            if (!isAdmin) return;
+            const token = prompt('Dirección del token (no USDT):'); const cant = prompt('Cantidad:');
+            if (!token || !cant) return;
+            try { await (await contract.recuperarTokenExterno(token, ethers.utils.parseUnits(cant, 18))).wait(); showToast('✅ Tokens recuperados'); } catch (e) { showToast('Error: ' + e.message, true); }
+        };
+
+        window.addEventListener('load', () => {
+            if (window.ethereum && window.ethereum.selectedAddress) connect();
+        });
+    </script>
+    <footer class="text-center text-[10px] text-gray-500 mt-4">Milimar v3 Protocol · Precio 10 USDT · BSC</footer>
+</body>
+</html>
