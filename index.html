@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Milimar v3 | Oficina Virtual</title>
+    <title>Milimar JAGC | Oficina Virtual</title>
     <!-- Fuentes -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
@@ -120,8 +120,8 @@
     <div class="max-w-3xl mx-auto">
         <header class="text-center py-8">
             <div class="flex items-center justify-center gap-4">
-                <h1 class="text-6xl font-black text-white drop-shadow-2xl tracking-tighter" style="text-shadow: 0 0 20px rgba(251,191,36,0.5);">MILIMAR V3</h1>
-                <span class="price-badge">10 USDT</span>
+                <!-- Cambio aquí: título a MILIMAR JAGC y sin etiqueta de precio -->
+                <h1 class="text-6xl font-black text-white drop-shadow-2xl tracking-tighter" style="text-shadow: 0 0 20px rgba(251,191,36,0.5);">MILIMAR JAGC</h1>
             </div>
             <p class="text-sm text-white/80 uppercase tracking-[0.3em] font-light mt-2">Oficina Virtual · BSC</p>
         </header>
@@ -204,7 +204,7 @@
             <!-- Botones de acción -->
             <div class="grid grid-cols-2 gap-3">
                 <button id="btnApprove" class="btn bg-blue-600 text-white hover:bg-blue-500">1. AUTORIZAR USDT</button>
-                <button id="btnJoin" class="btn bg-yellow-500 text-black hover:bg-yellow-400">2. ACTIVAR</button>
+                <button id="btnJoin" class="btn bg-yellow-500 text-black hover:bg-yellow-400">2. ACTIVAR (10 USDT)</button>
                 <button id="btnRenew" class="btn bg-indigo-600 text-white hover:bg-indigo-500">RENOVAR</button>
                 <button id="btnWithdraw" class="btn bg-green-600 text-white hover:bg-green-500">RETIRAR</button>
             </div>
@@ -284,9 +284,8 @@
         const USDT_ADDR = "0x55d398326f99059fF775485246999027B3197955";
         const BSC_CHAIN_ID = 56;
 
-        // ABI completo con funciones y eventos (corregido)
+        // ABI completo con eventos
         const abi = [
-            // Funciones
             "function consultarEstado(address) view returns (uint256,uint256,uint256,uint256,uint256,uint256,bool)",
             "function unirse(address)",
             "function renovarSuscripcion()",
@@ -304,7 +303,6 @@
             "function emergencyWithdraw()",
             "function activateEmergencyMode()",
             "function usarFondoSolidaridad(address,uint256,string)",
-            // Eventos (necesarios para escuchar)
             "event RegistroGlobal(address indexed usuario, address indexed patrocinador, uint256 fecha)",
             "event BonoNivel3Alcanzado(address indexed usuario, uint256 fecha)",
             "event RetiroExitoso(address indexed usuario, uint256 monto)",
@@ -312,12 +310,10 @@
         ];
         const usdtAbi = ["function approve(address spender, uint256 amount) returns (bool)"];
 
-        // Estado
         let provider, signer, userAddress, contract, usdtContract;
         let isAdmin = false;
         let toastTimeout;
 
-        // Elementos DOM
         const toast = document.getElementById('toast');
         const toastMsg = document.getElementById('toastMsg');
         const copyLinkBtn = document.getElementById('copyLinkBtn');
@@ -330,7 +326,6 @@
         const emergencyContainer = document.getElementById('emergencyContainer');
         const btnEmergency = document.getElementById('btnEmergencyWithdraw');
 
-        // Mostrar toast
         function showToast(msg, isError = false) {
             clearTimeout(toastTimeout);
             toast.classList.remove('hidden');
@@ -339,7 +334,6 @@
             toastTimeout = setTimeout(() => toast.classList.add('hidden'), 4000);
         }
 
-        // Copiar link
         copyLinkBtn.addEventListener('click', () => {
             refLink.select();
             refLink.setSelectionRange(0, 99999);
@@ -349,7 +343,6 @@
             }).catch(() => showToast('Error al copiar', true));
         });
 
-        // Verificar red BSC
         async function checkNetwork() {
             const network = await provider.getNetwork();
             if (network.chainId !== BSC_CHAIN_ID) {
@@ -363,7 +356,6 @@
             return true;
         }
 
-        // Cargar detalles de red y ganancias
         async function loadRedYGanancias(intentos = 3) {
             for (let i = 0; i < intentos; i++) {
                 try {
@@ -399,7 +391,6 @@
             }
         }
 
-        // Cargar datos del usuario y fondos
         async function loadUserData() {
             try {
                 const data = await contract.consultarEstado(userAddress);
@@ -409,7 +400,6 @@
                 document.getElementById('valDias').innerText = data[5].toString();
                 await loadRedYGanancias();
 
-                // Fondos globales
                 const fondo = await contract.fondoSolidaridad();
                 fondoElem.innerText = ethers.utils.formatUnits(fondo, 18) + ' USDT';
                 const pool = await contract.poolLiderazgo();
@@ -429,7 +419,6 @@
             }
         }
 
-        // Conectar wallet
         async function connect() {
             if (!window.ethereum) return showToast('Instala MetaMask/OKX Wallet', true);
             try {
@@ -454,7 +443,7 @@
 
                 await loadUserData();
 
-                // Escuchar eventos para notificaciones (ahora con eventos en ABI)
+                // Escuchar eventos
                 contract.on("RegistroGlobal", (usuario, patrocinador, fecha) => {
                     showToast(`🎉 Nuevo registro: ${usuario.slice(0,6)}...${usuario.slice(-4)}`);
                 });
@@ -469,7 +458,6 @@
             }
         }
 
-        // Event listeners
         document.getElementById('btnConnect').onclick = connect;
 
         document.getElementById('btnApprove').onclick = async () => {
@@ -520,7 +508,6 @@
         document.getElementById('btnReloadDetails').onclick = loadRedYGanancias;
         document.getElementById('btnReloadGanancias').onclick = loadRedYGanancias;
 
-        // Admin functions
         document.getElementById('btnPausa').onclick = async () => {
             if (!isAdmin || !confirm('¿Cambiar estado de pausa?')) return;
             try { await (await contract.togglePausa()).wait(); showToast('✅ Pausa cambiada'); } catch (e) { showToast('Error: ' + e.message, true); }
@@ -555,11 +542,10 @@
             } catch (e) { showToast('Error: ' + e.message, true); }
         };
 
-        // Auto-conectar si hay wallet conectada
         window.addEventListener('load', () => {
             if (window.ethereum && window.ethereum.selectedAddress) connect();
         });
     </script>
-    <footer class="text-center text-[10px] text-gray-500 mt-4">Milimar v3 Protocol · Precio 10 USDT · BSC</footer>
+    <footer class="text-center text-[10px] text-gray-500 mt-4">Milimar Protocol · BSC</footer>
 </body>
 </html>
