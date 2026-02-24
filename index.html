@@ -73,6 +73,9 @@
         .tutorial-step {
             @apply bg-white/10 p-3 rounded-lg mb-2 text-sm border border-white/20;
         }
+        .benefit-card {
+            @apply glass-card p-4 text-center hover:scale-105 transition-transform cursor-default;
+        }
         .price-badge {
             background: rgba(251, 191, 36, 0.2);
             border: 1px solid #fbbf24;
@@ -120,7 +123,6 @@
     <div class="max-w-3xl mx-auto">
         <header class="text-center py-8">
             <div class="flex items-center justify-center gap-4">
-                <!-- Cambio aquí: título a MILIMAR JAGC y sin etiqueta de precio -->
                 <h1 class="text-6xl font-black text-white drop-shadow-2xl tracking-tighter" style="text-shadow: 0 0 20px rgba(251,191,36,0.5);">MILIMAR JAGC</h1>
             </div>
             <p class="text-sm text-white/80 uppercase tracking-[0.3em] font-light mt-2">Oficina Virtual · BSC</p>
@@ -130,8 +132,53 @@
             <button id="btnConnect" class="btn bg-white text-black w-full max-w-md mx-auto hover:bg-yellow-300 transition">CONECTAR BILLETERA</button>
         </div>
 
+        <!-- NUEVA SECCIÓN: Beneficios del Contrato -->
+        <div class="glass-card p-6 mb-6">
+            <h2 class="text-2xl font-bold text-white mb-4 text-center">🚀 ¿POR QUÉ MILIMAR JAGC?</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="benefit-card">
+                    <div class="text-3xl mb-2">🔒</div>
+                    <h3 class="font-bold text-yellow-400">Transparencia Total</h3>
+                    <p class="text-xs text-white/70">Contrato verificado en BscScan. Todo el código es público y auditable.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="text-3xl mb-2">💸</div>
+                    <h3 class="font-bold text-yellow-400">Desde 10 USDT</h3>
+                    <p class="text-xs text-white/70">Suscripción mensual accesible. Incluye comisiones en 5 niveles.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="text-3xl mb-2">🤝</div>
+                    <h3 class="font-bold text-yellow-400">Fondo Solidaridad</h3>
+                    <p class="text-xs text-white/70">1% de cada suscripción apoya a miembros vulnerables.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="text-3xl mb-2">⚡</div>
+                    <h3 class="font-bold text-yellow-400">Comisiones 5 Niveles</h3>
+                    <p class="text-xs text-white/70">Gana el 25%, 17%, 10%, 6% y 3% por cada nuevo miembro en tu red.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="text-3xl mb-2">🏆</div>
+                    <h3 class="font-bold text-yellow-400">Pool de Liderazgo</h3>
+                    <p class="text-xs text-white/70">3% de cada suscripción se acumula para premiar a los mejores líderes.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="text-3xl mb-2">🛡️</div>
+                    <h3 class="font-bold text-yellow-400">Modo Emergencia</h3>
+                    <p class="text-xs text-white/70">Protección para usuarios: retiro de fondos en caso de contingencia.</p>
+                </div>
+                <div class="benefit-card md:col-span-3">
+                    <div class="text-3xl mb-2">📈</div>
+                    <h3 class="font-bold text-yellow-400">Potencial Exponencial</h3>
+                    <p class="text-xs text-white/70">Ejemplo: con 4 referidos directos que inviten a 4 cada uno, podrías ganar más de $560 mensuales.</p>
+                </div>
+            </div>
+            <div class="mt-4 text-center">
+                <p class="text-xs text-white/50">Contrato: <span class="font-mono">0x00D019...b9353</span> | <a href="https://bscscan.com/address/0x00D019DF3fD2dbe8A597Cd9d98ca54D2e9bb9353" target="_blank" class="text-yellow-400 underline">Ver en BscScan</a></p>
+            </div>
+        </div>
+
         <div id="dash" class="hidden space-y-6">
-            <!-- Tarjetas de resumen -->
+            <!-- Tarjetas de resumen (sin cambios) -->
             <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
                 <div class="glass-card p-4 border-l-4 border-green-400">
                     <p class="text-[10px] text-white/60 uppercase font-bold">Saldo Pendiente</p>
@@ -278,13 +325,12 @@
     </div>
 
     <script>
-        // Configuración
+        // 🟢 CONFIGURACIÓN (sin cambios)
         const TELEGRAM_GRUPO = "https://t.me/+z7wwfx0ocho1NzI5";
         const CONTRACT_ADDR = "0x00D019DF3fD2dbe8A597Cd9d98ca54D2e9bb9353";
         const USDT_ADDR = "0x55d398326f99059fF775485246999027B3197955";
         const BSC_CHAIN_ID = 56;
 
-        // ABI completo con eventos
         const abi = [
             "function consultarEstado(address) view returns (uint256,uint256,uint256,uint256,uint256,uint256,bool)",
             "function unirse(address)",
@@ -310,6 +356,7 @@
         ];
         const usdtAbi = ["function approve(address spender, uint256 amount) returns (bool)"];
 
+        // Estado
         let provider, signer, userAddress, contract, usdtContract;
         let isAdmin = false;
         let toastTimeout;
