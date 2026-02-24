@@ -73,9 +73,6 @@
         .tutorial-step, .benefit-step {
             @apply bg-white/10 p-3 rounded-lg mb-2 text-sm border border-white/20;
         }
-        .benefit-card {
-            @apply glass-card p-4 text-center hover:scale-105 transition-transform cursor-default;
-        }
         /* Botón de Telegram flotante */
         .telegram-button {
             position: fixed;
@@ -126,7 +123,7 @@
             <button id="btnConnect" class="btn bg-white text-black w-full max-w-md mx-auto hover:bg-yellow-300 transition">CONECTAR BILLETERA</button>
         </div>
 
-        <!-- SECCIÓN COLAPSABLE: ¿Por qué Milimar? (similar a tutoriales) -->
+        <!-- SECCIÓN COLAPSABLE: ¿Por qué Milimar? (nueva) -->
         <div class="glass-card p-4 mb-6">
             <details class="cursor-pointer">
                 <summary class="text-white font-bold text-sm list-none flex justify-between items-center drop-shadow">
@@ -170,7 +167,7 @@
         </div>
 
         <div id="dash" class="hidden space-y-6">
-            <!-- Tarjetas de resumen (con nuevo indicador de cupos extra) -->
+            <!-- Tarjetas de resumen (las 4 originales) -->
             <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
                 <div class="glass-card p-4 border-l-4 border-green-400">
                     <p class="text-[10px] text-white/60 uppercase font-bold">Saldo Pendiente</p>
@@ -185,8 +182,8 @@
                     <p id="valDir" class="text-xl font-black text-blue-300">0</p>
                 </div>
                 <div class="glass-card p-4 border-r-4 border-purple-400 text-right">
-                    <p class="text-[10px] text-white/60 uppercase font-bold">Cupos Extra</p>
-                    <p id="valCuposExtra" class="text-xl font-black text-purple-300">0</p>
+                    <p class="text-[10px] text-white/60 uppercase font-bold">Días activo</p>
+                    <p id="valDias" class="text-xl font-black text-purple-300">0</p>
                 </div>
             </div>
 
@@ -323,10 +320,9 @@
         const USDT_ADDR = "0x55d398326f99059fF775485246999027B3197955";
         const BSC_CHAIN_ID = 56;
 
-        // ABI actualizado para incluir cuposExtraAdmin y el resto de funciones
+        // ABI original (sin la función usuarios, solo las necesarias)
         const abi = [
             "function consultarEstado(address) view returns (uint256,uint256,uint256,uint256,uint256,uint256,bool)",
-            "function usuarios(address) view returns (bool registrado, address patrocinador, uint256 saldoPendiente, uint256 totalGanado, uint256 totalRetirado, uint256 contadorDirectos, uint256 redTotal, uint256[5] conteoNiveles, uint256 cuposExtraAdmin, uint256 vencimiento, uint256[5] gananciasNiveles, bool bonoN3Reclamado, uint256 fechaRegistro, bool activo)",
             "function unirse(address)",
             "function renovarSuscripcion()",
             "function retirarGanancias()",
@@ -434,15 +430,12 @@
 
         async function loadUserData() {
             try {
-                // Obtener datos básicos del usuario (incluye cuposExtraAdmin)
-                const userData = await contract.usuarios(userAddress);
-                document.getElementById('valSaldo').innerText = ethers.utils.formatUnits(userData.saldoPendiente, 18);
-                document.getElementById('valDir').innerText = userData.contadorDirectos.toString();
-                document.getElementById('valRed').innerText = userData.redTotal.toString();
-                const dias = userData.vencimiento > Math.floor(Date.now() / 1000) ? Math.floor((userData.vencimiento - Math.floor(Date.now() / 1000)) / 86400) : 0;
-                document.getElementById('valDias').innerText = dias.toString();
-                document.getElementById('valCuposExtra').innerText = userData.cuposExtraAdmin.toString();
-
+                // Usar consultarEstado que ya funcionaba
+                const data = await contract.consultarEstado(userAddress);
+                document.getElementById('valSaldo').innerText = ethers.utils.formatUnits(data[0], 18);
+                document.getElementById('valDir').innerText = data[3].toString();
+                document.getElementById('valRed').innerText = data[4].toString();
+                document.getElementById('valDias').innerText = data[5].toString();
                 await loadRedYGanancias();
 
                 // Fondos globales
@@ -554,6 +547,7 @@
         document.getElementById('btnReloadDetails').onclick = loadRedYGanancias;
         document.getElementById('btnReloadGanancias').onclick = loadRedYGanancias;
 
+        // Admin functions
         document.getElementById('btnPausa').onclick = async () => {
             if (!isAdmin || !confirm('¿Cambiar estado de pausa?')) return;
             try { await (await contract.togglePausa()).wait(); showToast('✅ Pausa cambiada'); } catch (e) { showToast('Error: ' + e.message, true); }
@@ -594,4 +588,4 @@
     </script>
     <footer class="text-center text-[10px] text-gray-500 mt-4">Milimar Protocol · BSC</footer>
 </body>
-                                                                                                         </html>
+    </html>
