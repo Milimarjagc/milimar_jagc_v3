@@ -70,10 +70,9 @@
             @apply font-black py-3 px-6 rounded-xl transition-all transform hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed;
             font-family: 'Poppins', sans-serif;
         }
-        .tutorial-step, .benefit-step {
+        .tutorial-step, .benefit-step, .feed-item {
             @apply bg-white/10 p-3 rounded-lg mb-2 text-sm border border-white/20;
         }
-        /* Botón de Telegram flotante */
         .telegram-button {
             position: fixed;
             bottom: 20px;
@@ -97,6 +96,19 @@
             transform: scale(1.05);
             box-shadow: 0 6px 25px rgba(42, 171, 238, 0.7);
         }
+        .tab-button {
+            @apply px-6 py-3 rounded-t-xl font-bold transition-all;
+        }
+        .tab-active {
+            @apply bg-yellow-500 text-black;
+        }
+        .tab-inactive {
+            @apply bg-white/10 text-white hover:bg-white/20;
+        }
+        .feed-container {
+            max-height: 200px;
+            overflow-y: auto;
+        }
     </style>
 </head>
 <body class="text-white antialiased p-4 min-h-screen relative">
@@ -119,55 +131,20 @@
             <p class="text-sm text-white/80 uppercase tracking-[0.3em] font-light mt-2">Oficina Virtual · BSC</p>
         </header>
 
+        <!-- Pestañas de navegación -->
+        <div class="flex justify-center gap-2 mb-6">
+            <button id="btnMembresia" class="tab-button tab-active">MEMBRESÍA</button>
+            <button id="btnArbitraje" class="tab-button tab-inactive">ARBITRAJE (próximamente)</button>
+        </div>
+
+        <!-- Contenedor principal (se conectará después de conectar wallet) -->
         <div id="conBox" class="glass-card p-10 text-center mb-6">
             <button id="btnConnect" class="btn bg-white text-black w-full max-w-md mx-auto hover:bg-yellow-300 transition">CONECTAR BILLETERA</button>
         </div>
 
-        <!-- SECCIÓN COLAPSABLE: ¿Por qué Milimar? (nueva) -->
-        <div class="glass-card p-4 mb-6">
-            <details class="cursor-pointer">
-                <summary class="text-white font-bold text-sm list-none flex justify-between items-center drop-shadow">
-                    🚀 ¿POR QUÉ MILIMAR JAGC? (clic para expandir)
-                    <span class="text-xs text-white/60">ver beneficios</span>
-                </summary>
-                <div class="mt-4 space-y-3">
-                    <div class="benefit-step">
-                        <p class="font-bold text-yellow-300">🔒 Transparencia Total</p>
-                        <p class="text-xs text-white/80">Contrato verificado en BscScan. Todo el código es público y auditable.</p>
-                    </div>
-                    <div class="benefit-step">
-                        <p class="font-bold text-yellow-300">💸 Desde 10 USDT</p>
-                        <p class="text-xs text-white/80">Suscripción mensual accesible. Incluye comisiones en 5 niveles.</p>
-                    </div>
-                    <div class="benefit-step">
-                        <p class="font-bold text-yellow-300">🤝 Fondo Solidaridad</p>
-                        <p class="text-xs text-white/80">1% de cada suscripción apoya a miembros vulnerables.</p>
-                    </div>
-                    <div class="benefit-step">
-                        <p class="font-bold text-yellow-300">⚡ Comisiones 5 Niveles</p>
-                        <p class="text-xs text-white/80">Gana el 25%, 17%, 10%, 6% y 3% por cada nuevo miembro en tu red.</p>
-                    </div>
-                    <div class="benefit-step">
-                        <p class="font-bold text-yellow-300">🏆 Pool de Liderazgo</p>
-                        <p class="text-xs text-white/80">3% de cada suscripción se acumula para premiar a los mejores líderes.</p>
-                    </div>
-                    <div class="benefit-step">
-                        <p class="font-bold text-yellow-300">🛡️ Modo Emergencia</p>
-                        <p class="text-xs text-white/80">Protección para usuarios: retiro de fondos en caso de contingencia.</p>
-                    </div>
-                    <div class="benefit-step">
-                        <p class="font-bold text-yellow-300">📈 Potencial Exponencial</p>
-                        <p class="text-xs text-white/80">Ejemplo: con 4 referidos directos que inviten a 4 cada uno, podrías ganar más de $560 mensuales.</p>
-                    </div>
-                    <div class="mt-2 text-center">
-                        <p class="text-xs text-white/50">Contrato: <span class="font-mono">0x00D019...b9353</span> | <a href="https://bscscan.com/address/0x00D019DF3fD2dbe8A597Cd9d98ca54D2e9bb9353" target="_blank" class="text-yellow-400 underline">Ver en BscScan</a></p>
-                    </div>
-                </div>
-            </details>
-        </div>
-
-        <div id="dash" class="hidden space-y-6">
-            <!-- Tarjetas de resumen (las 4 originales) -->
+        <!-- SECCIÓN MEMBRESÍA (visible por defecto) -->
+        <div id="seccionMembresia" class="space-y-6">
+            <!-- Tarjetas de resumen (4) -->
             <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
                 <div class="glass-card p-4 border-l-4 border-green-400">
                     <p class="text-[10px] text-white/60 uppercase font-bold">Saldo Pendiente</p>
@@ -187,7 +164,7 @@
                 </div>
             </div>
 
-            <!-- Fondos: Solidaridad y Pool Liderazgo + Emergencia -->
+            <!-- Fondos: Solidaridad, Pool Liderazgo, Emergencia -->
             <div class="grid grid-cols-3 gap-3">
                 <div class="glass-card p-3 text-center">
                     <p class="text-[10px] text-white/60 uppercase font-bold">Fondo Solidaridad</p>
@@ -257,7 +234,7 @@
                 <div class="mt-2 text-[10px] text-white/50">Usa estas funciones con responsabilidad.</div>
             </div>
 
-            <!-- Sección de comunidad visible para todos -->
+            <!-- Sección de comunidad -->
             <div class="glass-card p-4 text-center">
                 <h3 class="text-white font-bold mb-2 text-sm drop-shadow">📢 COMUNIDAD OFICIAL</h3>
                 <p class="text-xs text-white/70 mb-3">Accede a nuestro grupo privado de Telegram para soporte, novedades y conectar con otros líderes.</p>
@@ -310,17 +287,80 @@
                     </div>
                 </details>
             </div>
+
+            <!-- FEED DE ACTIVIDAD PÚBLICA (transparencia) -->
+            <div class="glass-card p-4">
+                <h3 class="text-white font-bold text-sm mb-2 drop-shadow">📢 ACTIVIDAD RECIENTE DE LA COMUNIDAD</h3>
+                <div id="feedActividad" class="feed-container space-y-2 pr-2">
+                    <p class="text-white/50 text-xs">Conecta tu wallet para ver la actividad en tiempo real...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN ARBITRAJE (oculta inicialmente) -->
+        <div id="seccionArbitraje" class="hidden space-y-6">
+            <div class="glass-card p-6 text-center">
+                <h2 class="text-2xl font-bold text-yellow-400 mb-4">FONDO DE ARBITRAJE DEFI</h2>
+                <p class="text-sm text-white/70 mb-6">Próximamente: Invierte en nuestro fondo automatizado de arbitraje entre exchanges descentralizados. Genera rendimientos mientras contribuyes a la liquidez del ecosistema.</p>
+                
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+                    <div class="glass-card p-3">
+                        <p class="text-[10px] text-white/50">Total en fondo</p>
+                        <p class="text-xl font-black text-green-300">-- USDT</p>
+                    </div>
+                    <div class="glass-card p-3">
+                        <p class="text-[10px] text-white/50">Mi inversión</p>
+                        <p class="text-xl font-black text-blue-300">-- USDT</p>
+                    </div>
+                    <div class="glass-card p-3">
+                        <p class="text-[10px] text-white/50">Ganancias</p>
+                        <p class="text-xl font-black text-yellow-300">-- USDT</p>
+                    </div>
+                    <div class="glass-card p-3">
+                        <p class="text-[10px] text-white/50">APY estimado</p>
+                        <p class="text-xl font-black text-purple-300">-- %</p>
+                    </div>
+                </div>
+
+                <div class="bg-yellow-500/20 border border-yellow-500 rounded-lg p-4 mb-6">
+                    <p class="text-yellow-300 font-bold">🚧 EN DESARROLLO</p>
+                    <p class="text-xs text-white/70 mt-2">Estamos trabajando en un contrato inteligente independiente para arbitraje. Mientras tanto, puedes unirte a nuestro grupo de Telegram para recibir noticias sobre su lanzamiento.</p>
+                </div>
+
+                <div class="flex gap-3">
+                    <button class="btn bg-gray-600 text-white opacity-50 cursor-not-allowed flex-1">DEPOSITAR</button>
+                    <button class="btn bg-gray-600 text-white opacity-50 cursor-not-allowed flex-1">RETIRAR</button>
+                </div>
+                <p class="text-[10px] text-white/30 mt-2">Funciones disponibles próximamente</p>
+            </div>
+
+            <!-- Explicación del arbitraje -->
+            <div class="glass-card p-4">
+                <details class="cursor-pointer">
+                    <summary class="text-white font-bold text-sm list-none flex justify-between items-center drop-shadow">
+                        📘 ¿CÓMO FUNCIONARÁ EL ARBITRAJE?
+                        <span class="text-xs text-white/60">clic para expandir</span>
+                    </summary>
+                    <div class="mt-4 space-y-2 text-xs text-white/80">
+                        <p>🔹 <span class="text-yellow-300">Fondo colectivo:</span> Los usuarios depositan USDT en un contrato independiente.</p>
+                        <p>🔹 <span class="text-yellow-300">Bot automatizado:</span> Un algoritmo detecta diferencias de precio entre DEXs (PancakeSwap, Biswap, etc.) y ejecuta operaciones.</p>
+                        <p>🔹 <span class="text-yellow-300">Ganancias distribuidas:</span> Las utilidades se reparten proporcionalmente entre los participantes.</p>
+                        <p>🔹 <span class="text-yellow-300">Seguridad:</span> El contrato de arbitraje es independiente del de membresía, protegiendo tus fondos.</p>
+                        <p class="mt-2 text-white/50">⏱️ Tiempo estimado de desarrollo: 2-4 meses.</p>
+                    </div>
+                </details>
+            </div>
         </div>
     </div>
 
     <script>
-        // 🟢 CONFIGURACIÓN
-        const TELEGRAM_GRUPO = "https://t.me/+z7wwfx0ocho1NzI5";
-        const CONTRACT_ADDR = "0x00D019DF3fD2dbe8A597Cd9d98ca54D2e9bb9353";
+        // 🟢 CONFIGURACIÓN (ACTUALIZA CON TU NUEVA DIRECCIÓN)
+        const CONTRACT_ADDR = "0x497D328d5d59E191Eb7FC411a876CefB8B43176c"; // Milimar_v4
         const USDT_ADDR = "0x55d398326f99059fF775485246999027B3197955";
         const BSC_CHAIN_ID = 56;
+        const TELEGRAM_GRUPO = "https://t.me/+z7wwfx0ocho1NzI5";
 
-        // ABI original (sin la función usuarios, solo las necesarias)
+        // ABI del contrato (versión simplificada para evitar stack too deep)
         const abi = [
             "function consultarEstado(address) view returns (uint256,uint256,uint256,uint256,uint256,uint256,bool)",
             "function unirse(address)",
@@ -337,12 +377,11 @@
             "function poolLiderazgo() view returns (uint256)",
             "function emergencyMode() view returns (bool)",
             "function emergencyWithdraw()",
-            "function activateEmergencyMode()",
-            "function usarFondoSolidaridad(address,uint256,string)",
             "event RegistroGlobal(address indexed usuario, address indexed patrocinador, uint256 fecha)",
             "event BonoNivel3Alcanzado(address indexed usuario, uint256 fecha)",
             "event RetiroExitoso(address indexed usuario, uint256 monto)",
-            "event EmergencyWithdraw(address indexed user, uint256 amount)"
+            "event PremiadoLider(address indexed lider, uint256 monto)",
+            "event FondoSolidaridadUsado(address beneficiado, uint256 monto, string motivo)"
         ];
         const usdtAbi = ["function approve(address spender, uint256 amount) returns (bool)"];
 
@@ -351,6 +390,7 @@
         let isAdmin = false;
         let toastTimeout;
 
+        // Elementos DOM
         const toast = document.getElementById('toast');
         const toastMsg = document.getElementById('toastMsg');
         const copyLinkBtn = document.getElementById('copyLinkBtn');
@@ -362,6 +402,41 @@
         const emergencyStatus = document.getElementById('emergencyStatus');
         const emergencyContainer = document.getElementById('emergencyContainer');
         const btnEmergency = document.getElementById('btnEmergencyWithdraw');
+        const feedActividad = document.getElementById('feedActividad');
+        const btnMembresia = document.getElementById('btnMembresia');
+        const btnArbitraje = document.getElementById('btnArbitraje');
+        const seccionMembresia = document.getElementById('seccionMembresia');
+        const seccionArbitraje = document.getElementById('seccionArbitraje');
+
+        // Inicializar pestañas
+        btnMembresia.addEventListener('click', () => {
+            btnMembresia.classList.add('tab-active');
+            btnMembresia.classList.remove('tab-inactive');
+            btnArbitraje.classList.add('tab-inactive');
+            btnArbitraje.classList.remove('tab-active');
+            seccionMembresia.classList.remove('hidden');
+            seccionArbitraje.classList.add('hidden');
+        });
+
+        btnArbitraje.addEventListener('click', () => {
+            btnArbitraje.classList.add('tab-active');
+            btnArbitraje.classList.remove('tab-inactive');
+            btnMembresia.classList.add('tab-inactive');
+            btnMembresia.classList.remove('tab-active');
+            seccionMembresia.classList.add('hidden');
+            seccionArbitraje.classList.remove('hidden');
+        });
+
+        // Función para agregar al feed de actividad
+        function agregarAlFeed(mensaje, tipo = 'info') {
+            const item = document.createElement('div');
+            item.className = `feed-item border-l-4 ${tipo === 'premio' ? 'border-yellow-500' : tipo === 'registro' ? 'border-green-500' : 'border-blue-500'}`;
+            item.innerHTML = `<p class="text-xs text-white/80">${mensaje}</p>`;
+            feedActividad.prepend(item); // Los más nuevos arriba
+            if (feedActividad.children.length > 20) {
+                feedActividad.removeChild(feedActividad.lastChild);
+            }
+        }
 
         function showToast(msg, isError = false) {
             clearTimeout(toastTimeout);
@@ -430,7 +505,6 @@
 
         async function loadUserData() {
             try {
-                // Usar consultarEstado que ya funcionaba
                 const data = await contract.consultarEstado(userAddress);
                 document.getElementById('valSaldo').innerText = ethers.utils.formatUnits(data[0], 18);
                 document.getElementById('valDir').innerText = data[3].toString();
@@ -438,7 +512,6 @@
                 document.getElementById('valDias').innerText = data[5].toString();
                 await loadRedYGanancias();
 
-                // Fondos globales
                 const fondo = await contract.fondoSolidaridad();
                 fondoElem.innerText = ethers.utils.formatUnits(fondo, 18) + ' USDT';
                 const pool = await contract.poolLiderazgo();
@@ -472,7 +545,7 @@
                 usdtContract = new ethers.Contract(USDT_ADDR, usdtAbi, signer);
 
                 document.getElementById('conBox').classList.add('hidden');
-                document.getElementById('dash').classList.remove('hidden');
+                seccionMembresia.classList.remove('hidden');
                 telegramLink.classList.remove('hidden');
                 refLink.value = window.location.origin + window.location.pathname + "?ref=" + userAddress;
 
@@ -482,16 +555,25 @@
 
                 await loadUserData();
 
-                // Escuchar eventos
+                // Escuchar eventos para el feed de actividad
                 contract.on("RegistroGlobal", (usuario, patrocinador, fecha) => {
-                    showToast(`🎉 Nuevo registro: ${usuario.slice(0,6)}...${usuario.slice(-4)}`);
+                    agregarAlFeed(`🎉 Nuevo registro: ${usuario.slice(0,6)}...${usuario.slice(-4)}`, 'registro');
                 });
                 contract.on("BonoNivel3Alcanzado", (usuario, fecha) => {
-                    showToast(`🏆 Bono nivel 3 alcanzado por ${usuario.slice(0,6)}...${usuario.slice(-4)}`);
+                    agregarAlFeed(`🏆 Bono nivel 3 alcanzado por ${usuario.slice(0,6)}...${usuario.slice(-4)}`, 'premio');
                 });
                 contract.on("RetiroExitoso", (usuario, monto) => {
-                    showToast(`💰 Retiro de ${ethers.utils.formatUnits(monto,18)} USDT por ${usuario.slice(0,6)}...${usuario.slice(-4)}`);
+                    agregarAlFeed(`💰 Retiro de ${ethers.utils.formatUnits(monto,18)} USDT por ${usuario.slice(0,6)}...${usuario.slice(-4)}`, 'info');
                 });
+                contract.on("PremiadoLider", (lider, monto) => {
+                    agregarAlFeed(`🏅 Premio a líder ${lider.slice(0,6)}...${lider.slice(-4)}: ${ethers.utils.formatUnits(monto,18)} USDT`, 'premio');
+                });
+                contract.on("FondoSolidaridadUsado", (beneficiario, monto, motivo) => {
+                    agregarAlFeed(`🤝 Apoyo solidario a ${beneficiario.slice(0,6)}...${beneficiario.slice(-4)}: ${ethers.utils.formatUnits(monto,18)} USDT (${motivo})`, 'info');
+                });
+
+                // Cargar últimos eventos (opcional)
+                // Podrías usar getLogs aquí para historial
             } catch (e) {
                 showToast('Error conectando: ' + e.message, true);
             }
@@ -586,6 +668,6 @@
             if (window.ethereum && window.ethereum.selectedAddress) connect();
         });
     </script>
-    <footer class="text-center text-[10px] text-gray-500 mt-4">Milimar Protocol · BSC</footer>
+    <footer class="text-center text-[10px] text-gray-500 mt-4">Milimar Protocol · BSC · Contrato: 0x497D...3176C</footer>
 </body>
-    </html>
+                            </html>
