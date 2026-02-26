@@ -70,14 +70,14 @@
             @apply font-black py-3 px-6 rounded-xl transition-all transform hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed;
             font-family: 'Poppins', sans-serif;
         }
-        .tutorial-step, .benefit-step, .feed-item {
-            @apply bg-white/10 p-3 rounded-lg mb-2 text-sm border border-white/20;
+        .tutorial-step, .benefit-step, .feed-item, .info-section {
+            @apply bg-white/10 p-4 rounded-lg mb-3 text-sm border border-white/20;
         }
-        /* Botón flotante de WhatsApp */
+        /* Botones flotantes */
         .whatsapp-button {
             position: fixed;
             bottom: 20px;
-            left: 90px; /* Posición para no solaparse con Telegram */
+            left: 90px;
             z-index: 50;
             background: linear-gradient(145deg, #25D366, #128C7E);
             padding: 12px 24px;
@@ -139,6 +139,9 @@
         .vault-stat {
             @apply text-2xl font-black text-yellow-300;
         }
+        .info-title {
+            @apply text-yellow-400 font-bold text-base mb-2;
+        }
     </style>
 </head>
 <body class="text-white antialiased p-4 min-h-screen relative">
@@ -166,9 +169,10 @@
         </header>
 
         <!-- Pestañas de navegación -->
-        <div class="flex justify-center gap-2 mb-6">
+        <div class="flex flex-wrap justify-center gap-2 mb-6">
             <button id="btnMembresia" class="tab-button tab-active">MEMBRESÍA</button>
-            <button id="btnVault" class="tab-button tab-inactive">VAULT (INVERSIÓN)</button>
+            <button id="btnVault" class="tab-button tab-inactive">VAULT</button>
+            <button id="btnInfoVault" class="tab-button tab-inactive">📘 ACERCA DEL VAULT</button>
             <button id="btnArbitraje" class="tab-button tab-inactive">ARBITRAJE</button>
         </div>
 
@@ -312,7 +316,7 @@
             </div>
         </div>
 
-        <!-- SECCIÓN VAULT (completa, tal como estaba) -->
+        <!-- SECCIÓN VAULT (con proyecciones diarias/semanales) -->
         <div id="seccionVault" class="hidden space-y-6">
             <div class="glass-card p-6">
                 <h2 class="text-2xl font-bold text-yellow-400 mb-4">🏦 VAULT DE CRECIMIENTO</h2>
@@ -338,16 +342,25 @@
                     </div>
                 </div>
 
-                <!-- Proyecciones atractivas -->
-                <div class="grid grid-cols-2 gap-3 mb-6">
-                    <div class="glass-card p-3">
-                        <p class="text-xs text-white/60">Ganancia semanal estimada (con $100)</p>
-                        <p class="text-lg font-bold text-green-300">$0.30 – $0.40</p>
+                <!-- NUEVO: Mensaje sobre variabilidad con rangos diarios/semanales -->
+                <div class="glass-card p-4 mb-6 bg-yellow-500/10 border-yellow-500/30">
+                    <p class="text-sm text-white/80 text-center">
+                        ⚠️ El rendimiento del Vault es <span class="font-bold text-yellow-300">variable</span> y depende de las condiciones diarias del mercado, el volumen de transacciones en los protocolos y el precio de los tokens de recompensa. 
+                        Históricamente, los rendimientos han oscilado entre:
+                    </p>
+                    <div class="grid grid-cols-2 gap-4 mt-3 text-center">
+                        <div class="bg-black/30 p-2 rounded">
+                            <p class="text-xs text-white/50">Diario (promedio)</p>
+                            <p class="text-lg font-bold text-green-300">0.02% – 0.05%</p>
+                        </div>
+                        <div class="bg-black/30 p-2 rounded">
+                            <p class="text-xs text-white/50">Semanal (promedio)</p>
+                            <p class="text-lg font-bold text-green-300">0.15% – 0.38%</p>
+                        </div>
                     </div>
-                    <div class="glass-card p-3">
-                        <p class="text-xs text-white/60">Ganancia mensual estimada (con $100)</p>
-                        <p class="text-lg font-bold text-green-300">$1.20 – $1.60</p>
-                    </div>
+                    <p class="text-[10px] text-white/40 mt-3 text-center">
+                        *Estos rangos son históricos y no garantizan resultados futuros. El rendimiento real puede ser mayor o menor según el mercado.
+                    </p>
                 </div>
 
                 <!-- Formulario de depósito -->
@@ -385,6 +398,76 @@
                     <h3 class="text-white font-bold text-sm mb-2">📢 ACTIVIDAD DEL VAULT</h3>
                     <div id="vaultFeed" class="feed-container space-y-2 pr-2">
                         <p class="text-white/50 text-xs">Conecta tu wallet para ver la actividad...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- NUEVA SECCIÓN: ACERCA DEL VAULT (informativa) -->
+        <div id="seccionInfoVault" class="hidden space-y-6">
+            <div class="glass-card p-6">
+                <h2 class="text-2xl font-bold text-yellow-400 mb-4">📘 ACERCA DEL VAULT DE CRECIMIENTO</h2>
+                
+                <div class="space-y-4">
+                    <div class="info-section">
+                        <h3 class="info-title">🔍 ¿Cómo funciona?</h3>
+                        <p class="text-white/80 text-xs leading-relaxed">
+                            El Vault es un fondo colectivo donde los usuarios depositan USDT. El contrato inteligente invierte automáticamente estos fondos en dos estrategias:
+                        </p>
+                        <ul class="list-disc list-inside text-white/70 text-xs mt-2 space-y-1">
+                            <li><span class="text-yellow-300">70% en préstamos seguros (Venus Protocol):</span> Genera rendimientos estables a través de intereses de préstamos.</li>
+                            <li><span class="text-yellow-300">30% en farming de alto rendimiento (PancakeSwap/Beefy):</span> Obtiene ganancias de comisiones de trading y recompensas en tokens.</li>
+                        </ul>
+                    </div>
+
+                    <div class="info-section">
+                        <h3 class="info-title">📈 ¿Por qué el rendimiento es variable y en qué rangos se mueve?</h3>
+                        <p class="text-white/80 text-xs leading-relaxed">
+                            Los rendimientos dependen de múltiples factores del mercado DeFi que cambian a diario:
+                        </p>
+                        <ul class="list-disc list-inside text-white/70 text-xs mt-2 space-y-1">
+                            <li>Las tasas de interés de los préstamos (Venus) varían según la oferta y demanda de USDT.</li>
+                            <li>Las recompensas por farming (PancakeSwap) fluctúan con el volumen de trading y el precio del token CAKE.</li>
+                            <li>El número de transacciones diarias en los pools afecta directamente las comisiones generadas.</li>
+                        </ul>
+                        <p class="text-white/70 text-xs mt-2">
+                            Históricamente, el Vault ha generado rendimientos promedio de:
+                        </p>
+                        <div class="grid grid-cols-2 gap-3 mt-2">
+                            <div class="bg-black/30 p-2 rounded text-center">
+                                <p class="text-[10px] text-white/50">Diario</p>
+                                <p class="text-sm font-bold text-green-300">0.02% – 0.05%</p>
+                            </div>
+                            <div class="bg-black/30 p-2 rounded text-center">
+                                <p class="text-[10px] text-white/50">Semanal</p>
+                                <p class="text-sm font-bold text-green-300">0.15% – 0.38%</p>
+                            </div>
+                        </div>
+                        <p class="text-white/50 text-[10px] mt-2">
+                            Estos valores son promedios históricos y no constituyen una garantía de rendimiento futuro.
+                        </p>
+                    </div>
+
+                    <div class="info-section">
+                        <h3 class="info-title">🛡️ Seguridad y riesgos</h3>
+                        <ul class="list-disc list-inside text-white/70 text-xs space-y-1">
+                            <li><span class="text-yellow-300">Riesgo de mercado:</span> El valor de los activos puede fluctuar.</li>
+                            <li><span class="text-yellow-300">Riesgo de protocolo:</span> Aunque Venus y PancakeSwap son líderes, siempre existe posibilidad técnica de fallos.</li>
+                            <li><span class="text-yellow-300">Protecciones:</span> El contrato incluye emergency withdraw, pausa y diversificación para minimizar riesgos.</li>
+                        </ul>
+                    </div>
+
+                    <div class="info-section">
+                        <h3 class="info-title">💡 Preguntas frecuentes</h3>
+                        <div class="space-y-2">
+                            <p class="text-white/80 text-xs"><span class="text-yellow-300">¿Puedo perder mi inversión?</span> El capital no está garantizado, pero el riesgo es bajo en comparación con estrategias de trading agresivas.</p>
+                            <p class="text-white/80 text-xs"><span class="text-yellow-300">¿Cada cuánto se reparten las ganancias?</span> Semanalmente, después del harvest. Las ganancias se acumulan en tu cuenta y puedes reclamarlas.</p>
+                            <p class="text-white/80 text-xs"><span class="text-yellow-300">¿Hay comisiones?</span> La empresa cobra un 3% sobre las ganancias. Los retiros instantáneos tienen un 1% de comisión.</p>
+                        </div>
+                    </div>
+
+                    <div class="glass-card p-4 mt-4 text-center">
+                        <p class="text-xs text-white/50">Para más información, únete a nuestro <a href="https://t.me/+z7wwfx0ocho1NzI5" target="_blank" class="text-yellow-400 underline">grupo de Telegram</a> o <a href="https://whatsapp.com/channel/0029Vb74Mxr3LdQVgWdycV2a" target="_blank" class="text-yellow-400 underline">canal de WhatsApp</a>.</p>
                     </div>
                 </div>
             </div>
@@ -467,9 +550,11 @@
         const conBox = document.getElementById('conBox');
         const seccionMembresia = document.getElementById('seccionMembresia');
         const seccionVault = document.getElementById('seccionVault');
+        const seccionInfoVault = document.getElementById('seccionInfoVault');
         const seccionArbitraje = document.getElementById('seccionArbitraje');
         const btnMembresia = document.getElementById('btnMembresia');
         const btnVault = document.getElementById('btnVault');
+        const btnInfoVault = document.getElementById('btnInfoVault');
         const btnArbitraje = document.getElementById('btnArbitraje');
         const vaultFeed = document.getElementById('vaultFeed');
         const copyLinkBtn = document.getElementById('copyLinkBtn');
@@ -481,7 +566,7 @@
         const emergencyContainer = document.getElementById('emergencyContainer');
         const btnEmergency = document.getElementById('btnEmergencyWithdraw');
 
-        // Funciones de utilidad
+        // Función para mostrar toasts
         function showToast(msg, isError = false) {
             clearTimeout(toastTimeout);
             toast.classList.remove('hidden');
@@ -501,44 +586,49 @@
         });
 
         // Cambio de pestañas
+        function setActiveTab(active, inactives) {
+            active.classList.add('tab-active');
+            active.classList.remove('tab-inactive');
+            inactives.forEach(btn => {
+                btn.classList.add('tab-inactive');
+                btn.classList.remove('tab-active');
+            });
+        }
+
         btnMembresia.addEventListener('click', () => {
-            btnMembresia.classList.add('tab-active');
-            btnMembresia.classList.remove('tab-inactive');
-            btnVault.classList.add('tab-inactive');
-            btnVault.classList.remove('tab-active');
-            btnArbitraje.classList.add('tab-inactive');
-            btnArbitraje.classList.remove('tab-active');
+            setActiveTab(btnMembresia, [btnVault, btnInfoVault, btnArbitraje]);
             seccionMembresia.classList.remove('hidden');
             seccionVault.classList.add('hidden');
+            seccionInfoVault.classList.add('hidden');
             seccionArbitraje.classList.add('hidden');
         });
 
         btnVault.addEventListener('click', () => {
-            btnVault.classList.add('tab-active');
-            btnVault.classList.remove('tab-inactive');
-            btnMembresia.classList.add('tab-inactive');
-            btnMembresia.classList.remove('tab-active');
-            btnArbitraje.classList.add('tab-inactive');
-            btnArbitraje.classList.remove('tab-active');
+            setActiveTab(btnVault, [btnMembresia, btnInfoVault, btnArbitraje]);
             seccionMembresia.classList.add('hidden');
             seccionVault.classList.remove('hidden');
+            seccionInfoVault.classList.add('hidden');
             seccionArbitraje.classList.add('hidden');
             if (userAddress) cargarDatosVault();
         });
 
-        btnArbitraje.addEventListener('click', () => {
-            btnArbitraje.classList.add('tab-active');
-            btnArbitraje.classList.remove('tab-inactive');
-            btnMembresia.classList.add('tab-inactive');
-            btnMembresia.classList.remove('tab-active');
-            btnVault.classList.add('tab-inactive');
-            btnVault.classList.remove('tab-active');
+        btnInfoVault.addEventListener('click', () => {
+            setActiveTab(btnInfoVault, [btnMembresia, btnVault, btnArbitraje]);
             seccionMembresia.classList.add('hidden');
             seccionVault.classList.add('hidden');
+            seccionInfoVault.classList.remove('hidden');
+            seccionArbitraje.classList.add('hidden');
+        });
+
+        btnArbitraje.addEventListener('click', () => {
+            setActiveTab(btnArbitraje, [btnMembresia, btnVault, btnInfoVault]);
+            seccionMembresia.classList.add('hidden');
+            seccionVault.classList.add('hidden');
+            seccionInfoVault.classList.add('hidden');
             seccionArbitraje.classList.remove('hidden');
         });
 
-        // Funciones de membresía (cargar datos, admin, etc.)
+        // Función para verificar red
         async function checkNetwork() {
             const network = await provider.getNetwork();
             if (network.chainId !== BSC_CHAIN_ID) {
@@ -552,6 +642,7 @@
             return true;
         }
 
+        // Funciones de membresía (cargar datos, admin, etc.)
         async function loadRedYGanancias(intentos = 3) {
             for (let i = 0; i < intentos; i++) {
                 try {
@@ -672,7 +763,6 @@
 
                 await loadUserData();
 
-                // Cargar datos del vault si la pestaña está activa y el contrato existe
                 if (!seccionVault.classList.contains('hidden') && contractVault) {
                     cargarDatosVault();
                 }
@@ -714,7 +804,7 @@
 
         btnConnect.onclick = connect;
 
-        // Botones de membresía (aprobación, activación, etc.)
+        // Botones de membresía
         document.getElementById('btnApprove').onclick = async () => {
             try {
                 const tx = await usdtContract.approve(CONTRACT_ADDR_MEMBRESIA, ethers.utils.parseUnits("100", 18));
@@ -856,4 +946,4 @@
     </script>
     <footer class="text-center text-[10px] text-gray-500 mt-4">Milimar Protocol · BSC · Versión 4 + Vault</footer>
 </body>
-                        </html>
+    </html>
