@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Milimar JAGC | Oficina Virtual (Testnet)</title>
+    <title>Milimar JAGC | Oficina Virtual</title>
     <!-- Fuentes -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
@@ -164,16 +164,14 @@
         <header class="text-center py-8">
             <div class="flex items-center justify-center gap-4">
                 <h1 class="text-6xl font-black text-white drop-shadow-2xl tracking-tighter" style="text-shadow: 0 0 20px rgba(251,191,36,0.5);">MILIMAR JAGC</h1>
-                <span class="bg-yellow-500/20 border border-yellow-500 text-yellow-300 text-xs px-3 py-1 rounded-full">TESTNET</span>
             </div>
-            <p class="text-sm text-white/80 uppercase tracking-[0.3em] font-light mt-2">Oficina Virtual · BSC Testnet</p>
+            <p class="text-sm text-white/80 uppercase tracking-[0.3em] font-light mt-2">Oficina Virtual · BSC</p>
         </header>
 
         <!-- Pestañas de navegación -->
         <div class="flex flex-wrap justify-center gap-2 mb-6">
             <button id="btnMembresia" class="tab-button tab-active">MEMBRESÍA</button>
             <button id="btnVault" class="tab-button tab-inactive">VAULT</button>
-            <button id="btnInfoVault" class="tab-button tab-inactive">📘 ACERCA DEL VAULT</button>
             <button id="btnArbitraje" class="tab-button tab-inactive">ARBITRAJE</button>
         </div>
 
@@ -317,106 +315,13 @@
             </div>
         </div>
 
-        <!-- SECCIÓN VAULT (con proyecciones diarias/semanales) -->
+        <!-- SECCIÓN VAULT (próximamente) -->
         <div id="seccionVault" class="hidden space-y-6">
-            <div class="glass-card p-6">
+            <div class="glass-card p-6 text-center">
                 <h2 class="text-2xl font-bold text-yellow-400 mb-4">🏦 VAULT DE CRECIMIENTO</h2>
-                <p class="text-sm text-white/70 mb-6">Invierte desde $10 USDT en nuestro fondo diversificado. Gana intereses semanales y retira cuando quieras.</p>
-
-                <!-- Estadísticas del vault -->
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
-                    <div class="vault-card">
-                        <p class="text-[10px] text-white/50">Mi inversión</p>
-                        <p id="vaultMiInversion" class="vault-stat">0.00</p>
-                    </div>
-                    <div class="vault-card">
-                        <p class="text-[10px] text-white/50">Ganancias acumuladas</p>
-                        <p id="vaultGanancias" class="vault-stat">0.00</p>
-                    </div>
-                    <div class="vault-card">
-                        <p class="text-[10px] text-white/50">Total en fondo</p>
-                        <p id="vaultTotalFondo" class="vault-stat">0.00</p>
-                    </div>
-                    <div class="vault-card">
-                        <p class="text-[10px] text-white/50">Valor de share</p>
-                        <p id="vaultSharePrice" class="vault-stat">1.00</p>
-                    </div>
-                </div>
-
-                <!-- Mensaje sobre variabilidad -->
-                <div class="glass-card p-4 mb-6 bg-yellow-500/10 border-yellow-500/30">
-                    <p class="text-sm text-white/80 text-center">
-                        ⚠️ El rendimiento del Vault es <span class="font-bold text-yellow-300">variable</span> y depende de las condiciones del mercado. Históricamente, los rendimientos han oscilado entre:
-                    </p>
-                    <div class="grid grid-cols-2 gap-4 mt-3 text-center">
-                        <div class="bg-black/30 p-2 rounded">
-                            <p class="text-xs text-white/50">Diario (promedio)</p>
-                            <p class="text-lg font-bold text-green-300">0.02% – 0.05%</p>
-                        </div>
-                        <div class="bg-black/30 p-2 rounded">
-                            <p class="text-xs text-white/50">Semanal (promedio)</p>
-                            <p class="text-lg font-bold text-green-300">0.15% – 0.38%</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Formulario de depósito -->
-                <div class="glass-card p-4 mb-4">
-                    <h3 class="font-bold text-white mb-2">📥 Depositar USDT</h3>
-                    <div class="flex gap-2">
-                        <input type="number" id="vaultDepositAmount" placeholder="Cantidad (mín. 10)" min="10" step="0.01" class="w-full bg-white/10 border border-white/30 rounded-lg p-2 text-white">
-                        <button id="btnVaultDeposit" class="btn bg-green-600 text-white px-6">Depositar</button>
-                    </div>
-                    <p class="text-[10px] text-white/30 mt-1">Mínimo 10 USDT. Las ganancias se reparten semanalmente.</p>
-                </div>
-
-                <!-- Opciones de retiro -->
-                <div class="grid grid-cols-2 gap-3">
-                    <div class="glass-card p-4">
-                        <h3 class="font-bold text-white mb-2">📤 Retiro estándar</h3>
-                        <p class="text-xs text-white/60 mb-2">Sin comisión. Se procesa al final del ciclo (semanal).</p>
-                        <div class="flex gap-2">
-                            <input type="number" id="vaultWithdrawStandard" placeholder="Cantidad de shares" min="0" step="1" class="w-full bg-white/10 border border-white/30 rounded-lg p-2 text-white">
-                            <button id="btnVaultRequestStandard" class="btn bg-blue-600 text-white px-4">Solicitar</button>
-                        </div>
-                    </div>
-                    <div class="glass-card p-4">
-                        <h3 class="font-bold text-white mb-2">⚡ Retiro instantáneo</h3>
-                        <p class="text-xs text-white/60 mb-2">Comisión 1%. Límite semanal del 10% del fondo.</p>
-                        <div class="flex gap-2">
-                            <input type="number" id="vaultWithdrawInstant" placeholder="Cantidad de shares" min="0" step="1" class="w-full bg-white/10 border border-white/30 rounded-lg p-2 text-white">
-                            <button id="btnVaultInstant" class="btn bg-yellow-500 text-black px-4">Retirar</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Feed de actividad del vault -->
-                <div class="glass-card p-4 mt-6">
-                    <h3 class="text-white font-bold text-sm mb-2">📢 ACTIVIDAD DEL VAULT</h3>
-                    <div id="vaultFeed" class="feed-container space-y-2 pr-2">
-                        <p class="text-white/50 text-xs">Conecta tu wallet para ver la actividad...</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- SECCIÓN ACERCA DEL VAULT -->
-        <div id="seccionInfoVault" class="hidden space-y-6">
-            <div class="glass-card p-6">
-                <h2 class="text-2xl font-bold text-yellow-400 mb-4">📘 ACERCA DEL VAULT</h2>
-                <div class="space-y-4">
-                    <div class="info-section">
-                        <h3 class="info-title">🔍 ¿Cómo funciona?</h3>
-                        <p class="text-white/80 text-xs leading-relaxed">El Vault es un fondo colectivo donde los usuarios depositan USDT. El contrato inteligente invierte automáticamente estos fondos en estrategias de préstamos y farming de alto rendimiento.</p>
-                    </div>
-                    <div class="info-section">
-                        <h3 class="info-title">📈 ¿Por qué el rendimiento es variable?</h3>
-                        <p class="text-white/80 text-xs">Depende de las tasas de interés de los préstamos, el volumen de trading en los pools y el precio de los tokens de recompensa.</p>
-                    </div>
-                    <div class="info-section">
-                        <h3 class="info-title">🛡️ Seguridad</h3>
-                        <p class="text-white/80 text-xs">El contrato incluye emergency withdraw, pausa y diversificación para minimizar riesgos.</p>
-                    </div>
+                <p class="text-sm text-white/70 mb-6">Estamos preparando un fondo de inversión automatizado para ti. ¡Muy pronto!</p>
+                <div class="bg-yellow-500/20 border border-yellow-500 rounded-lg p-4">
+                    <p class="text-yellow-300 font-bold">🚧 EN DESARROLLO</p>
                 </div>
             </div>
         </div>
@@ -434,15 +339,14 @@
     </div>
 
     <script>
-        // 🟢 CONFIGURACIÓN PARA TESTNET (¡CAMBIA AQUÍ CUANDO VAYAS A MAINNET!)
-        const CONTRACT_ADDR_MEMBRESIA = "0x497D328d5d59E191Eb7FC411a876CefB8B43176c"; // Milimar v4 (mainnet)
-        const CONTRACT_ADDR_VAULT = "0x09b3A8338471718e25b19E37d0669FfdE250CD37"; // VAULT EN TESTNET (¡TU DIRECCIÓN!)
-        const USDT_ADDR = "0x99fCBb34f4DF7574101Bffb22D8566AAC8D19175"; // USDT testnet
-        const BSC_CHAIN_ID = 97; // BSC Testnet
+        // 🟢 CONFIGURACIÓN PARA MAINNET
+        const CONTRACT_ADDR_MEMBRESIA = "0x497D328d5d59E191Eb7FC411a876CefB8B43176c";
+        const USDT_ADDR = "0x55d398326f99059fF775485246999027B3197955";
+        const BSC_CHAIN_ID = 56;
         const TELEGRAM_GRUPO = "https://t.me/+z7wwfx0ocho1NzI5";
         const WHATSAPP_CANAL = "https://whatsapp.com/channel/0029Vb74Mxr3LdQVgWdycV2a";
 
-        // ABIs (simplificados)
+        // ABIs (completos)
         const abiMembresia = [
             "function consultarEstado(address) view returns (uint256,uint256,uint256,uint256,uint256,uint256,bool)",
             "function unirse(address)",
@@ -465,29 +369,14 @@
             "event PremiadoLider(address indexed lider, uint256 monto)"
         ];
 
-        const abiVault = [
-            "function deposit(uint256 amount) external",
-            "function requestStandardWithdraw(uint256 shares) external",
-            "function instantWithdraw(uint256 shares) external",
-            "function balanceOf(address) view returns (uint256)",
-            "function pendingRewards(address) view returns (uint256)",
-            "function totalAssets() view returns (uint256)",
-            "function totalShares() view returns (uint256)",
-            "function sharePrice() view returns (uint256)",
-            "event Deposited(address indexed user, uint256 amount, uint256 shares)",
-            "event WithdrawnStandard(address indexed user, uint256 amount, uint256 shares)",
-            "event WithdrawnInstant(address indexed user, uint256 amount, uint256 shares, uint256 fee)",
-            "event ProfitDistributed(uint256 totalProfit, uint256 fee)"
-        ];
-
         const usdtAbi = ["function approve(address spender, uint256 amount) returns (bool)"];
 
         // Estado
-        let provider, signer, userAddress, contractMembresia, contractVault, usdtContract;
+        let provider, signer, userAddress, contractMembresia, usdtContract;
         let isAdmin = false;
         let toastTimeout;
 
-        // Elementos DOM (simplificado, en el código real deben estar todos)
+        // Elementos DOM
         const toast = document.getElementById('toast');
         const toastMsg = document.getElementById('toastMsg');
         const telegramLink = document.getElementById('telegramLink');
@@ -496,16 +385,18 @@
         const conBox = document.getElementById('conBox');
         const seccionMembresia = document.getElementById('seccionMembresia');
         const seccionVault = document.getElementById('seccionVault');
-        const seccionInfoVault = document.getElementById('seccionInfoVault');
         const seccionArbitraje = document.getElementById('seccionArbitraje');
         const btnMembresia = document.getElementById('btnMembresia');
         const btnVault = document.getElementById('btnVault');
-        const btnInfoVault = document.getElementById('btnInfoVault');
         const btnArbitraje = document.getElementById('btnArbitraje');
-        const vaultFeed = document.getElementById('vaultFeed');
         const copyLinkBtn = document.getElementById('copyLinkBtn');
         const refLink = document.getElementById('refLink');
         const copyMsg = document.getElementById('copyMsg');
+        const fondoElem = document.getElementById('fondoSolidaridad');
+        const poolElem = document.getElementById('poolLiderazgo');
+        const emergencyStatus = document.getElementById('emergencyStatus');
+        const emergencyContainer = document.getElementById('emergencyContainer');
+        const btnEmergency = document.getElementById('btnEmergencyWithdraw');
 
         // Funciones de utilidad
         function showToast(msg, isError = false) {
@@ -537,35 +428,23 @@
         }
 
         btnMembresia.addEventListener('click', () => {
-            setActiveTab(btnMembresia, [btnVault, btnInfoVault, btnArbitraje]);
+            setActiveTab(btnMembresia, [btnVault, btnArbitraje]);
             seccionMembresia.classList.remove('hidden');
             seccionVault.classList.add('hidden');
-            seccionInfoVault.classList.add('hidden');
             seccionArbitraje.classList.add('hidden');
         });
 
         btnVault.addEventListener('click', () => {
-            setActiveTab(btnVault, [btnMembresia, btnInfoVault, btnArbitraje]);
+            setActiveTab(btnVault, [btnMembresia, btnArbitraje]);
             seccionMembresia.classList.add('hidden');
             seccionVault.classList.remove('hidden');
-            seccionInfoVault.classList.add('hidden');
-            seccionArbitraje.classList.add('hidden');
-            if (userAddress) cargarDatosVault();
-        });
-
-        btnInfoVault.addEventListener('click', () => {
-            setActiveTab(btnInfoVault, [btnMembresia, btnVault, btnArbitraje]);
-            seccionMembresia.classList.add('hidden');
-            seccionVault.classList.add('hidden');
-            seccionInfoVault.classList.remove('hidden');
             seccionArbitraje.classList.add('hidden');
         });
 
         btnArbitraje.addEventListener('click', () => {
-            setActiveTab(btnArbitraje, [btnMembresia, btnVault, btnInfoVault]);
+            setActiveTab(btnArbitraje, [btnMembresia, btnVault]);
             seccionMembresia.classList.add('hidden');
             seccionVault.classList.add('hidden');
-            seccionInfoVault.classList.add('hidden');
             seccionArbitraje.classList.remove('hidden');
         });
 
@@ -576,49 +455,80 @@
                 try {
                     await window.ethereum.request({
                         method: 'wallet_switchEthereumChain',
-                        params: [{ chainId: '0x61' }] // 97 en hex
+                        params: [{ chainId: '0x38' }] // 56 en hex
                     });
                 } catch {
-                    showToast('Cambia a BSC Testnet en tu wallet', true);
+                    showToast('Cambia a BSC Mainnet en tu wallet', true);
                     return false;
                 }
             }
             return true;
         }
 
-        // Funciones de membresía (cargar datos, etc.) - simplificadas por brevedad
-        async function loadUserData() { /* ... */ }
-        async function loadRedYGanancias() { /* ... */ }
+        // Funciones de membresía
+        async function loadRedYGanancias(intentos = 3) {
+            for (let i = 0; i < intentos; i++) {
+                try {
+                    const red = await contractMembresia.verDetalleRed(userAddress);
+                    const ganancias = await contractMembresia.verDetalleGanancias(userAddress);
+                    for (let j = 0; j < 5; j++) {
+                        const node = document.getElementById('n' + (j+1));
+                        const cantidad = red[j].toNumber();
+                        node.innerHTML = `N${j+1}<br><span class="text-[10px]">${cantidad}</span>`;
+                        if (cantidad > 0) {
+                            node.classList.add('node-filled');
+                            node.classList.remove('node-empty');
+                        } else {
+                            node.classList.add('node-empty');
+                            node.classList.remove('node-filled');
+                        }
+                    }
+                    let redHtml = '', ganHtml = '';
+                    for (let j = 0; j < 5; j++) {
+                        redHtml += `<div class="flex justify-between"><span>Nivel ${j+1}:</span><span class="font-bold">${red[j].toString()}</span></div>`;
+                        ganHtml += `<div class="flex justify-between"><span>Nivel ${j+1}:</span><span class="font-bold">${ethers.utils.formatUnits(ganancias[j], 18)} USDT</span></div>`;
+                    }
+                    document.getElementById('redNiveles').innerHTML = redHtml;
+                    document.getElementById('gananciasNiveles').innerHTML = ganHtml;
+                    return;
+                } catch (e) {
+                    if (i === intentos - 1) {
+                        document.getElementById('redNiveles').innerHTML = '<p class="text-red-400">Error al cargar. Intenta recargar manualmente.</p>';
+                        document.getElementById('gananciasNiveles').innerHTML = '<p class="text-red-400">Error al cargar.</p>';
+                        showToast('No se pudieron cargar los detalles de la red', true);
+                    } else await new Promise(r => setTimeout(r, 1000));
+                }
+            }
+        }
 
-        // Cargar datos del vault
-        async function cargarDatosVault() {
-            if (!contractVault || !userAddress) return;
+        async function loadUserData() {
             try {
-                const miInversion = await contractVault.balanceOf(userAddress);
-                const ganancias = await contractVault.pendingRewards(userAddress);
-                const totalAssets = await contractVault.totalAssets();
-                const sharePrice = await contractVault.sharePrice();
-                document.getElementById('vaultMiInversion').innerText = ethers.utils.formatUnits(miInversion, 18);
-                document.getElementById('vaultGanancias').innerText = ethers.utils.formatUnits(ganancias, 18);
-                document.getElementById('vaultTotalFondo').innerText = ethers.utils.formatUnits(totalAssets, 18);
-                document.getElementById('vaultSharePrice').innerText = ethers.utils.formatUnits(sharePrice, 18);
+                const data = await contractMembresia.consultarEstado(userAddress);
+                document.getElementById('valSaldo').innerText = ethers.utils.formatUnits(data[0], 18);
+                document.getElementById('valDir').innerText = data[3].toString();
+                document.getElementById('valRed').innerText = data[4].toString();
+                document.getElementById('valDias').innerText = data[5].toString();
+                await loadRedYGanancias();
+
+                const fondo = await contractMembresia.fondoSolidaridad();
+                fondoElem.innerText = ethers.utils.formatUnits(fondo, 18) + ' USDT';
+                const pool = await contractMembresia.poolLiderazgo();
+                poolElem.innerText = ethers.utils.formatUnits(pool, 18) + ' USDT';
+                const emergency = await contractMembresia.emergencyMode();
+                emergencyStatus.innerText = emergency ? 'ACTIVO' : 'INACTIVO';
+                if (emergency) {
+                    emergencyContainer.classList.add('border-2', 'border-red-500');
+                    btnEmergency.classList.remove('hidden');
+                } else {
+                    emergencyContainer.classList.remove('border-2', 'border-red-500');
+                    btnEmergency.classList.add('hidden');
+                }
             } catch (e) {
-                console.error("Error cargando vault:", e);
+                console.error('Error en loadUserData:', e);
+                showToast('Error al cargar datos básicos', true);
             }
         }
 
-        // Agregar al feed del vault
-        function agregarAlFeedVault(mensaje, tipo = 'info') {
-            const item = document.createElement('div');
-            item.className = `feed-item border-l-4 ${tipo === 'deposit' ? 'border-green-500' : tipo === 'withdraw' ? 'border-yellow-500' : 'border-blue-500'}`;
-            item.innerHTML = `<p class="text-xs text-white/80">${mensaje}</p>`;
-            vaultFeed.prepend(item);
-            if (vaultFeed.children.length > 20) {
-                vaultFeed.removeChild(vaultFeed.lastChild);
-            }
-        }
-
-        // Función principal de conexión
         async function connect() {
             if (!window.ethereum) return showToast('Instala MetaMask/OKX Wallet', true);
             try {
@@ -630,7 +540,6 @@
                 if (!await checkNetwork()) return;
 
                 contractMembresia = new ethers.Contract(CONTRACT_ADDR_MEMBRESIA, abiMembresia, signer);
-                contractVault = new ethers.Contract(CONTRACT_ADDR_VAULT, abiVault, signer);
                 usdtContract = new ethers.Contract(USDT_ADDR, usdtAbi, signer);
 
                 conBox.classList.add('hidden');
@@ -643,24 +552,20 @@
                 isAdmin = (adminAddr.toLowerCase() === userAddress.toLowerCase());
                 if (isAdmin) document.getElementById('adminSection').classList.remove('hidden');
 
-                await loadUserData(); // Simplificado, pero aquí iría la carga real
+                await loadUserData();
 
-                if (!seccionVault.classList.contains('hidden') && contractVault) {
-                    cargarDatosVault();
-                }
-
-                // Escuchar eventos del vault
-                contractVault.on("Deposited", (user, amount, shares) => {
-                    agregarAlFeedVault(`📥 Depósito de ${ethers.utils.formatUnits(amount, 18)} USDT por ${user.slice(0,6)}...${user.slice(-4)}`, 'deposit');
+                // Escuchar eventos
+                contractMembresia.on("RegistroGlobal", (usuario, patrocinador, fecha) => {
+                    showToast(`🎉 Nuevo registro: ${usuario.slice(0,6)}...${usuario.slice(-4)}`);
                 });
-                contractVault.on("WithdrawnStandard", (user, amount, shares) => {
-                    agregarAlFeedVault(`📤 Retiro estándar de ${ethers.utils.formatUnits(amount, 18)} USDT por ${user.slice(0,6)}...${user.slice(-4)}`, 'withdraw');
+                contractMembresia.on("BonoNivel3Alcanzado", (usuario, fecha) => {
+                    showToast(`🏆 Bono nivel 3 alcanzado por ${usuario.slice(0,6)}...${usuario.slice(-4)}`);
                 });
-                contractVault.on("WithdrawnInstant", (user, amount, shares, fee) => {
-                    agregarAlFeedVault(`⚡ Retiro instantáneo de ${ethers.utils.formatUnits(amount, 18)} USDT (comisión ${ethers.utils.formatUnits(fee, 18)}) por ${user.slice(0,6)}...${user.slice(-4)}`, 'withdraw');
+                contractMembresia.on("RetiroExitoso", (usuario, monto) => {
+                    showToast(`💰 Retiro de ${ethers.utils.formatUnits(monto,18)} USDT por ${usuario.slice(0,6)}...${usuario.slice(-4)}`);
                 });
-                contractVault.on("ProfitDistributed", (totalProfit, fee) => {
-                    agregarAlFeedVault(`💰 Distribución de ganancias: total $${ethers.utils.formatUnits(totalProfit, 18)} USDT`, 'profit');
+                contractMembresia.on("PremiadoLider", (lider, monto) => {
+                    showToast(`🏅 Premio a líder ${lider.slice(0,6)}...${lider.slice(-4)}: ${ethers.utils.formatUnits(monto,18)} USDT`);
                 });
 
             } catch (e) {
@@ -670,59 +575,95 @@
 
         btnConnect.onclick = connect;
 
-        // Botones del vault
-        document.getElementById('btnVaultDeposit').addEventListener('click', async () => {
-            const amount = document.getElementById('vaultDepositAmount').value;
-            if (!amount || parseFloat(amount) < 10) return showToast('Monto mínimo 10 USDT', true);
+        // Botones de acción
+        document.getElementById('btnApprove').onclick = async () => {
             try {
-                const amountWei = ethers.utils.parseUnits(amount, 18);
-                const approveTx = await usdtContract.approve(CONTRACT_ADDR_VAULT, amountWei);
-                await approveTx.wait();
-                const tx = await contractVault.deposit(amountWei);
-                showToast('Depositando...');
+                const tx = await usdtContract.approve(CONTRACT_ADDR_MEMBRESIA, ethers.utils.parseUnits("100", 18));
+                showToast('Autorizando...');
                 await tx.wait();
-                showToast('✅ Depósito exitoso');
-                cargarDatosVault();
-            } catch (e) {
-                showToast('Error: ' + e.message, true);
-            }
-        });
+                showToast('✅ USDT autorizado');
+            } catch (e) { showToast('Error: ' + e.message, true); }
+        };
 
-        document.getElementById('btnVaultRequestStandard').addEventListener('click', async () => {
-            const shares = document.getElementById('vaultWithdrawStandard').value;
-            if (!shares || parseFloat(shares) <= 0) return showToast('Cantidad inválida', true);
+        document.getElementById('btnJoin').onclick = async () => {
             try {
-                const sharesWei = ethers.utils.parseUnits(shares, 18);
-                const tx = await contractVault.requestStandardWithdraw(sharesWei);
-                showToast('Solicitando retiro estándar...');
+                const urlParams = new URLSearchParams(window.location.search);
+                let sponsor = urlParams.get('ref');
+                if (!sponsor || sponsor === userAddress) {
+                    sponsor = prompt('Dirección del patrocinador:');
+                    if (!sponsor) return;
+                }
+                const tx = await contractMembresia.unirse(sponsor);
+                showToast('Activando...');
                 await tx.wait();
-                showToast('✅ Solicitud registrada');
-                cargarDatosVault();
-            } catch (e) {
-                showToast('Error: ' + e.message, true);
-            }
-        });
+                showToast('✅ Registro exitoso');
+                await loadUserData();
+            } catch (e) { showToast('Error: ' + e.message, true); }
+        };
 
-        document.getElementById('btnVaultInstant').addEventListener('click', async () => {
-            const shares = document.getElementById('vaultWithdrawInstant').value;
-            if (!shares || parseFloat(shares) <= 0) return showToast('Cantidad inválida', true);
+        document.getElementById('btnRenew').onclick = async () => {
             try {
-                const sharesWei = ethers.utils.parseUnits(shares, 18);
-                const tx = await contractVault.instantWithdraw(sharesWei);
-                showToast('Retirando instantáneamente...');
+                const tx = await contractMembresia.renovarSuscripcion();
+                showToast('Renovando...');
                 await tx.wait();
-                showToast('✅ Retiro instantáneo completado');
-                cargarDatosVault();
-            } catch (e) {
-                showToast('Error: ' + e.message, true);
-            }
-        });
+                showToast('✅ Suscripción renovada');
+                await loadUserData();
+            } catch (e) { showToast('Error: ' + e.message, true); }
+        };
+
+        document.getElementById('btnWithdraw').onclick = async () => {
+            try {
+                const tx = await contractMembresia.retirarGanancias();
+                showToast('Retirando...');
+                await tx.wait();
+                showToast('✅ Retiro exitoso');
+                await loadUserData();
+            } catch (e) { showToast('Error: ' + e.message, true); }
+        };
+
+        document.getElementById('btnReloadDetails').onclick = loadRedYGanancias;
+        document.getElementById('btnReloadGanancias').onclick = loadRedYGanancias;
+
+        // Admin functions
+        document.getElementById('btnPausa').onclick = async () => {
+            if (!isAdmin || !confirm('¿Cambiar estado de pausa?')) return;
+            try { await (await contractMembresia.togglePausa()).wait(); showToast('✅ Pausa cambiada'); } catch (e) { showToast('Error: ' + e.message, true); }
+        };
+        document.getElementById('btnCupos').onclick = async () => {
+            if (!isAdmin) return;
+            const lider = prompt('Dirección del líder:'); const cant = prompt('Cantidad de cupos:');
+            if (!lider || !cant) return;
+            try { await (await contractMembresia.otorgarCuposExtra(lider, cant)).wait(); showToast('✅ Cupos otorgados'); } catch (e) { showToast('Error: ' + e.message, true); }
+        };
+        document.getElementById('btnPremiar').onclick = async () => {
+            if (!isAdmin) return;
+            const lider = prompt('Dirección del líder:'); const monto = prompt('Monto en USDT:');
+            if (!lider || !monto) return;
+            try { await (await contractMembresia.premiarLider(lider, ethers.utils.parseUnits(monto, 18))).wait(); showToast('✅ Premio enviado'); } catch (e) { showToast('Error: ' + e.message, true); }
+        };
+        document.getElementById('btnRecuperar').onclick = async () => {
+            if (!isAdmin) return;
+            const token = prompt('Dirección del token (no USDT):'); const cant = prompt('Cantidad:');
+            if (!token || !cant) return;
+            try { await (await contractMembresia.recuperarTokenExterno(token, ethers.utils.parseUnits(cant, 18))).wait(); showToast('✅ Tokens recuperados'); } catch (e) { showToast('Error: ' + e.message, true); }
+        };
+
+        btnEmergency.onclick = async () => {
+            if (!confirm('¿Estás seguro de retirar todos tus fondos en modo de emergencia?')) return;
+            try {
+                const tx = await contractMembresia.emergencyWithdraw();
+                showToast('Procesando retiro de emergencia...');
+                await tx.wait();
+                showToast('✅ Retiro de emergencia completado');
+                await loadUserData();
+            } catch (e) { showToast('Error: ' + e.message, true); }
+        };
 
         // Auto-conectar
         window.addEventListener('load', () => {
             if (window.ethereum && window.ethereum.selectedAddress) connect();
         });
     </script>
-    <footer class="text-center text-[10px] text-gray-500 mt-4">Milimar Protocol · BSC Testnet · Versión 4 + Vault</footer>
+    <footer class="text-center text-[10px] text-gray-500 mt-4">Milimar Protocol · BSC · Versión 4</footer>
 </body>
 </html>
