@@ -4,122 +4,137 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Milimar_jagc.v5 - Milimar_jagc</title>
-    <meta name="description" content="Plataforma oficial de Milimar_jagc con contrato inteligente Milimar_jagc.v5 y bot de arbitraje próximo">
-    <!-- Estilos Aurora Oscuro -->
+    <meta name="description" content="Plataforma oficial de Milimar_jagc con contrato inteligente en BNB Chain">
+    <!-- Estilos -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/ethers@6.12.1/dist/ethers.umd.min.js"></script>
     <style type="text/tailwindcss">
         @layer utilities {
-            .bg-aurora {
-                background: linear-gradient(135deg, #0f0e17 0%, #1a1625 50%, #2a223a 100%);
+            .bg-forest {
+                background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+            }
+            .card-soft {
+                background: rgba(30, 41, 59, 0.8);
+                border: 1px solid rgba(74, 222, 128, 0.2);
             }
             .text-glow {
-                text-shadow: 0 0 5px #8b5cf6, 0 0 10px #8b5cf6, 0 0 15px #8b5cf6;
+                text-shadow: 0 0 4px rgba(74, 222, 128, 0.3);
             }
-            .btn-glow {
-                box-shadow: 0 0 5px #8b5cf6, 0 0 10px #8b5cf6, 0 0 15px #8b5cf6;
+            .btn-soft {
+                background: rgba(74, 222, 128, 0.2);
+                border: 1px solid rgba(74, 222, 128, 0.4);
+                transition: all 0.3s ease;
             }
-            .card-aurora {
-                background: rgba(26, 22, 37, 0.8);
-                border: 1px solid rgba(139, 92, 246, 0.3);
-                box-shadow: 0 0 10px rgba(139, 92, 246, 0.2);
+            .btn-soft:hover {
+                background: rgba(74, 222, 128, 0.3);
+                box-shadow: 0 0 8px rgba(74, 222, 128, 0.2);
             }
         }
     </style>
 </head>
-<body class="bg-aurora text-gray-200 min-h-screen flex flex-col">
+<body class="bg-forest text-gray-200 min-h-screen flex flex-col">
     <!-- Barra de Navegación -->
-    <nav class="bg-black/50 backdrop-blur-md border-b border-purple-500/30 sticky top-0 z-50">
+    <nav class="bg-black/30 backdrop-blur-md border-b border-emerald-400/20 sticky top-0 z-50">
         <div class="container mx-auto px-4 py-3 flex justify-between items-center">
             <div class="flex items-center space-x-2">
-                <i class="fa fa-star text-purple-400 text-xl"></i>
-                <h1 class="text-xl font-bold text-glow">Milimar_jagc.v5</h1>
+                <i class="fa fa-leaf text-emerald-400 text-xl"></i>
+                <h1 class="text-xl font-bold text-emerald-400 text-glow">Milimar_jagc.v5</h1>
             </div>
             <div class="flex items-center space-x-4">
-                <button id="connectWallet" class="bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded-lg btn-glow transition-all duration-300">
-                    <i class="fa fa-plug mr-2"></i>Conectar Cartera
+                <button id="connectWallet" class="btn-soft px-4 py-2 rounded-lg flex items-center gap-2">
+                    <i class="fa fa-plug text-emerald-400"></i>
+                    <span>Conectar Cartera</span>
                 </button>
-                <button id="notifyBtn" class="bg-indigo-600 hover:bg-indigo-700 px-4 py-2 rounded-lg transition-all duration-300">
-                    <i class="fa fa-bell mr-2"></i>Notificaciones
+                <button id="notifyBtn" class="btn-soft px-4 py-2 rounded-lg flex items-center gap-2">
+                    <i class="fa fa-bell text-emerald-400"></i>
+                    <span>Notificaciones</span>
                 </button>
             </div>
         </div>
     </nav>
 
-    <!-- Sección Principal -->
+    <!-- Contenido Principal -->
     <main class="flex-grow container mx-auto px-4 py-8">
         <!-- Banner Principal -->
-        <section class="mb-10 card-aurora rounded-xl p-6 text-center">
-            <h2 class="text-3xl md:text-4xl font-bold mb-4 text-glow">Milimar_jagc Oficial</h2>
-            <p class="text-lg md:text-xl mb-6 max-w-3xl mx-auto">
-                Plataforma de operaciones y arbitraje con contrato inteligente <span class="text-purple-400">Milimar_jagc.v5</span> en BNB Chain.
-                Próximamente: Bot de Arbitraje Automatizado con notificaciones en tiempo real.
+        <section class="card-soft rounded-xl p-6 mb-8 text-center">
+            <h2 class="text-2xl md:text-3xl font-bold text-emerald-400 text-glow mb-3">Milimar_jagc Oficial</h2>
+            <p class="text-gray-300 max-w-2xl mx-auto">
+                Contrato Inteligente Milimar_jagc.v5 en BNB Chain - Plataforma de operaciones y arbitraje con diseño suave y funcional.
             </p>
-            <a href="https://bscscan.com/address/0xA71B4CEEDBFEAf1c6F741De0E09aB712Fe169057" target="_blank" class="inline-block bg-purple-600 hover:bg-purple-700 px-6 py-3 rounded-lg transition-all duration-300 btn-glow">
-                <i class="fa fa-link mr-2"></i>Ver Contrato en BscScan
+            <a href="https://bscscan.com/address/0xA71B4CEEDBFEAf1c6F741De0E09aB712Fe169057" target="_blank" class="inline-block mt-4 btn-soft px-5 py-2 rounded-lg">
+                <i class="fa fa-external-link text-emerald-400"></i>
+                <span>Ver Contrato en BscScan</span>
             </a>
         </section>
 
         <!-- Panel de Usuario -->
-        <section id="userPanel" class="card-aurora rounded-xl p-6 mb-8 hidden">
-            <h3 class="text-2xl font-bold mb-4 text-purple-400">Panel de Usuario</h3>
+        <section id="userPanel" class="card-soft rounded-xl p-6 mb-8 hidden">
+            <h3 class="text-xl font-bold text-emerald-400 mb-4">Mi Panel de Operaciones</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="border border-purple-500/30 rounded-lg p-4">
-                    <h4 class="text-xl font-semibold mb-3 text-indigo-400">Datos de tu Cuenta</h4>
-                    <p><strong>Dirección:</strong> <span id="userAddress" class="text-purple-400"></span></p>
+                <div class="border border-emerald-400/20 rounded-lg p-4">
+                    <h4 class="font-semibold text-emerald-400 mb-2">Datos de mi Cuenta</h4>
+                    <p><strong>Dirección:</strong> <span id="userAddress" class="text-emerald-400 break-all"></span></p>
                     <p><strong>Nivel:</strong> <span id="userLevel"></span></p>
                     <p><strong>Cupos Asignados:</strong> <span id="userCupo"></span> USDT</p>
                 </div>
-                <div class="border border-purple-500/30 rounded-lg p-4">
-                    <h4 class="text-xl font-semibold mb-3 text-indigo-400">Solicitar Cupo Extra</h4>
-                    <input type="number" id="extraAmount" placeholder="Cantidad USDT" class="bg-gray-800 border border-purple-500/50 rounded-lg p-2 w-full mb-3">
-                    <button id="requestBtn" class="bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded-lg transition-all">
-                        <i class="fa fa-paper-plane mr-2"></i>Solicitar
+                <div class="border border-emerald-400/20 rounded-lg p-4">
+                    <h4 class="font-semibold text-emerald-400 mb-2">Solicitar Cupo Extra</h4>
+                    <div class="mb-3">
+                        <input type="number" id="extraAmount" placeholder="Cantidad USDT" class="w-full bg-black/30 border border-emerald-400/30 rounded-lg p-2 text-gray-200">
+                    </div>
+                    <button id="requestExtraBtn" class="btn-soft w-full py-2 rounded-lg">
+                        <i class="fa fa-paper-plane text-emerald-400"></i>
+                        <span>Solicitar Cupo</span>
                     </button>
                 </div>
             </div>
         </section>
 
-        <!-- Panel Admin -->
-        <section id="adminPanel" class="card-aurora rounded-xl p-6 mb-8 hidden">
-            <h3 class="text-2xl font-bold mb-4 text-purple-400">Panel de Administración</h3>
+        <!-- Panel de Administración -->
+        <section id="adminPanel" class="card-soft rounded-xl p-6 mb-8 hidden">
+            <h3 class="text-xl font-bold text-emerald-400 mb-4">Panel de Administración</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                    <h4 class="text-xl font-semibold mb-3 text-indigo-400">Solicitudes Pendientes</h4>
+                    <h4 class="font-semibold text-emerald-400 mb-2">Gestionar Solicitudes</h4>
                     <div id="requestsList" class="space-y-3"></div>
                 </div>
                 <div>
-                    <h4 class="text-xl font-semibold mb-3 text-indigo-400">Ganancias y Control</h4>
-                    <p class="mb-3"><strong>Saldo Contrato:</strong> <span id="contractBalance"></span> USDT</p>
-                    <button id="withdrawBtn" class="bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg transition-all">
-                        <i class="fa fa-money mr-2"></i>Retirar Ganancias
+                    <h4 class="font-semibold text-emerald-400 mb-2">Control del Contrato</h4>
+                    <p><strong>Saldo Contrato:</strong> <span id="contractBalance"></span> USDT</p>
+                    <button id="withdrawBtn" class="btn-soft w-full py-2 rounded-lg mt-3">
+                        <i class="fa fa-money text-emerald-400"></i>
+                        <span>Retirar Ganancias</span>
                     </button>
                 </div>
             </div>
         </section>
 
         <!-- Sección Bot de Arbitraje -->
-        <section class="card-aurora rounded-xl p-6 text-center">
-            <h3 class="text-2xl font-bold mb-4 text-glow">Próximamente: Bot de Arbitraje Aurora</h3>
-            <p class="mb-6 text-lg">Automatización de operaciones de arbitraje en BNB Chain con notificaciones en tiempo real.</p>
-            <button id="arbitrageNotify" class="bg-indigo-600 hover:bg-indigo-700 px-4 py-2 rounded-lg transition-all btn-glow">
-                <i class="fa fa-bell mr-2"></i>Recibir Alertas del Bot
+        <section class="card-soft rounded-xl p-6">
+            <h3 class="text-xl font-bold text-emerald-400 mb-4">Próximamente: Bot de Arbitraje Milimar_jagc</h3>
+            <p class="text-gray-300 mb-4">
+                Automatización de operaciones de arbitraje en BNB Chain para optimizar tus ganancias con el contrato v5.
+            </p>
+            <button id="botNotifyBtn" class="btn-soft px-5 py-2 rounded-lg">
+                <i class="fa fa-bell text-emerald-400"></i>
+                <span>Recibir Alertas del Bot</span>
             </button>
         </section>
     </main>
 
     <!-- Pie de Página -->
-    <footer class="bg-black/50 border-t border-purple-500/30 py-6">
+    <footer class="bg-black/50 border-t border-emerald-400/20 py-6">
         <div class="container mx-auto px-4 text-center">
-            <p class="mb-2">&copy; 2026 Milimar_jagc - Todos los derechos reservados</p>
-            <a href="https://bscscan.com/address/0xA71B4CEEDBFEAf1c6F741De0E09aB712Fe169057" target="_blank" class="text-purple-400 hover:underline">
-                Ver Contrato en BscScan
-            </a>
+            <p class="text-gray-400">Milimar_jagc - Contrato Inteligente v5 © 2026 Todos los derechos reservados</p>
+            <p class="text-gray-500 mt-2">
+                <a href="https://bscscan.com/address/0xA71B4CEEDBFEAf1c6F741De0E09aB712Fe169057" target="_blank" class="text-emerald-400 hover:underline">Ver en BscScan</a>
+            </p>
         </div>
     </footer>
 
+    <!-- Lógica de Conexión -->
     <script>
-        // Configuración del Contrato
-        const CONTRACT_ADDRESS = "0xA71B4CEEDBFEAf1c6F741De0E09aB712Fe169057";
-        const CONTRACT_ABI = [{"inputs":[{"internalType":"address","name":"direccionCarteraEmpresa","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"inputs":[{"internalType":"address","name":"owner","type":"address"}],"name":"OwnableInvalidOwner","type":"error"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"OwnableUnauthorizedAccount","type":"error"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"antiguaCartera","type":"address"},{"indexed":false,"internalType":"address","name":"nuevaCartera","type":"address"}],"name":"CarteraEmpresaActualizada","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"usuario","type":"address"},{"indexed":false,"internalType":"uint256","name":"cantidad","type":"uint256"}],"name":"CuposOtorgadosExitoso","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"nuevoContrato","type":"address"}],"name":"MigracionContratoCompletada","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"usuario","type":"address"},{"indexed":false,"internalType":"uint256","name":"nuevoNivel","type":"uint256"}],"name":"NivelUsuarioActualizado","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"usuario","type":"address"},{"indexed":false,"internalType":"uint256","name":"montoUsuario","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"montoEmpresa","type":"uint256"}],"name":"RetiroGananciasExitoso","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"usuario","type":"address"}],"name":"UsuarioRegistradoExitoso","type":"event"},{"inputs":[{"internalType":"address","name":"nuevaCartera","type":"address"}],"name":"actualizarCarteraEmpresa","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"usuario","type":"address"},{"internalType":"uint256","name":"nuevoNivel","type":"uint256"}],"name":"actualizarNivelUsuario","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"idSolicitud","type":"uint256"},{"internalType":"bool","name":"aprobar","type":"bool"},{"internalType":"uint256","name":"cantidadOtorgar","type":"uint256"}],"name":"aprobarSolicitudCupos","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"carteraEmpresa","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"contadorOperaciones","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"contadorSolicitudes","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"contadorUsuarios","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"cuposAutomaticosNivel3","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"cuposBasePorDefecto","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"cantidad","type":"uint256"}],"name":"enviarSolicitudCuposExtra","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"usuario","type":"address"}],"name":"importarDatosUsuario","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"listaSolicitudes","outputs":[{"internalType":"uint256","name":"id","type":"uint256"},{"internalType":"address","name":"usuario","type":"address"},{"internalType":"uint256","name":"cantidad","type":"uint256"},{"internalType":"bool","name":"aprobada","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"listaTotalUsuarios","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"nuevoContrato","type":"address"}],"name":"migrarContratoNuevo","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"nombreProyecto","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"usuario","type":"address"}],"name":"obtenerDatosUsuario","outputs":[{"components":[{"internalType":"address","name":"direccion","type":"address"},{"internalType":"uint256","name":"nivel","type":"uint256"},{"internalType":"uint256","name":"cupoAsignado","type":"uint256"},{"internalType":"uint256","name":"ganancias","type":"uint256"},{"internalType":"bool","name":"activo","type":"bool"}],"internalType":"struct Milimar.Usuario","name":"","type":"tuple"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"porcentajeComision","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"usuario","type":"address"},{"internalType":"uint256","name":"monto","type":"uint256"}],"name":"registrarOperacion","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"usuario","type":"address"}],"name":"registrarUsuario","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"retirarGanancias","outputs":[],"stateMutability":"nonpayable","type
+        // Configuración Contrato
+        const CONTRACT_ADDR = "0xA71B4CEEDBFEAf1c6F741De0E09aB712Fe169057";
+        const CONTRACT_ABI = [{"inputs":[{"internalType":"address","name":"direccionCarteraEmpresa","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"inputs":[{"internalType":"address","name":"owner","type":"address"}],"name":"OwnableInvalidOwner","type":"error"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"OwnableUnauthorizedAccount","type":"error"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"antiguaCartera","type":"address"},{"indexed":false,"internalType":"address","name":"nuevaCartera","type":"address"}],"name":"CarteraEmpresaActualizada","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"usuario","type":"address"},{"indexed":false,"internalType":"uint256","name":"cantidad","type":"uint256"}],"name":"CuposOtorgadosExitoso","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"nuevoContrato","type":"address"}],"name":"MigracionContratoCompletada","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"usuario","type":"address"},{"indexed":false,"internalType":"uint256","name":"nuevoNivel","type":"uint256"}],"name":"NivelUsuarioActualizado","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"usuario","type":"address"},{"indexed":false,"internalType":"uint256","name":"montoUsuario","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"montoEmpresa","type":"uint256"}],"name":"RetiroGananciasExitoso","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"usuario","type":"address"}],"name":"UsuarioRegistradoExitoso","type":"event"},{"inputs":[{"internalType":"address","name":"nuevaCartera","type":"address"}],"name":"actualizarCarteraEmpresa","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"usuario","type":"address"},{"internalType":"uint256","name":"nuevoNivel","type":"uint256"}],"name":"actualizarNivelUsuario","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"idSolicitud","type":"uint256"},{"internalType":"bool","name":"aprobar","type":"bool"},{"internalType":"uint256","name":"cantidadOtorgar","type":"uint256"}],"name":"aprobarSolicitudCupos","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"carteraEmpresa","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"contadorOperaciones","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"contadorSolicitudes","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"contadorUsuarios","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"cuposAutomaticosNivel3","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"cuposBasePorDefecto","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"cantidad","type":"uint256"}],"name":"enviarSolicitudCuposExtra","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"usuario","type":"address"},{"internalType":"uint256","name":"fecha","type":"uint256"},{"internalType":"uint256","name":"nivel","type":"uint256"},{"internalType":"uint256","name":"cupos","type":"uint256"},{"internalType":"uint256","name":"ganancias","type":"uint256"}],"name":"importarDatosUsuario","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"listaTotalUsuarios","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"nuevoContrato","type":"address"}],"name":"migrarContratoNuevo","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"nivelMinimoCuposAutomaticos","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"nombreProyecto","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"usuario","type":"address"}],"name":"obtenerDatosUsuario","outputs":[{"components":[{"internalType":"address","name":"direccionUsuario","type":"address"},{"internalType":"uint256","name":"fechaAfiliacion","type":"uint256"},{"internalType":"uint256","name":"nivelActual","type":"uint256"},{"internalType":"uint256","name":"cuposAsignados","type":"uint256"},{"internalType":"uint256","name":"cuposUsados","type":"uint256"},{"internalType":"uint256","name":"gananciasAcumuladas","type":"uint256"},{"internalType":"bool","name":"estadoActivo","type":"bool"}],"internalType":"struct Milimar_jagc.Usuario","name":"","type":"tuple"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"operacionesRegistradas","outputs":[{"internalType":"uint256","name":"idOperacion","type":"uint256"},{"internalType":"address","name":"usuario","type":"address"},{"internalType":"uint256","name":"montoOperacion","type":"uint256"},
