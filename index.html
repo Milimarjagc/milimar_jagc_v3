@@ -3,667 +3,112 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Milimar JAGC | Oficina Virtual</title>
-    <!-- Fuentes -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
+    <title>Milimar_jagc.v5 - Milimar_jagc</title>
+    <meta name="description" content="Plataforma oficial de Milimar_jagc - Contrato Milimar_jagc.v5 en BNB Chain">
+    <!-- Estilos -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        /* Estilo Aurora OSCURO */
-        body {
-            background: linear-gradient(125deg, #0a0f1a 0%, #0f2a3a 35%, #1a3f3a 70%, #4a3a1a 100%);
-            background-size: 400% 400%;
-            animation: aurora 15s ease infinite;
-            font-family: 'Inter', sans-serif;
-        }
-        @keyframes aurora {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        h1, h2, h3, .font-display {
-            font-family: 'Poppins', sans-serif;
-            font-weight: 900;
-            letter-spacing: -0.02em;
-        }
-        .glass-card {
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 215, 0, 0.2);
-            border-radius: 1.5rem;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-        }
-        .node {
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            font-weight: bold;
-            transition: 0.3s;
-            margin: 0 4px;
-            font-family: 'Poppins', sans-serif;
-        }
-        .node-filled {
-            background: linear-gradient(145deg, #fbbf24, #f59e0b);
-            color: black;
-            border: 2px solid white;
-            box-shadow: 0 0 20px #fbbf24;
-        }
-        .node-empty {
-            border: 2px dashed rgba(255, 215, 0, 0.3);
-            color: rgba(255, 255, 255, 0.5);
-            background: transparent;
-        }
-        .toast {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 1000;
-            transition: opacity 0.3s;
-            max-width: 300px;
-        }
-        .btn {
-            @apply font-black py-3 px-6 rounded-xl transition-all transform hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed;
-            font-family: 'Poppins', sans-serif;
-        }
-        .tutorial-step, .benefit-step, .feed-item, .info-section {
-            @apply bg-white/10 p-4 rounded-lg mb-3 text-sm border border-white/20;
-        }
-        /* Botones flotantes */
-        .whatsapp-button {
-            position: fixed;
-            bottom: 20px;
-            left: 90px;
-            z-index: 50;
-            background: linear-gradient(145deg, #25D366, #128C7E);
-            padding: 12px 24px;
-            border-radius: 50px;
-            color: white;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.5);
-            transition: all 0.3s;
-            font-family: 'Poppins', sans-serif;
-            border: 1px solid rgba(255,255,255,0.3);
-            text-decoration: none;
-        }
-        .whatsapp-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 25px rgba(37, 211, 102, 0.7);
-        }
-        .telegram-button {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            z-index: 50;
-            background: linear-gradient(145deg, #2AABEE, #229ED9);
-            padding: 12px 24px;
-            border-radius: 50px;
-            color: white;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            box-shadow: 0 4px 20px rgba(42, 171, 238, 0.5);
-            transition: all 0.3s;
-            font-family: 'Poppins', sans-serif;
-            border: 1px solid rgba(255,255,255,0.3);
-            text-decoration: none;
-        }
-        .telegram-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 25px rgba(42, 171, 238, 0.7);
-        }
-        .tab-button {
-            @apply px-6 py-3 rounded-t-xl font-bold transition-all;
-        }
-        .tab-active {
-            @apply bg-yellow-500 text-black;
-        }
-        .tab-inactive {
-            @apply bg-white/10 text-white hover:bg-white/20;
-        }
-        .feed-container {
-            max-height: 200px;
-            overflow-y: auto;
-        }
-        .vault-card {
-            @apply glass-card p-4 text-center;
-        }
-        .vault-stat {
-            @apply text-2xl font-black text-yellow-300;
-        }
-        .info-title {
-            @apply text-yellow-400 font-bold text-base mb-2;
-        }
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/ethers@6.12.1/dist/ethers.umd.min.js"></script>
+    <style type="text/tailwindcss">
+        @tailwind base;
+        @tailwind components;
+        @tailwind utilities;
+        .card-hover { transition: transform 0.2s ease, box-shadow 0.2s ease; }
+        .card-hover:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
     </style>
 </head>
-<body class="text-white antialiased p-4 min-h-screen relative">
+<body class="bg-gray-50 text-gray-800 min-h-screen flex flex-col">
 
-    <!-- Botones flotantes de Telegram y WhatsApp -->
-    <a id="telegramLink" href="https://t.me/+z7wwfx0ocho1NzI5" target="_blank" class="telegram-button hidden">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.02-.15-.05-.22-.07-.07-.18-.05-.26-.03-.11.02-1.85 1.17-5.22 3.45-.5.34-.95.5-1.36.49-.45-.01-1.3-.25-1.94-.46-.78-.26-1.4-.4-1.35-.85.03-.23.27-.47.74-.72 2.91-1.27 4.86-2.11 5.83-2.52 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.08-.02.25-.04.4z"/></svg>
-        <span>Grupo Telegram</span>
-    </a>
-    <a id="whatsappLink" href="https://whatsapp.com/channel/0029Vb74Mxr3LdQVgWdycV2a" target="_blank" class="whatsapp-button hidden">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M12.036 2.001C6.505 2.001 2 6.506 2 12.037c0 1.95.57 3.77 1.55 5.31L2 22l4.78-1.53A9.978 9.978 0 0 0 12.036 22c5.53 0 10.034-4.505 10.034-10.036 0-5.53-4.505-10.035-10.034-10.035zm0 18.464c-1.634 0-3.212-.468-4.562-1.336l-.327-.198-3.004.963 1.003-2.93-.21-.337a8.38 8.38 0 0 1-1.345-4.59c0-4.616 3.76-8.376 8.376-8.376s8.376 3.76 8.376 8.376-3.76 8.376-8.376 8.376zm4.53-6.268c-.248-.124-1.466-.723-1.694-.805-.228-.082-.394-.124-.56.124-.166.248-.645.805-.79.97-.146.165-.29.186-.538.062s-1.052-.387-2.003-1.235c-.74-.66-1.24-1.476-1.385-1.724-.146-.248-.016-.382.11-.506.11-.11.248-.29.373-.435.124-.145.166-.248.248-.414.083-.165.041-.31-.02-.434-.062-.124-.56-1.35-.77-1.85-.202-.482-.407-.416-.56-.424-.145-.008-.31-.008-.476-.008-.166 0-.435.062-.663.31-.228.249-.87.85-.87 2.075 0 1.224.89 2.407 1.015 2.574.124.166 1.73 2.64 4.19 3.61.586.23 1.043.368 1.4.47.588.166 1.123.143 1.545.086.472-.062 1.454-.594 1.66-1.168.206-.574.206-1.066.145-1.168-.06-.103-.228-.166-.476-.29z"/></svg>
-        <span>Canal WhatsApp</span>
-    </a>
-
-    <div id="toast" class="toast glass-card p-4 hidden">
-        <p id="toastMsg" class="text-sm"></p>
-    </div>
-
-    <div class="max-w-3xl mx-auto">
-        <header class="text-center py-8">
-            <div class="flex items-center justify-center gap-4">
-                <h1 class="text-6xl font-black text-white drop-shadow-2xl tracking-tighter" style="text-shadow: 0 0 20px rgba(251,191,36,0.5);">MILIMAR JAGC</h1>
-            </div>
-            <p class="text-sm text-white/80 uppercase tracking-[0.3em] font-light mt-2">Oficina Virtual · BSC</p>
-        </header>
-
-        <!-- Pestañas de navegación -->
-        <div class="flex flex-wrap justify-center gap-2 mb-6">
-            <button id="btnMembresia" class="tab-button tab-active">MEMBRESÍA</button>
-            <button id="btnVault" class="tab-button tab-inactive">VAULT</button>
-            <button id="btnArbitraje" class="tab-button tab-inactive">ARBITRAJE</button>
+<!-- BARRA DE NAVEGACIÓN -->
+<nav class="bg-gradient-to-r from-blue-600 to-cyan-700 shadow-lg sticky top-0 z-50">
+    <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+        <div class="flex items-center space-x-2">
+            <i class="fa fa-code text-white text-xl"></i>
+            <span class="text-white text-xl font-bold">Milimar_jagc.v5</span>
         </div>
-
-        <!-- Contenedor de conexión -->
-        <div id="conBox" class="glass-card p-10 text-center mb-6">
-            <button id="btnConnect" class="btn bg-white text-black w-full max-w-md mx-auto hover:bg-yellow-300 transition">CONECTAR BILLETERA</button>
-        </div>
-
-        <!-- SECCIÓN MEMBRESÍA (completa) -->
-        <div id="seccionMembresia" class="space-y-6">
-            <!-- Tarjetas de resumen -->
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-                <div class="glass-card p-4 border-l-4 border-green-400">
-                    <p class="text-[10px] text-white/60 uppercase font-bold">Saldo Pendiente</p>
-                    <p id="valSaldo" class="text-xl font-black text-green-300">0.00</p>
-                </div>
-                <div class="glass-card p-4 border-r-4 border-yellow-400 text-right">
-                    <p class="text-[10px] text-white/60 uppercase font-bold">Red Total</p>
-                    <p id="valRed" class="text-xl font-black text-yellow-300">0</p>
-                </div>
-                <div class="glass-card p-4 border-l-4 border-blue-400">
-                    <p class="text-[10px] text-white/60 uppercase font-bold">Directos</p>
-                    <p id="valDir" class="text-xl font-black text-blue-300">0</p>
-                </div>
-                <div class="glass-card p-4 border-r-4 border-purple-400 text-right">
-                    <p class="text-[10px] text-white/60 uppercase font-bold">Días activo</p>
-                    <p id="valDias" class="text-xl font-black text-purple-300">0</p>
-                </div>
-            </div>
-
-            <!-- Fondos: Solidaridad y Pool Liderazgo + Emergencia -->
-            <div class="grid grid-cols-3 gap-3">
-                <div class="glass-card p-3 text-center">
-                    <p class="text-[10px] text-white/60 uppercase font-bold">Fondo Solidaridad</p>
-                    <p id="fondoSolidaridad" class="text-lg font-black text-emerald-300">0.00</p>
-                </div>
-                <div class="glass-card p-3 text-center">
-                    <p class="text-[10px] text-white/60 uppercase font-bold">Pool Liderazgo</p>
-                    <p id="poolLiderazgo" class="text-lg font-black text-yellow-300">0.00</p>
-                </div>
-                <div class="glass-card p-3 text-center" id="emergencyContainer">
-                    <p class="text-[10px] text-white/60 uppercase font-bold">Modo Emergencia</p>
-                    <p id="emergencyStatus" class="text-lg font-black text-red-300">INACTIVO</p>
-                </div>
-            </div>
-
-            <!-- Botón de retiro de emergencia -->
-            <button id="btnEmergencyWithdraw" class="hidden w-full bg-red-700 text-white font-bold py-3 rounded-xl hover:bg-red-600 transition">🚨 RETIRO DE EMERGENCIA</button>
-
-            <!-- Visualización de 5 niveles -->
-            <div class="glass-card p-6 text-center">
-                <p class="text-white text-sm font-bold mb-4 drop-shadow">📊 TUS 5 NIVELES DE RED</p>
-                <div class="flex flex-wrap justify-center gap-2">
-                    <div id="n1" class="node node-empty">N1<br><span class="text-[10px]">0</span></div>
-                    <div id="n2" class="node node-empty">N2<br><span class="text-[10px]">0</span></div>
-                    <div id="n3" class="node node-empty">N3<br><span class="text-[10px]">0</span></div>
-                    <div id="n4" class="node node-empty">N4<br><span class="text-[10px]">0</span></div>
-                    <div id="n5" class="node node-empty">N5<br><span class="text-[10px]">0</span></div>
-                </div>
-                <p class="text-[10px] text-white/50 mt-4">Cada círculo muestra la cantidad de personas en ese nivel.</p>
-            </div>
-
-            <!-- Detalles por nivel y ganancias -->
-            <div class="grid md:grid-cols-2 gap-4">
-                <div class="glass-card p-4">
-                    <div class="flex justify-between items-center mb-2">
-                        <h3 class="text-white font-bold text-sm drop-shadow">📊 SOCIOS POR NIVEL</h3>
-                        <button id="btnReloadDetails" class="text-xs bg-white/20 hover:bg-white/30 px-2 py-1 rounded transition">⟳ Recargar</button>
-                    </div>
-                    <div id="redNiveles" class="space-y-1 text-xs"><p class="text-white/50">Cargando...</p></div>
-                </div>
-                <div class="glass-card p-4">
-                    <div class="flex justify-between items-center mb-2">
-                        <h3 class="text-white font-bold text-sm drop-shadow">💰 GANANCIAS ACUMULADAS</h3>
-                        <button id="btnReloadGanancias" class="text-xs bg-white/20 hover:bg-white/30 px-2 py-1 rounded transition">⟳ Recargar</button>
-                    </div>
-                    <div id="gananciasNiveles" class="space-y-1 text-xs"><p class="text-white/50">Cargando...</p></div>
-                </div>
-            </div>
-
-            <!-- Botones de acción -->
-            <div class="grid grid-cols-2 gap-3">
-                <button id="btnApprove" class="btn bg-blue-600 text-white hover:bg-blue-500">1. AUTORIZAR USDT</button>
-                <button id="btnJoin" class="btn bg-yellow-500 text-black hover:bg-yellow-400">2. ACTIVAR (10 USDT)</button>
-                <button id="btnRenew" class="btn bg-indigo-600 text-white hover:bg-indigo-500">RENOVAR</button>
-                <button id="btnWithdraw" class="btn bg-green-600 text-white hover:bg-green-500">RETIRAR</button>
-            </div>
-
-            <!-- Panel Admin -->
-            <div id="adminSection" class="hidden glass-card p-4 border border-yellow-500/50">
-                <h2 class="text-white font-bold mb-3 text-sm uppercase tracking-wider drop-shadow">⚙️ Panel Admin</h2>
-                <div class="grid grid-cols-2 gap-2">
-                    <button id="btnPausa" class="btn bg-red-600 text-white text-sm py-2 hover:bg-red-500">PAUSAR/REANUDAR</button>
-                    <button id="btnCupos" class="btn bg-purple-600 text-white text-sm py-2 hover:bg-purple-500">OTORGAR CUPOS</button>
-                    <button id="btnPremiar" class="btn bg-pink-600 text-white text-sm py-2 hover:bg-pink-500">PREMIAR LÍDER</button>
-                    <button id="btnRecuperar" class="btn bg-orange-600 text-white text-sm py-2 hover:bg-orange-500">RECUPERAR TOKEN</button>
-                </div>
-                <div class="mt-2 text-[10px] text-white/50">Usa estas funciones con responsabilidad.</div>
-            </div>
-
-            <!-- Enlace de invitación -->
-            <div class="glass-card p-4 text-center">
-                <p class="text-[10px] text-white/50 mb-1 uppercase font-bold">TU ENLACE DE INVITACIÓN</p>
-                <div class="flex items-center gap-2">
-                    <input id="refLink" readonly class="w-full bg-white/10 border border-white/30 rounded-lg p-2 text-center text-white text-xs outline-none">
-                    <button id="copyLinkBtn" class="bg-white text-black font-bold py-2 px-4 rounded-lg text-sm hover:bg-yellow-300 transition">Copiar</button>
-                </div>
-                <p id="copyMsg" class="text-[10px] text-green-300 mt-2 hidden">¡Link copiado!</p>
-            </div>
-
-            <!-- Tutoriales -->
-            <div class="glass-card p-4">
-                <details class="cursor-pointer">
-                    <summary class="text-white font-bold text-sm list-none flex justify-between items-center drop-shadow">
-                        📘 TUTORIALES RÁPIDOS
-                        <span class="text-xs text-white/60">(clic para expandir)</span>
-                    </summary>
-                    <div class="mt-4 space-y-3">
-                        <div class="tutorial-step">
-                            <p class="font-bold text-yellow-300">🔹 Autorizar USDT</p>
-                            <p class="text-xs text-white/80">1. Asegúrate de tener USDT en tu wallet.<br>2. Haz clic en "AUTORIZAR USDT".<br>3. Confirma la transacción (solo gas).</p>
-                        </div>
-                        <div class="tutorial-step">
-                            <p class="font-bold text-yellow-300">🔹 Activar suscripción</p>
-                            <p class="text-xs text-white/80">1. Después de autorizar, haz clic en "ACTIVAR".<br>2. Ingresa la dirección de tu patrocinador (si no viene por link).<br>3. Confirma la transacción (10 USDT + gas).</p>
-                        </div>
-                        <div class="tutorial-step">
-                            <p class="font-bold text-yellow-300">🔹 Renovar</p>
-                            <p class="text-xs text-white/80">Paga 10 USDT para extender tu membresía 30 días más.</p>
-                        </div>
-                        <div class="tutorial-step">
-                            <p class="font-bold text-yellow-300">🔹 Retirar ganancias</p>
-                            <p class="text-xs text-white/80">Solo cuando tengas al menos 4 directos y saldo ≥10 USDT.</p>
-                        </div>
-                        <div class="tutorial-step">
-                            <p class="font-bold text-yellow-300">🔹 Invitar</p>
-                            <p class="text-xs text-white/80">Comparte tu link de invitación. Cuando alguien se registre con él, será tu referido directo.</p>
-                        </div>
-                    </div>
-                </details>
-            </div>
-        </div>
-
-        <!-- SECCIÓN VAULT (próximamente) -->
-        <div id="seccionVault" class="hidden space-y-6">
-            <div class="glass-card p-6 text-center">
-                <h2 class="text-2xl font-bold text-yellow-400 mb-4">🏦 VAULT DE CRECIMIENTO</h2>
-                <p class="text-sm text-white/70 mb-6">Estamos preparando un fondo de inversión automatizado para ti. ¡Muy pronto!</p>
-                <div class="bg-yellow-500/20 border border-yellow-500 rounded-lg p-4">
-                    <p class="text-yellow-300 font-bold">🚧 EN DESARROLLO</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- SECCIÓN ARBITRAJE (próximamente) -->
-        <div id="seccionArbitraje" class="hidden space-y-6">
-            <div class="glass-card p-6 text-center">
-                <h2 class="text-2xl font-bold text-yellow-400 mb-4">🤖 ARBITRAJE</h2>
-                <p class="text-sm text-white/70 mb-6">Estamos desarrollando una plataforma de arbitraje automatizado. ¡Muy pronto!</p>
-                <div class="bg-yellow-500/20 border border-yellow-500 rounded-lg p-4">
-                    <p class="text-yellow-300 font-bold">🚧 EN DESARROLLO</p>
-                </div>
-            </div>
+        <div class="flex items-center space-x-4">
+            <button id="connectWalletBtn" class="bg-white text-blue-700 px-4 py-2 rounded-lg font-semibold hover:bg-gray-100 transition">
+                <i class="fa fa-plug mr-2"></i>Conectar Cartera
+            </button>
+            <button id="notificationsBtn" class="bg-white/20 text-white px-4 py-2 rounded-lg hover:bg-white/30 transition">
+                <i class="fa fa-bell mr-2"></i>Notificaciones
+            </button>
         </div>
     </div>
+</nav>
 
-    <script>
-        // 🟢 CONFIGURACIÓN PARA MAINNET
-        const CONTRACT_ADDR_MEMBRESIA = "0x497D328d5d59E191Eb7FC411a876CefB8B43176c";
-        const USDT_ADDR = "0x55d398326f99059fF775485246999027B3197955";
-        const BSC_CHAIN_ID = 56;
-        const TELEGRAM_GRUPO = "https://t.me/+z7wwfx0ocho1NzI5";
-        const WHATSAPP_CANAL = "https://whatsapp.com/channel/0029Vb74Mxr3LdQVgWdycV2a";
+<!-- SECCIÓN PRINCIPAL -->
+<main class="container mx-auto px-4 py-8 flex-grow">
+    <!-- BANNER DE LA EMPRESA -->
+    <div class="bg-gradient-to-r from-blue-600 to-cyan-700 text-white rounded-xl p-6 mb-8 text-center">
+        <h1 class="text-3xl md:text-4xl font-bold mb-2">Milimar_jagc</h1>
+        <p class="text-lg opacity-90">Contrato Inteligente Milimar_jagc.v5 en BNB Chain</p>
+    </div>
 
-        // ABIs (completos)
-        const abiMembresia = [
-            "function consultarEstado(address) view returns (uint256,uint256,uint256,uint256,uint256,uint256,bool)",
-            "function unirse(address)",
-            "function renovarSuscripcion()",
-            "function retirarGanancias()",
-            "function verDetalleRed(address) view returns (uint256[5] memory)",
-            "function verDetalleGanancias(address) view returns (uint256[5] memory)",
-            "function admin() view returns (address)",
-            "function togglePausa()",
-            "function otorgarCuposExtra(address,uint256)",
-            "function premiarLider(address,uint256)",
-            "function recuperarTokenExterno(address,uint256)",
-            "function fondoSolidaridad() view returns (uint256)",
-            "function poolLiderazgo() view returns (uint256)",
-            "function emergencyMode() view returns (bool)",
-            "function emergencyWithdraw()",
-            "event RegistroGlobal(address indexed usuario, address indexed patrocinador, uint256 fecha)",
-            "event BonoNivel3Alcanzado(address indexed usuario, uint256 fecha)",
-            "event RetiroExitoso(address indexed usuario, uint256 monto)",
-            "event PremiadoLider(address indexed lider, uint256 monto)"
-        ];
+    <!-- PANEL DE USUARIO -->
+    <section id="userPanel" class="bg-white rounded-xl shadow-md p-6 mb-8 card-hover hidden">
+        <h2 class="text-2xl font-bold text-blue-700 mb-4">Mi Panel de Operaciones</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="border border-blue-100 rounded-lg p-4">
+                <h3 class="font-semibold text-lg mb-2 text-blue-700">Datos de Mi Cuenta</h3>
+                <p><strong>Dirección:</strong> <span id="userAddress" class="text-sm break-all"></span></p>
+                <p><strong>Cupo Asignado:</strong> <span id="userLimit"></span> USDT</p>
+                <p><strong>Nivel Actual:</strong> <span id="userLevel"></span></p>
+                <p><strong>Ganancias Acumuladas:</strong> <span id="userEarnings"></span> USDT</p>
+            </div>
+            <div class="border border-blue-100 rounded-lg p-4">
+                <h3 class="font-semibold text-lg mb-2 text-blue-700">Solicitar Cupo Extra</h3>
+                <input type="number" id="extraAmount" placeholder="Cantidad USDT" class="w-full p-2 border border-gray-200 rounded mb-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                <button id="requestExtraBtn" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition w-full">
+                    <i class="fa fa-paper-plane mr-2"></i>Enviar Solicitud
+                </button>
+            </div>
+        </div>
+    </section>
 
-        const usdtAbi = ["function approve(address spender, uint256 amount) returns (bool)"];
+    <!-- PANEL ADMIN -->
+    <section id="adminPanel" class="bg-white rounded-xl shadow-md p-6 mb-8 card-hover hidden">
+        <h2 class="text-2xl font-bold text-blue-700 mb-4">Panel de Administración - Milimar_jagc</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                <h3 class="font-semibold text-lg mb-2 text-blue-700">Gestionar Solicitudes de Cupo</h3>
+                <div id="requestsList" class="space-y-3"></div>
+            </div>
+            <div>
+                <h3 class="font-semibold text-lg mb-2 text-blue-700">Administración del Contrato</h3>
+                <p class="mb-2"><strong>Versión del Contrato:</strong> <span id="contractVersion"></span></p>
+                <p class="mb-2"><strong>Cartera Empresa:</strong> <span id="companyWallet"></span></p>
+                <p class="mb-3"><strong>Porcentaje Comisión:</strong> <span id="companyFee"></span>%</p>
+                <button id="withdrawBtn" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition w-full">
+                    <i class="fa fa-money mr-2"></i>Retirar Ganancias
+                </button>
+            </div>
+        </div>
+    </section>
 
-        // Estado
-        let provider, signer, userAddress, contractMembresia, usdtContract;
-        let isAdmin = false;
-        let toastTimeout;
+    <!-- ESPACIO PARA BOT DE ARBITRAJE -->
+    <section id="botSection" class="bg-white rounded-xl shadow-md p-6 card-hover">
+        <h2 class="text-2xl font-bold text-blue-700 mb-4">Próximamente: Bot de Arbitraje Milimar_jagc</h2>
+        <p class="mb-4 text-gray-700">Automatización de operaciones de arbitraje en BNB Chain para optimizar tus ganancias con el contrato Milimar_jagc.v5.</p>
+        <button id="botNotifyBtn" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
+            <i class="fa fa-bell mr-2"></i>Recibir Notificaciones del Bot
+        </button>
+    </section>
+</main>
 
-        // Elementos DOM
-        const toast = document.getElementById('toast');
-        const toastMsg = document.getElementById('toastMsg');
-        const telegramLink = document.getElementById('telegramLink');
-        const whatsappLink = document.getElementById('whatsappLink');
-        const btnConnect = document.getElementById('btnConnect');
-        const conBox = document.getElementById('conBox');
-        const seccionMembresia = document.getElementById('seccionMembresia');
-        const seccionVault = document.getElementById('seccionVault');
-        const seccionArbitraje = document.getElementById('seccionArbitraje');
-        const btnMembresia = document.getElementById('btnMembresia');
-        const btnVault = document.getElementById('btnVault');
-        const btnArbitraje = document.getElementById('btnArbitraje');
-        const copyLinkBtn = document.getElementById('copyLinkBtn');
-        const refLink = document.getElementById('refLink');
-        const copyMsg = document.getElementById('copyMsg');
-        const fondoElem = document.getElementById('fondoSolidaridad');
-        const poolElem = document.getElementById('poolLiderazgo');
-        const emergencyStatus = document.getElementById('emergencyStatus');
-        const emergencyContainer = document.getElementById('emergencyContainer');
-        const btnEmergency = document.getElementById('btnEmergencyWithdraw');
+<!-- PIE DE PÁGINA -->
+<footer class="bg-gray-800 text-white py-6 mt-8">
+    <div class="container mx-auto px-4 text-center">
+        <p class="text-lg font-semibold mb-2">Milimar_jagc</p>
+        <p>Contrato Inteligente Milimar_jagc.v5 - © 2026 Todos los derechos reservados</p>
+        <p class="text-gray-400 mt-2">
+            <a href="https://bscscan.com/address/0xA71B4CEEDBFEAf1c6F741De0E09aB712Fe169057" class="text-blue-400 hover:underline">Ver Contrato Verificado en BscScan</a>
+        </p>
+    </div>
+</footer>
 
-        // Funciones de utilidad
-        function showToast(msg, isError = false) {
-            clearTimeout(toastTimeout);
-            toast.classList.remove('hidden');
-            toastMsg.innerText = msg;
-            toast.style.backgroundColor = isError ? 'rgba(127,29,29,0.9)' : 'rgba(6,78,59,0.9)';
-            toastTimeout = setTimeout(() => toast.classList.add('hidden'), 4000);
-        }
-
-        // Copiar link
-        copyLinkBtn.addEventListener('click', () => {
-            refLink.select();
-            refLink.setSelectionRange(0, 99999);
-            navigator.clipboard.writeText(refLink.value).then(() => {
-                copyMsg.classList.remove('hidden');
-                setTimeout(() => copyMsg.classList.add('hidden'), 2000);
-            }).catch(() => showToast('Error al copiar', true));
-        });
-
-        // Cambio de pestañas
-        function setActiveTab(active, inactives) {
-            active.classList.add('tab-active');
-            active.classList.remove('tab-inactive');
-            inactives.forEach(btn => {
-                btn.classList.add('tab-inactive');
-                btn.classList.remove('tab-active');
-            });
-        }
-
-        btnMembresia.addEventListener('click', () => {
-            setActiveTab(btnMembresia, [btnVault, btnArbitraje]);
-            seccionMembresia.classList.remove('hidden');
-            seccionVault.classList.add('hidden');
-            seccionArbitraje.classList.add('hidden');
-        });
-
-        btnVault.addEventListener('click', () => {
-            setActiveTab(btnVault, [btnMembresia, btnArbitraje]);
-            seccionMembresia.classList.add('hidden');
-            seccionVault.classList.remove('hidden');
-            seccionArbitraje.classList.add('hidden');
-        });
-
-        btnArbitraje.addEventListener('click', () => {
-            setActiveTab(btnArbitraje, [btnMembresia, btnVault]);
-            seccionMembresia.classList.add('hidden');
-            seccionVault.classList.add('hidden');
-            seccionArbitraje.classList.remove('hidden');
-        });
-
-        // Verificar red
-        async function checkNetwork() {
-            const network = await provider.getNetwork();
-            if (network.chainId !== BSC_CHAIN_ID) {
-                try {
-                    await window.ethereum.request({
-                        method: 'wallet_switchEthereumChain',
-                        params: [{ chainId: '0x38' }] // 56 en hex
-                    });
-                } catch {
-                    showToast('Cambia a BSC Mainnet en tu wallet', true);
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        // Funciones de membresía
-        async function loadRedYGanancias(intentos = 3) {
-            for (let i = 0; i < intentos; i++) {
-                try {
-                    const red = await contractMembresia.verDetalleRed(userAddress);
-                    const ganancias = await contractMembresia.verDetalleGanancias(userAddress);
-                    for (let j = 0; j < 5; j++) {
-                        const node = document.getElementById('n' + (j+1));
-                        const cantidad = red[j].toNumber();
-                        node.innerHTML = `N${j+1}<br><span class="text-[10px]">${cantidad}</span>`;
-                        if (cantidad > 0) {
-                            node.classList.add('node-filled');
-                            node.classList.remove('node-empty');
-                        } else {
-                            node.classList.add('node-empty');
-                            node.classList.remove('node-filled');
-                        }
-                    }
-                    let redHtml = '', ganHtml = '';
-                    for (let j = 0; j < 5; j++) {
-                        redHtml += `<div class="flex justify-between"><span>Nivel ${j+1}:</span><span class="font-bold">${red[j].toString()}</span></div>`;
-                        ganHtml += `<div class="flex justify-between"><span>Nivel ${j+1}:</span><span class="font-bold">${ethers.utils.formatUnits(ganancias[j], 18)} USDT</span></div>`;
-                    }
-                    document.getElementById('redNiveles').innerHTML = redHtml;
-                    document.getElementById('gananciasNiveles').innerHTML = ganHtml;
-                    return;
-                } catch (e) {
-                    if (i === intentos - 1) {
-                        document.getElementById('redNiveles').innerHTML = '<p class="text-red-400">Error al cargar. Intenta recargar manualmente.</p>';
-                        document.getElementById('gananciasNiveles').innerHTML = '<p class="text-red-400">Error al cargar.</p>';
-                        showToast('No se pudieron cargar los detalles de la red', true);
-                    } else await new Promise(r => setTimeout(r, 1000));
-                }
-            }
-        }
-
-        async function loadUserData() {
-            try {
-                const data = await contractMembresia.consultarEstado(userAddress);
-                document.getElementById('valSaldo').innerText = ethers.utils.formatUnits(data[0], 18);
-                document.getElementById('valDir').innerText = data[3].toString();
-                document.getElementById('valRed').innerText = data[4].toString();
-                document.getElementById('valDias').innerText = data[5].toString();
-                await loadRedYGanancias();
-
-                const fondo = await contractMembresia.fondoSolidaridad();
-                fondoElem.innerText = ethers.utils.formatUnits(fondo, 18) + ' USDT';
-                const pool = await contractMembresia.poolLiderazgo();
-                poolElem.innerText = ethers.utils.formatUnits(pool, 18) + ' USDT';
-                const emergency = await contractMembresia.emergencyMode();
-                emergencyStatus.innerText = emergency ? 'ACTIVO' : 'INACTIVO';
-                if (emergency) {
-                    emergencyContainer.classList.add('border-2', 'border-red-500');
-                    btnEmergency.classList.remove('hidden');
-                } else {
-                    emergencyContainer.classList.remove('border-2', 'border-red-500');
-                    btnEmergency.classList.add('hidden');
-                }
-            } catch (e) {
-                console.error('Error en loadUserData:', e);
-                showToast('Error al cargar datos básicos', true);
-            }
-        }
-
-        async function connect() {
-            if (!window.ethereum) return showToast('Instala MetaMask/OKX Wallet', true);
-            try {
-                provider = new ethers.providers.Web3Provider(window.ethereum);
-                await provider.send("eth_requestAccounts", []);
-                signer = provider.getSigner();
-                userAddress = await signer.getAddress();
-
-                if (!await checkNetwork()) return;
-
-                contractMembresia = new ethers.Contract(CONTRACT_ADDR_MEMBRESIA, abiMembresia, signer);
-                usdtContract = new ethers.Contract(USDT_ADDR, usdtAbi, signer);
-
-                conBox.classList.add('hidden');
-                seccionMembresia.classList.remove('hidden');
-                telegramLink.classList.remove('hidden');
-                whatsappLink.classList.remove('hidden');
-                refLink.value = window.location.origin + window.location.pathname + "?ref=" + userAddress;
-
-                const adminAddr = await contractMembresia.admin();
-                isAdmin = (adminAddr.toLowerCase() === userAddress.toLowerCase());
-                if (isAdmin) document.getElementById('adminSection').classList.remove('hidden');
-
-                await loadUserData();
-
-                // Escuchar eventos
-                contractMembresia.on("RegistroGlobal", (usuario, patrocinador, fecha) => {
-                    showToast(`🎉 Nuevo registro: ${usuario.slice(0,6)}...${usuario.slice(-4)}`);
-                });
-                contractMembresia.on("BonoNivel3Alcanzado", (usuario, fecha) => {
-                    showToast(`🏆 Bono nivel 3 alcanzado por ${usuario.slice(0,6)}...${usuario.slice(-4)}`);
-                });
-                contractMembresia.on("RetiroExitoso", (usuario, monto) => {
-                    showToast(`💰 Retiro de ${ethers.utils.formatUnits(monto,18)} USDT por ${usuario.slice(0,6)}...${usuario.slice(-4)}`);
-                });
-                contractMembresia.on("PremiadoLider", (lider, monto) => {
-                    showToast(`🏅 Premio a líder ${lider.slice(0,6)}...${lider.slice(-4)}: ${ethers.utils.formatUnits(monto,18)} USDT`);
-                });
-
-            } catch (e) {
-                showToast('Error conectando: ' + e.message, true);
-            }
-        }
-
-        btnConnect.onclick = connect;
-
-        // Botones de acción
-        document.getElementById('btnApprove').onclick = async () => {
-            try {
-                const tx = await usdtContract.approve(CONTRACT_ADDR_MEMBRESIA, ethers.utils.parseUnits("100", 18));
-                showToast('Autorizando...');
-                await tx.wait();
-                showToast('✅ USDT autorizado');
-            } catch (e) { showToast('Error: ' + e.message, true); }
-        };
-
-        document.getElementById('btnJoin').onclick = async () => {
-            try {
-                const urlParams = new URLSearchParams(window.location.search);
-                let sponsor = urlParams.get('ref');
-                if (!sponsor || sponsor === userAddress) {
-                    sponsor = prompt('Dirección del patrocinador:');
-                    if (!sponsor) return;
-                }
-                const tx = await contractMembresia.unirse(sponsor);
-                showToast('Activando...');
-                await tx.wait();
-                showToast('✅ Registro exitoso');
-                await loadUserData();
-            } catch (e) { showToast('Error: ' + e.message, true); }
-        };
-
-        document.getElementById('btnRenew').onclick = async () => {
-            try {
-                const tx = await contractMembresia.renovarSuscripcion();
-                showToast('Renovando...');
-                await tx.wait();
-                showToast('✅ Suscripción renovada');
-                await loadUserData();
-            } catch (e) { showToast('Error: ' + e.message, true); }
-        };
-
-        document.getElementById('btnWithdraw').onclick = async () => {
-            try {
-                const tx = await contractMembresia.retirarGanancias();
-                showToast('Retirando...');
-                await tx.wait();
-                showToast('✅ Retiro exitoso');
-                await loadUserData();
-            } catch (e) { showToast('Error: ' + e.message, true); }
-        };
-
-        document.getElementById('btnReloadDetails').onclick = loadRedYGanancias;
-        document.getElementById('btnReloadGanancias').onclick = loadRedYGanancias;
-
-        // Admin functions
-        document.getElementById('btnPausa').onclick = async () => {
-            if (!isAdmin || !confirm('¿Cambiar estado de pausa?')) return;
-            try { await (await contractMembresia.togglePausa()).wait(); showToast('✅ Pausa cambiada'); } catch (e) { showToast('Error: ' + e.message, true); }
-        };
-        document.getElementById('btnCupos').onclick = async () => {
-            if (!isAdmin) return;
-            const lider = prompt('Dirección del líder:'); const cant = prompt('Cantidad de cupos:');
-            if (!lider || !cant) return;
-            try { await (await contractMembresia.otorgarCuposExtra(lider, cant)).wait(); showToast('✅ Cupos otorgados'); } catch (e) { showToast('Error: ' + e.message, true); }
-        };
-        document.getElementById('btnPremiar').onclick = async () => {
-            if (!isAdmin) return;
-            const lider = prompt('Dirección del líder:'); const monto = prompt('Monto en USDT:');
-            if (!lider || !monto) return;
-            try { await (await contractMembresia.premiarLider(lider, ethers.utils.parseUnits(monto, 18))).wait(); showToast('✅ Premio enviado'); } catch (e) { showToast('Error: ' + e.message, true); }
-        };
-        document.getElementById('btnRecuperar').onclick = async () => {
-            if (!isAdmin) return;
-            const token = prompt('Dirección del token (no USDT):'); const cant = prompt('Cantidad:');
-            if (!token || !cant) return;
-            try { await (await contractMembresia.recuperarTokenExterno(token, ethers.utils.parseUnits(cant, 18))).wait(); showToast('✅ Tokens recuperados'); } catch (e) { showToast('Error: ' + e.message, true); }
-        };
-
-        btnEmergency.onclick = async () => {
-            if (!confirm('¿Estás seguro de retirar todos tus fondos en modo de emergencia?')) return;
-            try {
-                const tx = await contractMembresia.emergencyWithdraw();
-                showToast('Procesando retiro de emergencia...');
-                await tx.wait();
-                showToast('✅ Retiro de emergencia completado');
-                await loadUserData();
-            } catch (e) { showToast('Error: ' + e.message, true); }
-        };
-
-        // Auto-conectar
-        window.addEventListener('load', () => {
-            if (window.ethereum && window.ethereum.selectedAddress) connect();
-        });
-    </script>
-    <footer class="text-center text-[10px] text-gray-500 mt-4">Milimar Protocol · BSC · Versión 4</footer>
-</body>
-</html>
+<!-- LÓGICA DE CONEXIÓN -->
+<script>
+// CONFIGURACIÓN DEL CONTRATO
+const CONTRACT_ADDRESS = "0xA71B4CEEDBFEAf1c6F741De0E09aB712Fe169057";
+const CONTRACT_ABI = [{"inputs":[{"internalType":"address","name":"direccionCarteraEmpresa","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"inputs":[{"internalType":"address","name":"owner","type":"address"}],"name":"OwnableInvalidOwner","type":"error"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"OwnableUnauthorizedAccount","type":"error"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"antiguaCartera","type":"address"},{"indexed":false,"internalType":"address","name":"nuevaCartera","type":"address"}],"name":"CarteraEmpresaActualizada","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"usuario","type":"address"},{"indexed":false,"internalType":"uint256","name":"cantidad","type":"uint256"}],"name":"CuposOtorgadosExitoso","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"nuevoContrato","type":"address"}],"name":"MigracionContratoCompletada","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"usuario","type":"address"},{"indexed":false,"internalType":"uint256","name":"nuevoNivel","type":"uint256"}],"name":"NivelUsuarioActualizado","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"usuario","type":"address"},{"indexed":false,"internalType":"uint256","name":"montoUsuario","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"montoEmpresa","type":"uint256"}],"name":"RetiroGananciasExitoso","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"usuario","type":"address"}],"name":"UsuarioRegistradoExitoso","type":"event"},{"inputs":[{"internalType":"address","name":"nuevaCartera","type":"address"}],"name":"actualizarCarteraEmpresa","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"usuario","type":"address"},{"internalType":"uint256","name":"nuevoNivel","type":"uint256"}],"name":"actualizarNivelUsuario","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"idSolicitud","type":"uint256"},{"internalType":"bool","name":"aprobar","type":"bool"},{"internalType":"uint256","name":"cantidadOtorgar","type":"uint256"}],"name":"aprobarSolicitudCupos","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"carteraEmpresa","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"contadorOperaciones","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"contadorSolicitudes","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"contadorUsuarios","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"cuposAutomaticosNivel3","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"cuposBasePorDefecto","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"cantidad","type":"uint256"}],"name":"enviarSolicitudCuposExtra","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"usuario","type":"address"},{"internalType":"uint256","name":"fecha","type":"uint256"},{"internalType":"uint256","name":"nivel","type":"uint256"},{"internalType":"uint256","name":"cupos","type":"uint256"},{"internalType":"uint256","name":"ganancias","type":"uint256"}],"name":"importarDatosUsuario","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"listaTotalUsuarios","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"nuevoContrato","type":"address"}],"name":"migrarContratoNuevo","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"nivelMinimoCuposAutomaticos","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"nombreProyecto","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"usuario","type":"address"}],"name":"obtenerDatosUsuario","outputs":[{"components":[{"internalType":"address","name":"direccionUsuario","type":"address"},{"internalType":"uint256","name":"fechaAfiliacion","type":"uint256"},{"internalType":"uint256","name":"nivelActual","type":"uint256"},{"internalType":"uint256","name":"cuposAsignados","type":"uint256"},{"internalType":"uint256","name":"cuposUsados","type":"uint256"},{"internalType":"uint256","name":"gananciasAcumuladas","type":"uint256"},{"internalType":"bool","name":"estadoActivo","type":"bool"}],"internalType":"struct ContratoInteligenteMilimar.Usuario","name":"","type":"tuple"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"operacionesRegistradas","outputs":[{"internalType":"uint256","name":"idOperacion","type":"uint256"},{"internalType":"address","name":"usuario","type":"address"},{"internalType":"uint256","name":"montoOperacion","type":"uint256"},{"internalType":"uint256","name":"fechaOperacion","type":"uint256"},{"internalType":"bool","name":"operacionCompletada","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"porcentajeComisionEmpresa","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"direccionUsuario","type":"address"}],"name":"registrarNuevoUsuario","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"usuario","type":"address"},{"internalType":"uint256","name":"monto","type":"uint256"}],"name":"registrarOperacion","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs
