@@ -3,414 +3,576 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Milimar - Contrato Inteligente</title>
+    <title>Milimar V5 - Plataforma de Liderazgo</title>
+    <!-- Font Awesome para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Ethers.js -->
+    <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
     <style>
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
         }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f0f2f5;
-            color: #1a1a1a;
-            line-height: 1.6;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
         }
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
         }
-        header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 30px 0;
+
+        /* Header */
+        .header {
+            background: rgba(255,255,255,0.95);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
             text-align: center;
-            border-radius: 0 0 20px 20px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
-        h1 {
+
+        .header h1 {
             font-size: 2.5em;
+            color: #4a5568;
             margin-bottom: 10px;
         }
-        .subtitle {
+
+        .header h1 i {
+            color: #667eea;
+            margin-right: 10px;
+        }
+
+        .header p {
+            color: #718096;
             font-size: 1.1em;
-            opacity: 0.9;
         }
-        .card {
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            padding: 25px;
-            margin: 20px 0;
-        }
-        .wallet-section {
+
+        .wallet-info {
             display: flex;
-            gap: 15px;
+            justify-content: center;
+            gap: 20px;
             flex-wrap: wrap;
-            align-items: center;
-            margin-bottom: 20px;
+            margin-top: 20px;
         }
+
+        .wallet-card {
+            background: #f7fafc;
+            border-radius: 12px;
+            padding: 15px 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .wallet-card i {
+            font-size: 2em;
+            color: #667eea;
+        }
+
         .btn {
             background: #667eea;
             color: white;
             border: none;
-            padding: 12px 24px;
-            border-radius: 8px;
-            font-size: 16px;
+            padding: 12px 30px;
+            border-radius: 10px;
+            font-size: 1em;
             font-weight: 600;
             cursor: pointer;
-            transition: background 0.3s, transform 0.2s;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(102,126,234,0.3);
         }
+
         .btn:hover {
             background: #5a67d8;
             transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(102,126,234,0.4);
         }
-        .btn-secondary {
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #667eea;
+            color: #667eea;
+            box-shadow: none;
+        }
+
+        .btn-outline:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-success {
             background: #48bb78;
+            box-shadow: 0 4px 6px rgba(72,187,120,0.3);
         }
-        .btn-secondary:hover {
+
+        .btn-success:hover {
             background: #38a169;
         }
-        .btn-danger {
-            background: #f56565;
-        }
-        .btn-danger:hover {
-            background: #e53e3e;
-        }
+
         .btn-warning {
             background: #ed8936;
+            box-shadow: 0 4px 6px rgba(237,137,54,0.3);
         }
+
         .btn-warning:hover {
             background: #dd6b20;
         }
-        .info-box {
-            background: #ebf4ff;
-            border-left: 4px solid #667eea;
-            padding: 15px;
-            margin: 15px 0;
-            border-radius: 8px;
-        }
-        .error-box {
-            background: #fff5f5;
-            border-left: 4px solid #f56565;
-            padding: 15px;
-            margin: 15px 0;
-            border-radius: 8px;
-            color: #c53030;
-        }
-        .success-box {
-            background: #f0fff4;
-            border-left: 4px solid #48bb78;
-            padding: 15px;
-            margin: 15px 0;
-            border-radius: 8px;
-            color: #276749;
-        }
-        .grid-2 {
+
+        .grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 20px;
+            margin: 20px 0;
         }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card h2 {
+            color: #4a5568;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 10px;
+        }
+
+        .card h2 i {
+            color: #667eea;
+            margin-right: 10px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .stat-item {
+            background: #f7fafc;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .stat-item .label {
+            color: #718096;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stat-item .value {
+            color: #2d3748;
+            font-size: 1.8em;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
         .form-group {
             margin-bottom: 15px;
         }
-        label {
+
+        .form-group label {
             display: block;
+            color: #4a5568;
             font-weight: 600;
             margin-bottom: 5px;
-            color: #4a5568;
         }
-        input, select {
+
+        .form-group input {
             width: 100%;
-            padding: 10px;
-            border: 1px solid #cbd5e0;
-            border-radius: 6px;
-            font-size: 16px;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 1em;
+            transition: border-color 0.3s;
         }
-        input:focus {
+
+        .form-group input:focus {
             outline: none;
             border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102,126,234,0.1);
         }
-        .user-data {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin: 20px 0;
-        }
-        .data-item {
-            background: #f7fafc;
-            padding: 15px;
-            border-radius: 8px;
-            text-align: center;
-        }
-        .data-item strong {
-            display: block;
-            font-size: 1.2em;
-            color: #2d3748;
-            margin-bottom: 5px;
-        }
-        .data-item span {
-            font-size: 1.5em;
-            color: #667eea;
-            font-weight: bold;
-        }
-        .admin-panel {
+
+        .admin-section {
             border-top: 3px solid #ed8936;
             margin-top: 30px;
             padding-top: 20px;
         }
+
+        .message {
+            background: #fefcbf;
+            border-left: 4px solid #ecc94b;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .message.error {
+            background: #fed7d7;
+            border-left-color: #f56565;
+        }
+
+        .message.success {
+            background: #c6f6d5;
+            border-left-color: #48bb78;
+        }
+
         .hidden {
             display: none;
         }
-        .wallet-selector {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin: 20px 0;
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #718096;
         }
-        .wallet-btn {
-            background: white;
-            border: 2px solid #667eea;
+
+        .loading i {
+            font-size: 3em;
+            margin-bottom: 10px;
             color: #667eea;
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
         }
-        .wallet-btn:hover {
-            background: #667eea;
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
             color: white;
+            opacity: 0.8;
         }
-        .wallet-btn img {
-            width: 24px;
-            height: 24px;
-        }
+
         @media (max-width: 768px) {
-            .grid-2 {
-                grid-template-columns: 1fr;
+            .header h1 {
+                font-size: 2em;
             }
         }
     </style>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <h1>🏦 Milimar V5</h1>
-            <p class="subtitle">Interfaz oficial del contrato inteligente en BSC Mainnet</p>
-        </div>
-    </header>
-
     <div class="container">
-        <!-- Conexión -->
-        <div class="card">
-            <div class="wallet-section">
-                <button class="btn" id="connectBtn">🔌 Conectar Wallet</button>
-                <div id="walletSelector" class="wallet-selector hidden"></div>
-                <div id="networkInfo" class="info-box" style="flex:1; margin:0;">No conectado</div>
-            </div>
-            <div id="accountInfo" class="info-box">Cuenta: -</div>
-        </div>
-
-        <!-- Datos del usuario -->
-        <div id="userDataCard" class="card hidden">
-            <h2>📊 Tus datos</h2>
-            <div class="user-data">
-                <div class="data-item">
-                    <strong>Nivel</strong>
-                    <span id="userNivel">-</span>
+        <!-- Header -->
+        <div class="header">
+            <h1><i class="fas fa-crown"></i> Milimar V5</h1>
+            <p>Sistema de liderazgo y recompensas en BSC</p>
+            <div class="wallet-info">
+                <div class="wallet-card">
+                    <i class="fas fa-wallet"></i>
+                    <div>
+                        <div style="font-weight: bold; color: #4a5568;">Estado</div>
+                        <div id="connectionStatus">Desconectado</div>
+                    </div>
                 </div>
-                <div class="data-item">
-                    <strong>Cupos asignados</strong>
-                    <span id="userCuposAsignados">-</span>
-                </div>
-                <div class="data-item">
-                    <strong>Cupos usados</strong>
-                    <span id="userCuposUsados">-</span>
-                </div>
-                <div class="data-item">
-                    <strong>Ganancias (USDT)</strong>
-                    <span id="userGanancias">-</span>
-                </div>
-                <div class="data-item">
-                    <strong>Estado</strong>
-                    <span id="userActivo">-</span>
+                <div class="wallet-card">
+                    <i class="fas fa-user-circle"></i>
+                    <div>
+                        <div style="font-weight: bold; color: #4a5568;">Cuenta</div>
+                        <div id="accountDisplay">-</div>
+                    </div>
                 </div>
             </div>
-            <p><strong>Dirección:</strong> <span id="userAddressDisplay"></span></p>
-        </div>
-
-        <!-- Acciones de usuario -->
-        <div id="userActionsCard" class="card hidden">
-            <h2>🎯 Acciones disponibles</h2>
-            <div class="grid-2">
-                <div>
-                    <h3>Solicitar cupos extra</h3>
-                    <div class="form-group">
-                        <label>Cantidad (1 o 2):</label>
-                        <input type="number" id="cuposCantidad" min="1" max="2" value="1">
-                    </div>
-                    <button class="btn btn-secondary" id="solicitarCuposBtn">📨 Enviar solicitud</button>
-                </div>
-                <div>
-                    <h3>Retirar ganancias</h3>
-                    <p>Mínimo: 10 USDT | Comisión: 10%</p>
-                    <button class="btn btn-warning" id="retirarBtn">💰 Retirar</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Panel de administración (solo owner) -->
-        <div id="adminCard" class="card hidden admin-panel">
-            <h2>⚙️ Panel de administración</h2>
-            <div class="grid-2">
-                <div>
-                    <h3>Registrar usuario</h3>
-                    <div class="form-group">
-                        <label>Dirección:</label>
-                        <input type="text" id="newUserAddress" placeholder="0x...">
-                    </div>
-                    <button class="btn" id="registrarUsuarioBtn">Registrar</button>
-                </div>
-                <div>
-                    <h3>Actualizar nivel</h3>
-                    <div class="form-group">
-                        <label>Usuario:</label>
-                        <input type="text" id="updateUserAddress" placeholder="0x...">
-                    </div>
-                    <div class="form-group">
-                        <label>Nuevo nivel:</label>
-                        <input type="number" id="newNivel" min="2">
-                    </div>
-                    <button class="btn" id="actualizarNivelBtn">Actualizar</button>
-                </div>
-                <div>
-                    <h3>Registrar operación (abonar)</h3>
-                    <div class="form-group">
-                        <label>Usuario:</label>
-                        <input type="text" id="operacionUserAddress" placeholder="0x...">
-                    </div>
-                    <div class="form-group">
-                        <label>Monto (USDT):</label>
-                        <input type="number" id="operacionMonto" step="0.01">
-                    </div>
-                    <button class="btn" id="registrarOperacionBtn">Registrar</button>
-                </div>
-                <div>
-                    <h3>Solicitudes de cupos</h3>
-                    <button class="btn btn-secondary" id="verSolicitudesBtn">Cargar últimas 10</button>
-                    <div id="solicitudesList" style="margin-top:15px;"></div>
-                </div>
-                <div>
-                    <h3>Aprobar/Rechazar solicitud</h3>
-                    <div class="form-group">
-                        <label>ID solicitud:</label>
-                        <input type="number" id="solicitudId">
-                    </div>
-                    <div class="form-group">
-                        <label>Cantidad a otorgar (si aprueba):</label>
-                        <input type="number" id="cantidadAprobar" min="1" max="2" value="1">
-                    </div>
-                    <button class="btn btn-secondary" id="aprobarSolicitudBtn">✅ Aprobar</button>
-                    <button class="btn btn-danger" id="rechazarSolicitudBtn">❌ Rechazar</button>
-                </div>
-                <div>
-                    <h3>Cambiar cartera empresa</h3>
-                    <div class="form-group">
-                        <label>Nueva dirección:</label>
-                        <input type="text" id="nuevaCartera" placeholder="0x...">
-                    </div>
-                    <button class="btn btn-warning" id="actualizarCarteraBtn">Actualizar</button>
-                </div>
-            </div>
+            <button class="btn" id="connectBtn" style="margin-top: 20px;">
+                <i class="fas fa-plug"></i> Conectar Wallet
+            </button>
+            <div id="walletSelector" class="hidden" style="margin-top: 15px;"></div>
         </div>
 
         <!-- Mensajes dinámicos -->
-        <div id="messageBox" class="info-box hidden"></div>
+        <div id="messageBox" class="message hidden"></div>
+
+        <!-- Cargando -->
+        <div id="loading" class="loading hidden">
+            <i class="fas fa-circle-notch fa-spin"></i>
+            <p>Cargando datos...</p>
+        </div>
+
+        <!-- Datos del usuario (visible solo si está registrado) -->
+        <div id="userSection" class="hidden">
+            <div class="grid">
+                <div class="card">
+                    <h2><i class="fas fa-user"></i> Mi perfil</h2>
+                    <div class="stats">
+                        <div class="stat-item">
+                            <div class="label">Nivel</div>
+                            <div class="value" id="userNivel">-</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="label">Directos</div>
+                            <div class="value" id="userDirectos">-</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="label">Red total</div>
+                            <div class="value" id="userRedTotal">-</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="label">Días restantes</div>
+                            <div class="value" id="userDias">-</div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 20px;">
+                        <p><strong>Saldo pendiente:</strong> <span id="userSaldo">0</span> USDT</p>
+                        <p><strong>Total ganado:</strong> <span id="userGanado">0</span> USDT</p>
+                        <p><strong>Total retirado:</strong> <span id="userRetirado">0</span> USDT</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2><i class="fas fa-chart-line"></i> Mi red</h2>
+                    <div class="stats">
+                        <div class="stat-item">
+                            <div class="label">Nivel 1</div>
+                            <div class="value" id="redNivel1">0</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="label">Nivel 2</div>
+                            <div class="value" id="redNivel2">0</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="label">Nivel 3</div>
+                            <div class="value" id="redNivel3">0</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="label">Nivel 4</div>
+                            <div class="value" id="redNivel4">0</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="label">Nivel 5</div>
+                            <div class="value" id="redNivel5">0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Acciones de usuario -->
+            <div class="grid">
+                <div class="card">
+                    <h2><i class="fas fa-user-plus"></i> Registrarme</h2>
+                    <p>Si aún no estás registrado, ingresa tu patrocinador.</p>
+                    <div class="form-group">
+                        <label>Dirección del patrocinador</label>
+                        <input type="text" id="patrocinadorInput" placeholder="0x...">
+                    </div>
+                    <button class="btn btn-success" id="registrarmeBtn">
+                        <i class="fas fa-check-circle"></i> Registrarme (10 USDT)
+                    </button>
+                </div>
+
+                <div class="card">
+                    <h2><i class="fas fa-sync-alt"></i> Renovar suscripción</h2>
+                    <p>Paga otros 10 USDT para extender tu membresía.</p>
+                    <button class="btn btn-warning" id="renovarBtn">
+                        <i class="fas fa-redo-alt"></i> Renovar (10 USDT)
+                    </button>
+                </div>
+
+                <div class="card">
+                    <h2><i class="fas fa-money-bill-wave"></i> Retirar ganancias</h2>
+                    <p>Mínimo 10 USDT, máximo 1000 USDT por transacción.</p>
+                    <button class="btn btn-success" id="retirarBtn">
+                        <i class="fas fa-hand-holding-usd"></i> Retirar
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Panel de administración (solo visible para owner) -->
+        <div id="adminSection" class="hidden">
+            <div class="card admin-section">
+                <h2><i class="fas fa-tools"></i> Administración</h2>
+                <div class="grid">
+                    <div>
+                        <h3>Registrar usuario</h3>
+                        <div class="form-group">
+                            <input type="text" id="newUserAddress" placeholder="Dirección">
+                        </div>
+                        <button class="btn" id="registrarUsuarioBtn">Registrar</button>
+                    </div>
+                    <div>
+                        <h3>Actualizar nivel</h3>
+                        <div class="form-group">
+                            <input type="text" id="updateUserAddress" placeholder="Usuario">
+                        </div>
+                        <div class="form-group">
+                            <input type="number" id="newNivel" placeholder="Nuevo nivel" min="2">
+                        </div>
+                        <button class="btn" id="actualizarNivelBtn">Actualizar</button>
+                    </div>
+                    <div>
+                        <h3>Otorgar cupos extra</h3>
+                        <div class="form-group">
+                            <input type="text" id="cuposUser" placeholder="Líder">
+                        </div>
+                        <div class="form-group">
+                            <input type="number" id="cuposCantidad" placeholder="Cantidad" min="1">
+                        </div>
+                        <button class="btn" id="otorgarCuposBtn">Otorgar</button>
+                    </div>
+                    <div>
+                        <h3>Premiar líder (pool)</h3>
+                        <div class="form-group">
+                            <input type="text" id="premiarUser" placeholder="Líder">
+                        </div>
+                        <div class="form-group">
+                            <input type="number" id="premiarMonto" placeholder="Monto USDT" step="0.01">
+                        </div>
+                        <button class="btn" id="premiarBtn">Premiar</button>
+                    </div>
+                    <div>
+                        <h3>Fondo solidaridad</h3>
+                        <div class="form-group">
+                            <input type="text" id="solidaridadUser" placeholder="Beneficiario">
+                        </div>
+                        <div class="form-group">
+                            <input type="number" id="solidaridadMonto" placeholder="Monto USDT">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" id="solidaridadMotivo" placeholder="Motivo">
+                        </div>
+                        <button class="btn" id="solidaridadBtn">Usar fondo</button>
+                    </div>
+                    <div>
+                        <h3>Cambiar parámetros</h3>
+                        <div class="form-group">
+                            <input type="number" id="nuevoPrecio" placeholder="Nuevo precio" step="0.01">
+                        </div>
+                        <button class="btn" id="actualizarPrecioBtn">Actualizar precio</button>
+                    </div>
+                    <div>
+                        <h3>Modo pausa</h3>
+                        <button class="btn btn-warning" id="togglePausaBtn">Toggle pausa</button>
+                    </div>
+                    <div>
+                        <h3>Bonos recurrentes</h3>
+                        <div class="form-group">
+                            <input type="text" id="bonosLista" placeholder="Direcciones separadas por coma">
+                        </div>
+                        <div class="form-group">
+                            <input type="number" id="bonosMonto" placeholder="Monto por persona" step="0.01">
+                        </div>
+                        <button class="btn" id="pagarBonosBtn">Pagar bonos</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>Milimar V5 - Contrato: <span id="contractAddressDisplay">0x35425E6416f799C30938cBc159523B43C1c358B2</span></p>
+        </div>
     </div>
 
-    <!-- Ethers.js -->
-    <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
-
     <script>
-        // CONFIGURACIÓN
-        const CONTRACT_ADDRESS = "0xA71B4CEEDBFEAf1c6F741De0E09aB712Fe169057"; // Tu contrato en mainnet
+        // Configuración
+        const CONTRACT_ADDRESS = "0x35425E6416f799C30938cBc159523B43C1c358B2";
         const BSC_MAINNET_CHAIN_ID = 56;
-        const BSC_MAINNET_NAME = "BNB Smart Chain Mainnet";
+        const USDT_DECIMALS = 18;
 
-        // ABI (solo las funciones que usamos)
+        // ABI mínimo necesario
         const CONTRACT_ABI = [
-            "function nombreProyecto() view returns (string)",
-            "function versionContrato() view returns (uint256)",
             "function tokenUSDT() view returns (address)",
-            "function carteraEmpresa() view returns (address)",
-            "function saldoMinimoRetiro() view returns (uint256)",
-            "function porcentajeComisionEmpresa() view returns (uint256)",
-            "function usuariosRegistrados(address) view returns (address direccionUsuario, uint256 fechaAfiliacion, uint256 nivelActual, uint256 cuposAsignados, uint256 cuposUsados, uint256 gananciasAcumuladas, bool estadoActivo)",
-            "function solicitudesCupos(uint256) view returns (uint256 idSolicitud, address usuarioSolicitante, uint256 cantidadSolicitada, uint256 fechaSolicitud, bool solicitudAprobada)",
-            "function contadorSolicitudes() view returns (uint256)",
-            "function registrarNuevoUsuario(address) external",
-            "function actualizarNivelUsuario(address, uint256) external",
-            "function enviarSolicitudCuposExtra(uint256) external",
-            "function aprobarSolicitudCupos(uint256, bool, uint256) external",
+            "function billeteraEmpresa() view returns (address)",
+            "function precioSuscripcion() view returns (uint256)",
+            "function minRetiro() view returns (uint256)",
+            "function maxRetiroTx() view returns (uint256)",
+            "function minDirectosRetiro() view returns (uint256)",
+            "function duracionMes() view returns (uint256)",
+            "function periodoGracia() view returns (uint256)",
+            "function maxFrontalesInicial() view returns (uint256)",
+            "function poolLiderazgo() view returns (uint256)",
+            "function fondoSolidaridad() view returns (uint256)",
+            "function porcentajes(uint256) view returns (uint256)",
+            "function bonoNivel3() view returns (uint256)",
+            "function bonosRecurrentesActivados() view returns (bool)",
+            "function emergencyMode() view returns (bool)",
+            "function pausado() view returns (bool)",
+            "function usuarios(address) view returns (bool registrado, address patrocinador, uint256 saldoPendiente, uint256 totalGanado, uint256 totalRetirado, uint256 contadorDirectos, uint256 redTotal, uint256[5] memory conteoNiveles, uint256 cuposExtraAdmin, uint256 vencimiento, uint256[5] memory gananciasNiveles, bool bonoN3Reclamado, uint256 fechaRegistro, uint256 ultimaActividad, bool activo)",
+            "function listaUsuarios(uint256) view returns (address)",
+            "function totalUsuarios() view returns (uint256)",
+            "function owner() view returns (address)",
+            "function unirse(address) external",
+            "function renovarSuscripcion() external",
             "function retirarGanancias() external",
-            "function registrarOperacion(address, uint256) external",
-            "function actualizarCarteraEmpresa(address) external",
-            "function owner() view returns (address)"
+            "function emergencyWithdraw() external",
+            "function actualizarPrecio(uint256) external",
+            "function actualizarMinRetiro(uint256) external",
+            "function actualizarMaxRetiro(uint256) external",
+            "function actualizarMinDirectos(uint256) external",
+            "function actualizarBonoNivel3(uint256) external",
+            "function setBonosRecurrentesActivados(bool) external",
+            "function otorgarCuposExtra(address,uint256) external",
+            "function togglePausa() external",
+            "function premiarLider(address,uint256) external",
+            "function usarFondoSolidaridad(address,uint256,string memory) external",
+            "function cambiarBilleteraEmpresa(address) external",
+            "function reemplazarUsuario(address,address) external",
+            "function recuperarTokenExterno(address,uint256) external",
+            "function activateEmergencyMode() external",
+            "function pagarBonosRecurrentes(address[],uint256) external",
+            "function consultarEstado(address) view returns (tuple(uint256 saldoPendiente, uint256 totalGanado, uint256 totalRetirado, uint256 directos, uint256 redTotal, uint256 diasRestantes, bool activo))",
+            "function verDetalleRed(address) view returns (uint256[5] memory)",
+            "function verDetalleGanancias(address) view returns (uint256[5] memory)"
         ];
-
-        // Variables globales
-        let provider, signer, contract, userAddress, ownerAddress;
-        let selectedWallet = null;
 
         // Elementos DOM
         const connectBtn = document.getElementById('connectBtn');
         const walletSelector = document.getElementById('walletSelector');
-        const networkInfo = document.getElementById('networkInfo');
-        const accountInfo = document.getElementById('accountInfo');
-        const userDataCard = document.getElementById('userDataCard');
-        const userActionsCard = document.getElementById('userActionsCard');
-        const adminCard = document.getElementById('adminCard');
+        const connectionStatus = document.getElementById('connectionStatus');
+        const accountDisplay = document.getElementById('accountDisplay');
         const messageBox = document.getElementById('messageBox');
+        const loading = document.getElementById('loading');
+        const userSection = document.getElementById('userSection');
+        const adminSection = document.getElementById('adminSection');
+        const contractAddressDisplay = document.getElementById('contractAddressDisplay');
+
+        // Variables globales
+        let provider, signer, contract, userAddress, ownerAddress;
 
         // Mostrar mensaje
         function showMessage(text, type = 'info') {
-            messageBox.classList.remove('hidden', 'info-box', 'error-box', 'success-box');
-            messageBox.textContent = text;
-            if (type === 'error') {
-                messageBox.classList.add('error-box');
-            } else if (type === 'success') {
-                messageBox.classList.add('success-box');
-            } else {
-                messageBox.classList.add('info-box');
-            }
+            messageBox.classList.remove('hidden', 'error', 'success');
+            messageBox.innerHTML = `<i class="fas ${type === 'error' ? 'fa-exclamation-circle' : type === 'success' ? 'fa-check-circle' : 'fa-info-circle'}"></i> ${text}`;
+            messageBox.classList.add(type);
         }
 
-        // Formatear USDT (18 decimales)
+        // Formatear USDT
         function formatUSDT(amount) {
-            return ethers.utils.formatUnits(amount, 18);
+            return ethers.utils.formatUnits(amount, USDT_DECIMALS);
         }
+
         function parseUSDT(amount) {
-            return ethers.utils.parseUnits(amount.toString(), 18);
+            return ethers.utils.parseUnits(amount.toString(), USDT_DECIMALS);
         }
 
         // Detectar wallets instaladas
         async function detectWallets() {
             const wallets = [];
             if (window.ethereum && window.ethereum.isMetaMask) {
-                wallets.push({ name: 'MetaMask', provider: window.ethereum, icon: '🦊' });
+                wallets.push({ name: 'MetaMask', provider: window.ethereum, icon: 'fab fa-metamask' });
             }
             if (window.BinanceChain) {
-                wallets.push({ name: 'Binance Wallet', provider: window.BinanceChain, icon: '🔶' });
+                wallets.push({ name: 'Binance Wallet', provider: window.BinanceChain, icon: 'fas fa-dog' }); // Icono temporal
             }
             if (window.okxwallet) {
-                wallets.push({ name: 'OKX Wallet', provider: window.okxwallet, icon: '⭕' });
+                wallets.push({ name: 'OKX Wallet', provider: window.okxwallet, icon: 'fas fa-bolt' });
             }
             return wallets;
         }
@@ -425,54 +587,52 @@
             walletSelector.innerHTML = '';
             wallets.forEach(w => {
                 const btn = document.createElement('button');
-                btn.className = 'wallet-btn';
-                btn.innerHTML = `${w.icon} ${w.name}`;
+                btn.className = 'btn btn-outline';
+                btn.style.margin = '5px';
+                btn.innerHTML = `<i class="${w.icon}"></i> ${w.name}`;
                 btn.onclick = () => connectWithWallet(w.provider);
                 walletSelector.appendChild(btn);
             });
             walletSelector.classList.remove('hidden');
         }
 
-        // Conectar con provider seleccionado
-        async function connectWithWallet(provider) {
+        // Conectar con wallet seleccionada
+        async function connectWithWallet(walletProvider) {
             try {
-                const ethersProvider = new ethers.providers.Web3Provider(provider);
+                loading.classList.remove('hidden');
+                walletSelector.classList.add('hidden');
+
+                const ethersProvider = new ethers.providers.Web3Provider(walletProvider);
                 await ethersProvider.send("eth_requestAccounts", []);
                 const signer = ethersProvider.getSigner();
                 const address = await signer.getAddress();
                 const network = await ethersProvider.getNetwork();
 
-                // Verificar red
                 if (network.chainId !== BSC_MAINNET_CHAIN_ID) {
-                    showMessage(`⚠️ Cambia a ${BSC_MAINNET_NAME} en tu wallet.`, 'error');
+                    showMessage('Por favor cambia a BNB Smart Chain Mainnet en tu wallet.', 'error');
+                    loading.classList.add('hidden');
                     return;
                 }
 
                 // Guardar todo
-                window.provider = ethersProvider;
-                window.signer = signer;
-                window.userAddress = address;
                 provider = ethersProvider;
                 signer = signer;
                 userAddress = address;
 
-                accountInfo.textContent = `Cuenta: ${userAddress}`;
-                networkInfo.textContent = `Red: ${BSC_MAINNET_NAME} (chainId: ${network.chainId})`;
+                connectionStatus.innerHTML = 'Conectado <i class="fas fa-check-circle" style="color: #48bb78;"></i>';
+                accountDisplay.innerHTML = `${userAddress.slice(0,6)}...${userAddress.slice(-4)}`;
 
                 contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
-
-                // Obtener owner
                 ownerAddress = await contract.owner();
 
-                // Cargar datos del usuario
+                // Cargar datos
                 await loadUserData();
 
-                // Ocultar selector
-                walletSelector.classList.add('hidden');
-                showMessage('Conectado exitosamente.', 'success');
+                loading.classList.add('hidden');
             } catch (error) {
                 console.error(error);
                 showMessage('Error al conectar: ' + error.message, 'error');
+                loading.classList.add('hidden');
             }
         }
 
@@ -480,29 +640,42 @@
         async function loadUserData() {
             if (!contract || !userAddress) return;
             try {
-                const userData = await contract.usuariosRegistrados(userAddress);
-                // Si la dirección no es cero, está registrado
-                if (userData.direccionUsuario !== ethers.constants.AddressZero) {
-                    document.getElementById('userAddressDisplay').textContent = userData.direccionUsuario;
-                    document.getElementById('userNivel').textContent = userData.nivelActual.toString();
-                    document.getElementById('userCuposAsignados').textContent = userData.cuposAsignados.toString();
-                    document.getElementById('userCuposUsados').textContent = userData.cuposUsados.toString();
-                    document.getElementById('userGanancias').textContent = formatUSDT(userData.gananciasAcumuladas);
-                    document.getElementById('userActivo').textContent = userData.estadoActivo ? 'Sí' : 'No';
+                // Verificar si el usuario está registrado
+                const user = await contract.usuarios(userAddress);
+                if (user.registrado) {
+                    // Mostrar sección de usuario
+                    userSection.classList.remove('hidden');
 
-                    userDataCard.classList.remove('hidden');
-                    userActionsCard.classList.remove('hidden');
-                } else {
-                    userDataCard.classList.add('hidden');
-                    userActionsCard.classList.add('hidden');
-                    showMessage('Tu dirección no está registrada en el contrato. Contacta al administrador.', 'info');
-                }
+                    // Consultar estado usando la función auxiliar
+                    const estado = await contract.consultarEstado(userAddress);
+                    document.getElementById('userSaldo').textContent = formatUSDT(estado.saldoPendiente);
+                    document.getElementById('userGanado').textContent = formatUSDT(estado.totalGanado);
+                    document.getElementById('userRetirado').textContent = formatUSDT(estado.totalRetirado);
+                    document.getElementById('userDirectos').textContent = estado.directos.toString();
+                    document.getElementById('userRedTotal').textContent = estado.redTotal.toString();
+                    document.getElementById('userDias').textContent = estado.diasRestantes.toString();
+                    document.getElementById('userNivel').textContent = '?'; // El nivel no está en el estado, lo sacamos de usuarios
+                    // Podemos obtener más datos si es necesario
 
-                // Mostrar panel de admin si es owner
-                if (userAddress.toLowerCase() === ownerAddress.toLowerCase()) {
-                    adminCard.classList.remove('hidden');
+                    // Detalle de red
+                    const red = await contract.verDetalleRed(userAddress);
+                    document.getElementById('redNivel1').textContent = red[0].toString();
+                    document.getElementById('redNivel2').textContent = red[1].toString();
+                    document.getElementById('redNivel3').textContent = red[2].toString();
+                    document.getElementById('redNivel4').textContent = red[3].toString();
+                    document.getElementById('redNivel5').textContent = red[4].toString();
+
+                    // Si es owner, mostrar panel admin
+                    if (userAddress.toLowerCase() === ownerAddress.toLowerCase()) {
+                        adminSection.classList.remove('hidden');
+                    } else {
+                        adminSection.classList.add('hidden');
+                    }
                 } else {
-                    adminCard.classList.add('hidden');
+                    // Usuario no registrado, ocultar secciones
+                    userSection.classList.add('hidden');
+                    adminSection.classList.add('hidden');
+                    showMessage('Tu dirección no está registrada. Puedes registrarte con un patrocinador.', 'info');
                 }
             } catch (error) {
                 console.error(error);
@@ -513,15 +686,31 @@
         // Evento conectar
         connectBtn.addEventListener('click', showWalletSelector);
 
-        // Acciones de usuario
-        document.getElementById('solicitarCuposBtn').addEventListener('click', async () => {
+        // ---- Acciones de usuario ----
+        document.getElementById('registrarmeBtn').addEventListener('click', async () => {
             try {
-                const cantidad = parseInt(document.getElementById('cuposCantidad').value);
-                if (cantidad !== 1 && cantidad !== 2) throw new Error('Cantidad debe ser 1 o 2');
-                const tx = await contract.enviarSolicitudCuposExtra(cantidad);
-                showMessage('Enviando solicitud...', 'info');
+                const patrocinador = document.getElementById('patrocinadorInput').value;
+                if (!ethers.utils.isAddress(patrocinador)) {
+                    showMessage('Dirección de patrocinador inválida', 'error');
+                    return;
+                }
+                const tx = await contract.unirse(patrocinador);
+                showMessage('Registrando... Confirma la transacción.', 'info');
                 await tx.wait();
-                showMessage('Solicitud enviada con éxito.', 'success');
+                showMessage('Registro exitoso!', 'success');
+                await loadUserData();
+            } catch (error) {
+                showMessage('Error: ' + error.message, 'error');
+            }
+        });
+
+        document.getElementById('renovarBtn').addEventListener('click', async () => {
+            try {
+                const tx = await contract.renovarSuscripcion();
+                showMessage('Renovando...', 'info');
+                await tx.wait();
+                showMessage('Renovación exitosa!', 'success');
+                await loadUserData();
             } catch (error) {
                 showMessage('Error: ' + error.message, 'error');
             }
@@ -532,14 +721,14 @@
                 const tx = await contract.retirarGanancias();
                 showMessage('Procesando retiro...', 'info');
                 await tx.wait();
-                showMessage('Retiro exitoso.', 'success');
+                showMessage('Retiro exitoso!', 'success');
                 await loadUserData();
             } catch (error) {
                 showMessage('Error: ' + error.message, 'error');
             }
         });
 
-        // Acciones de admin
+        // ---- Acciones de administración ----
         document.getElementById('registrarUsuarioBtn').addEventListener('click', async () => {
             try {
                 const addr = document.getElementById('newUserAddress').value;
@@ -548,7 +737,6 @@
                 showMessage('Registrando...', 'info');
                 await tx.wait();
                 showMessage('Usuario registrado.', 'success');
-                document.getElementById('newUserAddress').value = '';
             } catch (error) {
                 showMessage('Error: ' + error.message, 'error');
             }
@@ -568,132 +756,93 @@
             }
         });
 
-        document.getElementById('registrarOperacionBtn').addEventListener('click', async () => {
+        document.getElementById('otorgarCuposBtn').addEventListener('click', async () => {
             try {
-                const addr = document.getElementById('operacionUserAddress').value;
-                const monto = parseFloat(document.getElementById('operacionMonto').value);
-                if (!ethers.utils.isAddress(addr) || monto <= 0) throw new Error('Datos inválidos');
-                const montoWei = parseUSDT(monto);
-                const tx = await contract.registrarOperacion(addr, montoWei);
-                showMessage('Registrando operación...', 'info');
+                const lider = document.getElementById('cuposUser').value;
+                const cantidad = parseInt(document.getElementById('cuposCantidad').value);
+                if (!ethers.utils.isAddress(lider) || cantidad < 1) throw new Error('Datos inválidos');
+                const tx = await contract.otorgarCuposExtra(lider, cantidad);
+                showMessage('Otorgando cupos...', 'info');
                 await tx.wait();
-                showMessage('Operación registrada.', 'success');
+                showMessage('Cupos otorgados.', 'success');
             } catch (error) {
                 showMessage('Error: ' + error.message, 'error');
             }
         });
 
-        document.getElementById('verSolicitudesBtn').addEventListener('click', async () => {
+        document.getElementById('premiarBtn').addEventListener('click', async () => {
             try {
-                const total = await contract.contadorSolicitudes();
-                const lista = document.getElementById('solicitudesList');
-                lista.innerHTML = '';
-                for (let i = total; i > 0 && i > total - 10; i--) {
-                    const sol = await contract.solicitudesCupos(i);
-                    if (!sol.solicitudAprobada && sol.usuarioSolicitante !== ethers.constants.AddressZero) {
-                        const div = document.createElement('div');
-                        div.style.padding = '8px';
-                        div.style.borderBottom = '1px solid #ccc';
-                        div.innerHTML = `<strong>ID ${sol.idSolicitud}</strong>: ${sol.usuarioSolicitante} - Solicita ${sol.cantidadSolicitada} cupo(s) - ${new Date(sol.fechaSolicitud * 1000).toLocaleString()}`;
-                        lista.appendChild(div);
-                    }
-                }
-                if (lista.children.length === 0) {
-                    lista.innerHTML = '<p>No hay solicitudes pendientes.</p>';
-                }
-            } catch (error) {
-                showMessage('Error: ' + error.message, 'error');
-            }
-        });
-
-        document.getElementById('aprobarSolicitudBtn').addEventListener('click', async () => {
-            try {
-                const id = parseInt(document.getElementById('solicitudId').value);
-                const cantidad = parseInt(document.getElementById('cantidadAprobar').value);
-                if (id <= 0 || cantidad < 1 || cantidad > 2) throw new Error('ID o cantidad inválidos');
-                const tx = await contract.aprobarSolicitudCupos(id, true, cantidad);
-                showMessage('Aprobando...', 'info');
+                const lider = document.getElementById('premiarUser').value;
+                const monto = parseFloat(document.getElementById('premiarMonto').value);
+                if (!ethers.utils.isAddress(lider) || monto <= 0) throw new Error('Datos inválidos');
+                const tx = await contract.premiarLider(lider, parseUSDT(monto));
+                showMessage('Premiando...', 'info');
                 await tx.wait();
-                showMessage('Solicitud aprobada.', 'success');
+                showMessage('Premio otorgado.', 'success');
             } catch (error) {
                 showMessage('Error: ' + error.message, 'error');
             }
         });
 
-        document.getElementById('rechazarSolicitudBtn').addEventListener('click', async () => {
+        document.getElementById('solidaridadBtn').addEventListener('click', async () => {
             try {
-                const id = parseInt(document.getElementById('solicitudId').value);
-                if (id <= 0) throw new Error('ID inválido');
-                const tx = await contract.aprobarSolicitudCupos(id, false, 0);
-                showMessage('Rechazando...', 'info');
+                const beneficiario = document.getElementById('solidaridadUser').value;
+                const monto = parseFloat(document.getElementById('solidaridadMonto').value);
+                const motivo = document.getElementById('solidaridadMotivo').value;
+                if (!ethers.utils.isAddress(beneficiario) || monto <= 0 || motivo === '') throw new Error('Datos inválidos');
+                const tx = await contract.usarFondoSolidaridad(beneficiario, parseUSDT(monto), motivo);
+                showMessage('Usando fondo...', 'info');
                 await tx.wait();
-                showMessage('Solicitud rechazada.', 'success');
+                showMessage('Fondo usado.', 'success');
             } catch (error) {
                 showMessage('Error: ' + error.message, 'error');
             }
         });
 
-        document.getElementById('actualizarCarteraBtn').addEventListener('click', async () => {
+        document.getElementById('actualizarPrecioBtn').addEventListener('click', async () => {
             try {
-                const nueva = document.getElementById('nuevaCartera').value;
-                if (!ethers.utils.isAddress(nueva)) throw new Error('Dirección inválida');
-                const tx = await contract.actualizarCarteraEmpresa(nueva);
-                showMessage('Actualizando cartera...', 'info');
+                const nuevo = parseFloat(document.getElementById('nuevoPrecio').value);
+                if (nuevo <= 0) throw new Error('Precio inválido');
+                const tx = await contract.actualizarPrecio(parseUSDT(nuevo));
+                showMessage('Actualizando precio...', 'info');
                 await tx.wait();
-                showMessage('Cartera actualizada.', 'success');
+                showMessage('Precio actualizado.', 'success');
             } catch (error) {
                 showMessage('Error: ' + error.message, 'error');
             }
         });
 
-        // Escuchar cambios de cuenta/red en MetaMask
-        if (window.ethereum) {
-            window.ethereum.on('accountsChanged', (accounts) => {
-                if (accounts.length === 0) {
-                    // Desconectado
-                    accountInfo.textContent = 'Cuenta: -';
-                    userDataCard.classList.add('hidden');
-                    userActionsCard.classList.add('hidden');
-                    adminCard.classList.add('hidden');
-                    networkInfo.textContent = 'No conectado';
-                } else {
-                    userAddress = accounts[0];
-                    accountInfo.textContent = `Cuenta: ${userAddress}`;
-                    if (contract) loadUserData();
+        document.getElementById('togglePausaBtn').addEventListener('click', async () => {
+            try {
+                const tx = await contract.togglePausa();
+                showMessage('Cambiando estado de pausa...', 'info');
+                await tx.wait();
+                showMessage('Pausa toggled.', 'success');
+            } catch (error) {
+                showMessage('Error: ' + error.message, 'error');
+            }
+        });
+
+        document.getElementById('pagarBonosBtn').addEventListener('click', async () => {
+            try {
+                const listaStr = document.getElementById('bonosLista').value;
+                const monto = parseFloat(document.getElementById('bonosMonto').value);
+                const direcciones = listaStr.split(',').map(s => s.trim()).filter(s => s !== '');
+                for (let addr of direcciones) {
+                    if (!ethers.utils.isAddress(addr)) throw new Error('Dirección inválida: ' + addr);
                 }
-            });
-            window.ethereum.on('chainChanged', () => window.location.reload());
-        }
-        if (window.BinanceChain) {
-            window.BinanceChain.on('accountsChanged', (accounts) => {
-                if (accounts.length === 0) {
-                    accountInfo.textContent = 'Cuenta: -';
-                    userDataCard.classList.add('hidden');
-                    userActionsCard.classList.add('hidden');
-                    adminCard.classList.add('hidden');
-                    networkInfo.textContent = 'No conectado';
-                } else {
-                    userAddress = accounts[0];
-                    accountInfo.textContent = `Cuenta: ${userAddress}`;
-                    if (contract) loadUserData();
-                }
-            });
-        }
-        if (window.okxwallet) {
-            window.okxwallet.on('accountsChanged', (accounts) => {
-                if (accounts.length === 0) {
-                    accountInfo.textContent = 'Cuenta: -';
-                    userDataCard.classList.add('hidden');
-                    userActionsCard.classList.add('hidden');
-                    adminCard.classList.add('hidden');
-                    networkInfo.textContent = 'No conectado';
-                } else {
-                    userAddress = accounts[0];
-                    accountInfo.textContent = `Cuenta: ${userAddress}`;
-                    if (contract) loadUserData();
-                }
-            });
-        }
+                if (direcciones.length === 0 || monto <= 0) throw new Error('Datos inválidos');
+                const tx = await contract.pagarBonosRecurrentes(direcciones, parseUSDT(monto));
+                showMessage('Pagando bonos...', 'info');
+                await tx.wait();
+                showMessage('Bonos pagados.', 'success');
+            } catch (error) {
+                showMessage('Error: ' + error.message, 'error');
+            }
+        });
+
+        // Mostrar dirección del contrato
+        contractAddressDisplay.textContent = CONTRACT_ADDRESS;
     </script>
 </body>
-</html>
+    </html>
