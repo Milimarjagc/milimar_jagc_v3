@@ -3,143 +3,435 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Milimar_jagc.v5 - Milimar_jagc</title>
-    <meta name="description" content="Plataforma oficial de Milimar_jagc con contrato inteligente en BNB Chain">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-    <!-- Estilos -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/ethers@6.12.1/dist/ethers.umd.min.js"></script>
-    <style type="text/tailwindcss">
-        @layer utilities {
-            .bg-forest {
-                background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
-            }
-            .card-soft {
-                background: rgba(30, 41, 59, 0.8);
-                border: 1px solid rgba(74, 222, 128, 0.2);
-                border-radius: 0.75rem;
-            }
-            .text-soft-green {
-                color: #6ee7b7;
-            }
-            .btn-soft {
-                background: rgba(74, 222, 128, 0.15);
-                border: 1px solid rgba(74, 222, 128, 0.3);
-                color: #e2e8f0;
-                transition: all 0.3s ease;
-            }
-            .btn-soft:hover {
-                background: rgba(74, 222, 128, 0.25);
-                box-shadow: 0 0 6px rgba(74, 222, 128, 0.15);
-            }
+    <title>Milimar - Interfaz del Contrato</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        input, select {
+            padding: 8px;
+            margin: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 200px;
+        }
+        .error {
+            color: red;
+        }
+        .success {
+            color: green;
+        }
+        .info {
+            background-color: #e7f3fe;
+            border-left: 6px solid #2196F3;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        .admin-section {
+            border-top: 2px solid #ff9800;
+            margin-top: 20px;
+            padding-top: 20px;
+        }
+        .hidden {
+            display: none;
         }
     </style>
 </head>
-<body class="bg-forest text-gray-200 min-h-screen flex flex-col">
-    <!-- Barra de Navegación -->
-    <nav class="bg-black/20 backdrop-blur-sm border-b border-emerald-400/15 sticky top-0 z-50">
-        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-            <div class="flex items-center space-x-2">
-                <i class="fa fa-leaf text-soft-green text-xl"></i>
-                <h1 class="text-xl font-bold text-soft-green">Milimar_jagc.v5</h1>
-            </div>
-            <div class="flex items-center space-x-4">
-                <button id="connectWallet" class="btn-soft px-4 py-2 rounded-lg flex items-center gap-2">
-                    <i class="fa fa-plug text-soft-green"></i>
-                    <span>Conectar Cartera</span>
-                </button>
-                <button id="notifyBtn" class="btn-soft px-4 py-2 rounded-lg flex items-center gap-2">
-                    <i class="fa fa-bell text-soft-green"></i>
-                    <span>Notificaciones</span>
-                </button>
-            </div>
+<body>
+    <h1>Milimar - Interfaz del Contrato Inteligente</h1>
+    <div class="container">
+        <button id="connectBtn">Conectar MetaMask</button>
+        <p id="accountInfo">Cuenta: No conectada</p>
+        <p id="networkInfo">Red: No conectada</p>
+    </div>
+
+    <div id="userInfo" class="container hidden">
+        <h2>Datos del Usuario</h2>
+        <p><strong>Dirección:</strong> <span id="userAddress"></span></p>
+        <p><strong>Nivel:</strong> <span id="userNivel"></span></p>
+        <p><strong>Cupos asignados:</strong> <span id="userCuposAsignados"></span></p>
+        <p><strong>Cupos usados:</strong> <span id="userCuposUsados"></span></p>
+        <p><strong>Ganancias acumuladas (USDT):</strong> <span id="userGanancias"></span></p>
+        <p><strong>Estado activo:</strong> <span id="userActivo"></span></p>
+    </div>
+
+    <div id="userActions" class="container hidden">
+        <h2>Acciones de Usuario</h2>
+        <div>
+            <label for="cuposCantidad">Cantidad de cupos a solicitar (1 o 2):</label>
+            <input type="number" id="cuposCantidad" min="1" max="2" value="1">
+            <button id="solicitarCuposBtn">Solicitar cupos extra</button>
         </div>
-    </nav>
-
-    <!-- Contenido Principal -->
-    <main class="flex-grow container mx-auto px-4 py-8">
-        <!-- Banner Principal -->
-        <section class="card-soft p-6 mb-8 text-center">
-            <h2 class="text-2xl md:text-3xl font-bold text-soft-green mb-3">Milimar_jagc Oficial</h2>
-            <p class="text-gray-300 max-w-2xl mx-auto mb-5">
-                Contrato Inteligente Milimar_jagc.v5 en BNB Chain - Plataforma de operaciones y arbitraje con diseño suave y funcional.
-            </p>
-            <a href="https://bscscan.com/address/0xA71B4CEEDBFEAf1c6F741De0E09aB712Fe169057" target="_blank" class="inline-block btn-soft px-5 py-2 rounded-lg">
-                <i class="fa fa-external-link text-soft-green"></i>
-                <span>Ver Contrato en BscScan</span>
-            </a>
-        </section>
-
-        <!-- Panel de Usuario -->
-        <section id="userPanel" class="card-soft p-6 mb-8 hidden">
-            <h3 class="text-xl font-bold text-soft-green mb-4">Mi Panel de Operaciones</h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="border border-emerald-400/20 rounded-lg p-4">
-                    <h4 class="font-semibold text-soft-green mb-2">Datos de mi Cuenta</h4>
-                    <p><strong>Dirección:</strong> <span id="userAddress" class="text-soft-green break-all"></span></p>
-                    <p><strong>Nivel:</strong> <span id="userLevel"></span></p>
-                    <p><strong>Cupos Asignados:</strong> <span id="userCupo"></span> USDT</p>
-                </div>
-                <div class="border border-emerald-400/20 rounded-lg p-4">
-                    <h4 class="font-semibold text-soft-green mb-2">Solicitar Cupo Extra</h4>
-                    <div class="mb-3">
-                        <input type="number" id="extraAmount" placeholder="Cantidad USDT" class="w-full bg-black/20 border border-emerald-400/20 rounded-lg p-2 text-gray-200">
-                    </div>
-                    <button id="requestExtraBtn" class="btn-soft w-full py-2 rounded-lg">
-                        <i class="fa fa-paper-plane text-soft-green"></i>
-                        <span>Solicitar Cupo</span>
-                    </button>
-                </div>
-            </div>
-        </section>
-
-        <!-- Panel de Administración -->
-        <section id="adminPanel" class="card-soft p-6 mb-8 hidden">
-            <h3 class="text-xl font-bold text-soft-green mb-4">Panel de Administración</h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                    <h4 class="font-semibold text-soft-green mb-2">Gestionar Solicitudes</h4>
-                    <div id="requestsList" class="space-y-3"></div>
-                </div>
-                <div>
-                    <h4 class="font-semibold text-soft-green mb-2">Control del Contrato</h4>
-                    <p><strong>Saldo Contrato:</strong> <span id="contractBalance"></span> USDT</p>
-                    <button id="withdrawBtn" class="btn-soft w-full py-2 rounded-lg mt-3">
-                        <i class="fa fa-money text-soft-green"></i>
-                        <span>Retirar Ganancias</span>
-                    </button>
-                </div>
-            </div>
-        </section>
-
-        <!-- Sección Bot de Arbitraje -->
-        <section class="card-soft p-6">
-            <h3 class="text-xl font-bold text-soft-green mb-4">Próximamente: Bot de Arbitraje Milimar_jagc</h3>
-            <p class="text-gray-300 mb-4">
-                Automatización de operaciones de arbitraje en BNB Chain para optimizar tus ganancias con el contrato v5.
-            </p>
-            <button id="botNotifyBtn" class="btn-soft px-5 py-2 rounded-lg">
-                <i class="fa fa-bell text-soft-green"></i>
-                <span>Recibir Alertas del Bot</span>
-            </button>
-        </section>
-    </main>
-
-    <!-- Pie de Página -->
-    <footer class="bg-black/30 border-t border-emerald-400/15 py-6">
-        <div class="container mx-auto px-4 text-center">
-            <p class="text-gray-400">Milimar_jagc - Contrato Inteligente v5 © 2026 Todos los derechos reservados</p>
-            <p class="text-gray-500 mt-2">
-                <a href="https://bscscan.com/address/0xA71B4CEEDBFEAf1c6F741De0E09aB712Fe169057" target="_blank" class="text-soft-green hover:underline">Ver en BscScan</a>
-            </p>
+        <div>
+            <button id="retirarBtn">Retirar ganancias</button>
         </div>
-    </footer>
+    </div>
 
-    <!-- Lógica Completa -->
+    <div id="adminSection" class="container hidden admin-section">
+        <h2>Panel de Administrador (Owner)</h2>
+        <div>
+            <h3>Registrar nuevo usuario</h3>
+            <input type="text" id="newUserAddress" placeholder="Dirección del usuario">
+            <button id="registrarUsuarioBtn">Registrar</button>
+        </div>
+        <div>
+            <h3>Actualizar nivel de usuario</h3>
+            <input type="text" id="updateUserAddress" placeholder="Dirección del usuario">
+            <input type="number" id="newNivel" placeholder="Nuevo nivel" min="2">
+            <button id="actualizarNivelBtn">Actualizar nivel</button>
+        </div>
+        <div>
+            <h3>Registrar operación (abonar ganancias)</h3>
+            <input type="text" id="operacionUserAddress" placeholder="Dirección del usuario">
+            <input type="number" id="operacionMonto" placeholder="Monto en USDT">
+            <button id="registrarOperacionBtn">Registrar operación</button>
+        </div>
+        <div>
+            <h3>Ver solicitudes de cupos (pendientes)</h3>
+            <button id="verSolicitudesBtn">Cargar solicitudes</button>
+            <div id="solicitudesList"></div>
+        </div>
+        <div>
+            <h3>Aprobar solicitud</h3>
+            <input type="number" id="solicitudId" placeholder="ID de solicitud">
+            <input type="number" id="cantidadAprobar" placeholder="Cantidad a otorgar (1-2)">
+            <button id="aprobarSolicitudBtn">Aprobar</button>
+            <button id="rechazarSolicitudBtn">Rechazar</button>
+        </div>
+        <div>
+            <h3>Actualizar cartera de la empresa</h3>
+            <input type="text" id="nuevaCartera" placeholder="Nueva dirección">
+            <button id="actualizarCarteraBtn">Actualizar</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <p id="message" class="info"></p>
+    </div>
+
+    <!-- Ethers.js -->
+    <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
     <script>
-        // Configuración Contrato
-        const CONTRACT_ADDR = "0xA71B4CEEDBFEAf1c6F741De0E09aB712Fe169057";
-        const CONTRACT_ABI = [{"inputs":[{"internalType":"address","name":"direccionCarteraEmpresa","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"inputs":[{"internalType":"address","name":"owner","type":"address"}],"name":"OwnableInvalidOwner","type":"error"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"OwnableUnauthorizedAccount","type":"error"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"antiguaCartera","type":"address"},{"indexed":false,"internalType":"address","name":"nuevaCartera","type":"address"}],"name":"CarteraEmpresaActualizada","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"usuario","type":"address"},{"indexed":false,"internalType":"uint256","name":"cantidad","type":"uint256"}],"name":"CuposOtorgadosExitoso","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"nuevoContrato","type":"address"}],"name":"MigracionContratoCompletada","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"usuario","type":"address"},{"indexed":false,"internalType":"uint256","name":"nuevoNivel","type":"uint256"}],"name":"NivelUsuarioActualizado","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"usuario","type":"address"},{"indexed":false,"internalType":"uint256","name":"montoUsuario","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"montoEmpresa","type":"uint256"}],"name":"RetiroGananciasExitoso","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"usuario","type":"address"}],"name":"UsuarioRegistradoExitoso","type":"event"},{"inputs":[{"internalType":"address","name":"nuevaCartera","type":"address"}],"name":"actualizarCarteraEmpresa","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"usuario","type":"address"},{"internalType":"uint256","name":"nuevoNivel","type":"uint256"}],"name":"actualizarNivelUsuario","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"idSolicitud","type":"uint256"},{"internalType":"bool","name":"aprobar","type":"bool"},{"internalType":"uint256","name":"cantidadOtorgar","type":"uint256"}],"name":"aprobarSolicitudCupos","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"carteraEmpresa","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"contadorOperaciones","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"contadorSolicitudes","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"contadorUsuarios","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"cuposAutomaticosNivel3","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"cuposBasePorDefecto","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"cantidad","type":"uint256"}],"name":"enviarSolicitudCuposExtra","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"usuario","type":"address"},{"internalType":"uint256","name":"fecha","type":"uint256"},{"internalType":"uint256","name":"nivel","type":"uint256"},{"internalType":"uint256","name":"cupos","type":"uint256"},{"internalType":"uint256","name":"ganancias","type":"uint256"}],"name":"importarDatosUsuario","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"listaTotalUsuarios","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"nuevoContrato","type":"address"}],"name":"migrarContratoNuevo","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"nivelMinimoCuposAutomaticos","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"nombreProyecto","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"usuario","type":"address"}],"name":"obtenerDatosUsuario","outputs":[{"components":[{"internalType":"address","name":"direccionUsuario","type":"address"},{"internalType":"uint256","name":"fechaAfiliacion","type":"uint256"},{"internalType":"uint256","name":"nivelActual","type":"uint256"},{"internalType":"uint256","name":"cuposAsignados","type":"uint256"},{"internalType":"uint256","name":"cuposUsados","type":"uint256"},{"internalType":"uint256","name":"gananciasAcumuladas","type":"uint256"},{"internalType":"bool","name":"estadoActivo","type":"bool"}],"internalType":"struct Milimar
+        // Configuración
+        const CONTRACT_ADDRESS = "0xA71B4CEEDBFEAf1c6F741De0E09aB712Fe169057";
+        const BSC_MAINNET_CHAIN_ID = 56;
+        const BSC_TESTNET_CHAIN_ID = 97; // Por si acaso, pero aquí usamos mainnet
+
+        // ABI del contrato (simplificado pero funcional)
+        const CONTRACT_ABI = [
+            "function nombreProyecto() view returns (string)",
+            "function versionContrato() view returns (uint256)",
+            "function tokenUSDT() view returns (address)",
+            "function carteraEmpresa() view returns (address)",
+            "function saldoMinimoRetiro() view returns (uint256)",
+            "function porcentajeComisionEmpresa() view returns (uint256)",
+            "function usuariosRegistrados(address) view returns (address direccionUsuario, uint256 fechaAfiliacion, uint256 nivelActual, uint256 cuposAsignados, uint256 cuposUsados, uint256 gananciasAcumuladas, bool estadoActivo)",
+            "function solicitudesCupos(uint256) view returns (uint256 idSolicitud, address usuarioSolicitante, uint256 cantidadSolicitada, uint256 fechaSolicitud, bool solicitudAprobada)",
+            "function contadorSolicitudes() view returns (uint256)",
+            "function registrarNuevoUsuario(address) external",
+            "function actualizarNivelUsuario(address, uint256) external",
+            "function enviarSolicitudCuposExtra(uint256) external",
+            "function aprobarSolicitudCupos(uint256, bool, uint256) external",
+            "function retirarGanancias() external",
+            "function registrarOperacion(address, uint256) external",
+            "function actualizarCarteraEmpresa(address) external",
+            "function owner() view returns (address)"
+        ];
+
+        let provider, signer, contract, userAddress, ownerAddress;
+
+        // Elementos del DOM
+        const connectBtn = document.getElementById('connectBtn');
+        const accountInfo = document.getElementById('accountInfo');
+        const networkInfo = document.getElementById('networkInfo');
+        const userInfoDiv = document.getElementById('userInfo');
+        const userActionsDiv = document.getElementById('userActions');
+        const adminSection = document.getElementById('adminSection');
+        const messageP = document.getElementById('message');
+
+        // Funciones auxiliares
+        function showMessage(text, isError = false) {
+            messageP.textContent = text;
+            messageP.className = isError ? 'error' : 'success';
+        }
+
+        function formatUSDT(amount) {
+            return ethers.utils.formatUnits(amount, 18);
+        }
+
+        function parseUSDT(amount) {
+            return ethers.utils.parseUnits(amount.toString(), 18);
+        }
+
+        // Conectar MetaMask
+        async function connect() {
+            if (!window.ethereum) {
+                alert('MetaMask no está instalado. Por favor instálalo desde https://metamask.io/');
+                return;
+            }
+            try {
+                provider = new ethers.providers.Web3Provider(window.ethereum);
+                await provider.send("eth_requestAccounts", []);
+                signer = provider.getSigner();
+                userAddress = await signer.getAddress();
+                accountInfo.textContent = `Cuenta: ${userAddress}`;
+
+                const network = await provider.getNetwork();
+                networkInfo.textContent = `Red: ${network.name} (chainId: ${network.chainId})`;
+
+                // Verificar que estamos en BSC mainnet
+                if (network.chainId !== BSC_MAINNET_CHAIN_ID) {
+                    showMessage('⚠️ Por favor cambia a BNB Smart Chain Mainnet en MetaMask.', true);
+                } else {
+                    showMessage('Conectado correctamente a BSC Mainnet.');
+                }
+
+                contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
+
+                // Obtener owner
+                ownerAddress = await contract.owner();
+
+                // Cargar datos del usuario
+                await loadUserData();
+            } catch (error) {
+                console.error(error);
+                showMessage('Error al conectar: ' + error.message, true);
+            }
+        }
+
+        // Cargar datos del usuario actual
+        async function loadUserData() {
+            if (!contract || !userAddress) return;
+            try {
+                const userData = await contract.usuariosRegistrados(userAddress);
+                // userData es una tupla: [direccion, fecha, nivel, cuposAsignados, cuposUsados, ganancias, activo]
+                document.getElementById('userAddress').textContent = userData.direccionUsuario;
+                document.getElementById('userNivel').textContent = userData.nivelActual.toString();
+                document.getElementById('userCuposAsignados').textContent = userData.cuposAsignados.toString();
+                document.getElementById('userCuposUsados').textContent = userData.cuposUsados.toString();
+                document.getElementById('userGanancias').textContent = formatUSDT(userData.gananciasAcumuladas);
+                document.getElementById('userActivo').textContent = userData.estadoActivo ? 'Sí' : 'No';
+
+                // Mostrar secciones según si está registrado
+                if (userData.direccionUsuario !== ethers.constants.AddressZero) {
+                    userInfoDiv.classList.remove('hidden');
+                    userActionsDiv.classList.remove('hidden');
+                } else {
+                    userInfoDiv.classList.add('hidden');
+                    userActionsDiv.classList.add('hidden');
+                    showMessage('Tu dirección no está registrada en el contrato. Contacta al administrador.');
+                }
+
+                // Mostrar panel de admin si es el owner
+                if (userAddress.toLowerCase() === ownerAddress.toLowerCase()) {
+                    adminSection.classList.remove('hidden');
+                } else {
+                    adminSection.classList.add('hidden');
+                }
+            } catch (error) {
+                console.error(error);
+                showMessage('Error al cargar datos del usuario: ' + error.message, true);
+            }
+        }
+
+        // Acciones de usuario
+        document.getElementById('solicitarCuposBtn').addEventListener('click', async () => {
+            try {
+                const cantidad = parseInt(document.getElementById('cuposCantidad').value);
+                if (cantidad !== 1 && cantidad !== 2) {
+                    showMessage('Cantidad debe ser 1 o 2', true);
+                    return;
+                }
+                const tx = await contract.enviarSolicitudCuposExtra(cantidad);
+                showMessage('Enviando solicitud...');
+                await tx.wait();
+                showMessage('Solicitud enviada con éxito.');
+            } catch (error) {
+                showMessage('Error: ' + error.message, true);
+            }
+        });
+
+        document.getElementById('retirarBtn').addEventListener('click', async () => {
+            try {
+                const tx = await contract.retirarGanancias();
+                showMessage('Procesando retiro...');
+                await tx.wait();
+                showMessage('Retiro exitoso.');
+                await loadUserData(); // actualizar datos
+            } catch (error) {
+                showMessage('Error: ' + error.message, true);
+            }
+        });
+
+        // Acciones de admin
+        document.getElementById('registrarUsuarioBtn').addEventListener('click', async () => {
+            try {
+                const newUser = document.getElementById('newUserAddress').value;
+                if (!ethers.utils.isAddress(newUser)) {
+                    showMessage('Dirección inválida', true);
+                    return;
+                }
+                const tx = await contract.registrarNuevoUsuario(newUser);
+                showMessage('Registrando...');
+                await tx.wait();
+                showMessage('Usuario registrado.');
+                document.getElementById('newUserAddress').value = '';
+            } catch (error) {
+                showMessage('Error: ' + error.message, true);
+            }
+        });
+
+        document.getElementById('actualizarNivelBtn').addEventListener('click', async () => {
+            try {
+                const user = document.getElementById('updateUserAddress').value;
+                const nivel = parseInt(document.getElementById('newNivel').value);
+                if (!ethers.utils.isAddress(user) || nivel < 2) {
+                    showMessage('Datos inválidos', true);
+                    return;
+                }
+                const tx = await contract.actualizarNivelUsuario(user, nivel);
+                showMessage('Actualizando nivel...');
+                await tx.wait();
+                showMessage('Nivel actualizado.');
+            } catch (error) {
+                showMessage('Error: ' + error.message, true);
+            }
+        });
+
+        document.getElementById('registrarOperacionBtn').addEventListener('click', async () => {
+            try {
+                const user = document.getElementById('operacionUserAddress').value;
+                const monto = document.getElementById('operacionMonto').value;
+                if (!ethers.utils.isAddress(user) || parseFloat(monto) <= 0) {
+                    showMessage('Datos inválidos', true);
+                    return;
+                }
+                const montoWei = parseUSDT(monto);
+                const tx = await contract.registrarOperacion(user, montoWei);
+                showMessage('Registrando operación...');
+                await tx.wait();
+                showMessage('Operación registrada.');
+            } catch (error) {
+                showMessage('Error: ' + error.message, true);
+            }
+        });
+
+        // Ver solicitudes (simplificado: muestra las últimas 10 no aprobadas)
+        document.getElementById('verSolicitudesBtn').addEventListener('click', async () => {
+            try {
+                const total = await contract.contadorSolicitudes();
+                const lista = document.getElementById('solicitudesList');
+                lista.innerHTML = '';
+                for (let i = total; i > 0 && i > total - 10; i--) {
+                    const sol = await contract.solicitudesCupos(i);
+                    if (!sol.solicitudAprobada && sol.usuarioSolicitante !== ethers.constants.AddressZero) {
+                        const div = document.createElement('div');
+                        div.innerHTML = `ID: ${sol.idSolicitud} - Usuario: ${sol.usuarioSolicitante} - Cantidad: ${sol.cantidadSolicitada} - Fecha: ${new Date(sol.fechaSolicitud * 1000).toLocaleString()}`;
+                        lista.appendChild(div);
+                    }
+                }
+            } catch (error) {
+                showMessage('Error: ' + error.message, true);
+            }
+        });
+
+        document.getElementById('aprobarSolicitudBtn').addEventListener('click', async () => {
+            try {
+                const id = parseInt(document.getElementById('solicitudId').value);
+                const cantidad = parseInt(document.getElementById('cantidadAprobar').value);
+                if (id <= 0 || cantidad < 1 || cantidad > 2) {
+                    showMessage('ID o cantidad inválidos', true);
+                    return;
+                }
+                const tx = await contract.aprobarSolicitudCupos(id, true, cantidad);
+                showMessage('Aprobando...');
+                await tx.wait();
+                showMessage('Solicitud aprobada.');
+            } catch (error) {
+                showMessage('Error: ' + error.message, true);
+            }
+        });
+
+        document.getElementById('rechazarSolicitudBtn').addEventListener('click', async () => {
+            try {
+                const id = parseInt(document.getElementById('solicitudId').value);
+                if (id <= 0) {
+                    showMessage('ID inválido', true);
+                    return;
+                }
+                const tx = await contract.aprobarSolicitudCupos(id, false, 0);
+                showMessage('Rechazando...');
+                await tx.wait();
+                showMessage('Solicitud rechazada.');
+            } catch (error) {
+                showMessage('Error: ' + error.message, true);
+            }
+        });
+
+        document.getElementById('actualizarCarteraBtn').addEventListener('click', async () => {
+            try {
+                const nueva = document.getElementById('nuevaCartera').value;
+                if (!ethers.utils.isAddress(nueva)) {
+                    showMessage('Dirección inválida', true);
+                    return;
+                }
+                const tx = await contract.actualizarCarteraEmpresa(nueva);
+                showMessage('Actualizando...');
+                await tx.wait();
+                showMessage('Cartera actualizada.');
+            } catch (error) {
+                showMessage('Error: ' + error.message, true);
+            }
+        });
+
+        // Evento de cambio de cuenta en MetaMask
+        if (window.ethereum) {
+            window.ethereum.on('accountsChanged', (accounts) => {
+                if (accounts.length === 0) {
+                    // Desconectado
+                    accountInfo.textContent = 'Cuenta: No conectada';
+                    userInfoDiv.classList.add('hidden');
+                    userActionsDiv.classList.add('hidden');
+                    adminSection.classList.add('hidden');
+                } else {
+                    userAddress = accounts[0];
+                    accountInfo.textContent = `Cuenta: ${userAddress}`;
+                    if (contract) loadUserData();
+                }
+            });
+
+            window.ethereum.on('chainChanged', () => {
+                window.location.reload();
+            });
+        }
+
+        connectBtn.addEventListener('click', connect);
+    </script>
+</body>
+</html>
