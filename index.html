@@ -3,147 +3,348 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Milimar - Interfaz del Contrato</title>
+    <title>Milimar - Contrato Inteligente</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: #f5f5f5;
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
-        h1, h2 {
-            color: #333;
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f2f5;
+            color: #1a1a1a;
+            line-height: 1.6;
         }
         .container {
-            background: white;
+            max-width: 1200px;
+            margin: 0 auto;
             padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px 0;
+            text-align: center;
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        .card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 25px;
+            margin: 20px 0;
+        }
+        .wallet-section {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
             margin-bottom: 20px;
         }
-        button {
-            background-color: #4CAF50;
+        .btn {
+            background: #667eea;
             color: white;
-            padding: 10px 20px;
             border: none;
-            border-radius: 4px;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
             cursor: pointer;
-            margin: 5px;
+            transition: background 0.3s, transform 0.2s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
-        button:hover {
-            background-color: #45a049;
+        .btn:hover {
+            background: #5a67d8;
+            transform: translateY(-2px);
+        }
+        .btn-secondary {
+            background: #48bb78;
+        }
+        .btn-secondary:hover {
+            background: #38a169;
+        }
+        .btn-danger {
+            background: #f56565;
+        }
+        .btn-danger:hover {
+            background: #e53e3e;
+        }
+        .btn-warning {
+            background: #ed8936;
+        }
+        .btn-warning:hover {
+            background: #dd6b20;
+        }
+        .info-box {
+            background: #ebf4ff;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+        }
+        .error-box {
+            background: #fff5f5;
+            border-left: 4px solid #f56565;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+            color: #c53030;
+        }
+        .success-box {
+            background: #f0fff4;
+            border-left: 4px solid #48bb78;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+            color: #276749;
+        }
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #4a5568;
         }
         input, select {
-            padding: 8px;
-            margin: 5px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            width: 200px;
-        }
-        .error {
-            color: red;
-        }
-        .success {
-            color: green;
-        }
-        .info {
-            background-color: #e7f3fe;
-            border-left: 6px solid #2196F3;
+            width: 100%;
             padding: 10px;
-            margin: 10px 0;
+            border: 1px solid #cbd5e0;
+            border-radius: 6px;
+            font-size: 16px;
         }
-        .admin-section {
-            border-top: 2px solid #ff9800;
-            margin-top: 20px;
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102,126,234,0.1);
+        }
+        .user-data {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .data-item {
+            background: #f7fafc;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .data-item strong {
+            display: block;
+            font-size: 1.2em;
+            color: #2d3748;
+            margin-bottom: 5px;
+        }
+        .data-item span {
+            font-size: 1.5em;
+            color: #667eea;
+            font-weight: bold;
+        }
+        .admin-panel {
+            border-top: 3px solid #ed8936;
+            margin-top: 30px;
             padding-top: 20px;
         }
         .hidden {
             display: none;
         }
+        .wallet-selector {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+        .wallet-btn {
+            background: white;
+            border: 2px solid #667eea;
+            color: #667eea;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .wallet-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+        .wallet-btn img {
+            width: 24px;
+            height: 24px;
+        }
+        @media (max-width: 768px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
-    <h1>Milimar - Interfaz del Contrato Inteligente</h1>
-    <div class="container">
-        <button id="connectBtn">Conectar MetaMask</button>
-        <p id="accountInfo">Cuenta: No conectada</p>
-        <p id="networkInfo">Red: No conectada</p>
-    </div>
-
-    <div id="userInfo" class="container hidden">
-        <h2>Datos del Usuario</h2>
-        <p><strong>Dirección:</strong> <span id="userAddress"></span></p>
-        <p><strong>Nivel:</strong> <span id="userNivel"></span></p>
-        <p><strong>Cupos asignados:</strong> <span id="userCuposAsignados"></span></p>
-        <p><strong>Cupos usados:</strong> <span id="userCuposUsados"></span></p>
-        <p><strong>Ganancias acumuladas (USDT):</strong> <span id="userGanancias"></span></p>
-        <p><strong>Estado activo:</strong> <span id="userActivo"></span></p>
-    </div>
-
-    <div id="userActions" class="container hidden">
-        <h2>Acciones de Usuario</h2>
-        <div>
-            <label for="cuposCantidad">Cantidad de cupos a solicitar (1 o 2):</label>
-            <input type="number" id="cuposCantidad" min="1" max="2" value="1">
-            <button id="solicitarCuposBtn">Solicitar cupos extra</button>
+    <header>
+        <div class="container">
+            <h1>🏦 Milimar V5</h1>
+            <p class="subtitle">Interfaz oficial del contrato inteligente en BSC Mainnet</p>
         </div>
-        <div>
-            <button id="retirarBtn">Retirar ganancias</button>
-        </div>
-    </div>
-
-    <div id="adminSection" class="container hidden admin-section">
-        <h2>Panel de Administrador (Owner)</h2>
-        <div>
-            <h3>Registrar nuevo usuario</h3>
-            <input type="text" id="newUserAddress" placeholder="Dirección del usuario">
-            <button id="registrarUsuarioBtn">Registrar</button>
-        </div>
-        <div>
-            <h3>Actualizar nivel de usuario</h3>
-            <input type="text" id="updateUserAddress" placeholder="Dirección del usuario">
-            <input type="number" id="newNivel" placeholder="Nuevo nivel" min="2">
-            <button id="actualizarNivelBtn">Actualizar nivel</button>
-        </div>
-        <div>
-            <h3>Registrar operación (abonar ganancias)</h3>
-            <input type="text" id="operacionUserAddress" placeholder="Dirección del usuario">
-            <input type="number" id="operacionMonto" placeholder="Monto en USDT">
-            <button id="registrarOperacionBtn">Registrar operación</button>
-        </div>
-        <div>
-            <h3>Ver solicitudes de cupos (pendientes)</h3>
-            <button id="verSolicitudesBtn">Cargar solicitudes</button>
-            <div id="solicitudesList"></div>
-        </div>
-        <div>
-            <h3>Aprobar solicitud</h3>
-            <input type="number" id="solicitudId" placeholder="ID de solicitud">
-            <input type="number" id="cantidadAprobar" placeholder="Cantidad a otorgar (1-2)">
-            <button id="aprobarSolicitudBtn">Aprobar</button>
-            <button id="rechazarSolicitudBtn">Rechazar</button>
-        </div>
-        <div>
-            <h3>Actualizar cartera de la empresa</h3>
-            <input type="text" id="nuevaCartera" placeholder="Nueva dirección">
-            <button id="actualizarCarteraBtn">Actualizar</button>
-        </div>
-    </div>
+    </header>
 
     <div class="container">
-        <p id="message" class="info"></p>
+        <!-- Conexión -->
+        <div class="card">
+            <div class="wallet-section">
+                <button class="btn" id="connectBtn">🔌 Conectar Wallet</button>
+                <div id="walletSelector" class="wallet-selector hidden"></div>
+                <div id="networkInfo" class="info-box" style="flex:1; margin:0;">No conectado</div>
+            </div>
+            <div id="accountInfo" class="info-box">Cuenta: -</div>
+        </div>
+
+        <!-- Datos del usuario -->
+        <div id="userDataCard" class="card hidden">
+            <h2>📊 Tus datos</h2>
+            <div class="user-data">
+                <div class="data-item">
+                    <strong>Nivel</strong>
+                    <span id="userNivel">-</span>
+                </div>
+                <div class="data-item">
+                    <strong>Cupos asignados</strong>
+                    <span id="userCuposAsignados">-</span>
+                </div>
+                <div class="data-item">
+                    <strong>Cupos usados</strong>
+                    <span id="userCuposUsados">-</span>
+                </div>
+                <div class="data-item">
+                    <strong>Ganancias (USDT)</strong>
+                    <span id="userGanancias">-</span>
+                </div>
+                <div class="data-item">
+                    <strong>Estado</strong>
+                    <span id="userActivo">-</span>
+                </div>
+            </div>
+            <p><strong>Dirección:</strong> <span id="userAddressDisplay"></span></p>
+        </div>
+
+        <!-- Acciones de usuario -->
+        <div id="userActionsCard" class="card hidden">
+            <h2>🎯 Acciones disponibles</h2>
+            <div class="grid-2">
+                <div>
+                    <h3>Solicitar cupos extra</h3>
+                    <div class="form-group">
+                        <label>Cantidad (1 o 2):</label>
+                        <input type="number" id="cuposCantidad" min="1" max="2" value="1">
+                    </div>
+                    <button class="btn btn-secondary" id="solicitarCuposBtn">📨 Enviar solicitud</button>
+                </div>
+                <div>
+                    <h3>Retirar ganancias</h3>
+                    <p>Mínimo: 10 USDT | Comisión: 10%</p>
+                    <button class="btn btn-warning" id="retirarBtn">💰 Retirar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Panel de administración (solo owner) -->
+        <div id="adminCard" class="card hidden admin-panel">
+            <h2>⚙️ Panel de administración</h2>
+            <div class="grid-2">
+                <div>
+                    <h3>Registrar usuario</h3>
+                    <div class="form-group">
+                        <label>Dirección:</label>
+                        <input type="text" id="newUserAddress" placeholder="0x...">
+                    </div>
+                    <button class="btn" id="registrarUsuarioBtn">Registrar</button>
+                </div>
+                <div>
+                    <h3>Actualizar nivel</h3>
+                    <div class="form-group">
+                        <label>Usuario:</label>
+                        <input type="text" id="updateUserAddress" placeholder="0x...">
+                    </div>
+                    <div class="form-group">
+                        <label>Nuevo nivel:</label>
+                        <input type="number" id="newNivel" min="2">
+                    </div>
+                    <button class="btn" id="actualizarNivelBtn">Actualizar</button>
+                </div>
+                <div>
+                    <h3>Registrar operación (abonar)</h3>
+                    <div class="form-group">
+                        <label>Usuario:</label>
+                        <input type="text" id="operacionUserAddress" placeholder="0x...">
+                    </div>
+                    <div class="form-group">
+                        <label>Monto (USDT):</label>
+                        <input type="number" id="operacionMonto" step="0.01">
+                    </div>
+                    <button class="btn" id="registrarOperacionBtn">Registrar</button>
+                </div>
+                <div>
+                    <h3>Solicitudes de cupos</h3>
+                    <button class="btn btn-secondary" id="verSolicitudesBtn">Cargar últimas 10</button>
+                    <div id="solicitudesList" style="margin-top:15px;"></div>
+                </div>
+                <div>
+                    <h3>Aprobar/Rechazar solicitud</h3>
+                    <div class="form-group">
+                        <label>ID solicitud:</label>
+                        <input type="number" id="solicitudId">
+                    </div>
+                    <div class="form-group">
+                        <label>Cantidad a otorgar (si aprueba):</label>
+                        <input type="number" id="cantidadAprobar" min="1" max="2" value="1">
+                    </div>
+                    <button class="btn btn-secondary" id="aprobarSolicitudBtn">✅ Aprobar</button>
+                    <button class="btn btn-danger" id="rechazarSolicitudBtn">❌ Rechazar</button>
+                </div>
+                <div>
+                    <h3>Cambiar cartera empresa</h3>
+                    <div class="form-group">
+                        <label>Nueva dirección:</label>
+                        <input type="text" id="nuevaCartera" placeholder="0x...">
+                    </div>
+                    <button class="btn btn-warning" id="actualizarCarteraBtn">Actualizar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mensajes dinámicos -->
+        <div id="messageBox" class="info-box hidden"></div>
     </div>
 
     <!-- Ethers.js -->
     <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
-    <script>
-        // Configuración
-        const CONTRACT_ADDRESS = "0xA71B4CEEDBFEAf1c6F741De0E09aB712Fe169057";
-        const BSC_MAINNET_CHAIN_ID = 56;
-        const BSC_TESTNET_CHAIN_ID = 97; // Por si acaso, pero aquí usamos mainnet
 
-        // ABI del contrato (simplificado pero funcional)
+    <script>
+        // CONFIGURACIÓN
+        const CONTRACT_ADDRESS = "0xA71B4CEEDBFEAf1c6F741De0E09aB712Fe169057"; // Tu contrato en mainnet
+        const BSC_MAINNET_CHAIN_ID = 56;
+        const BSC_MAINNET_NAME = "BNB Smart Chain Mainnet";
+
+        // ABI (solo las funciones que usamos)
         const CONTRACT_ABI = [
             "function nombreProyecto() view returns (string)",
             "function versionContrato() view returns (uint256)",
@@ -164,53 +365,99 @@
             "function owner() view returns (address)"
         ];
 
+        // Variables globales
         let provider, signer, contract, userAddress, ownerAddress;
+        let selectedWallet = null;
 
-        // Elementos del DOM
+        // Elementos DOM
         const connectBtn = document.getElementById('connectBtn');
-        const accountInfo = document.getElementById('accountInfo');
+        const walletSelector = document.getElementById('walletSelector');
         const networkInfo = document.getElementById('networkInfo');
-        const userInfoDiv = document.getElementById('userInfo');
-        const userActionsDiv = document.getElementById('userActions');
-        const adminSection = document.getElementById('adminSection');
-        const messageP = document.getElementById('message');
+        const accountInfo = document.getElementById('accountInfo');
+        const userDataCard = document.getElementById('userDataCard');
+        const userActionsCard = document.getElementById('userActionsCard');
+        const adminCard = document.getElementById('adminCard');
+        const messageBox = document.getElementById('messageBox');
 
-        // Funciones auxiliares
-        function showMessage(text, isError = false) {
-            messageP.textContent = text;
-            messageP.className = isError ? 'error' : 'success';
+        // Mostrar mensaje
+        function showMessage(text, type = 'info') {
+            messageBox.classList.remove('hidden', 'info-box', 'error-box', 'success-box');
+            messageBox.textContent = text;
+            if (type === 'error') {
+                messageBox.classList.add('error-box');
+            } else if (type === 'success') {
+                messageBox.classList.add('success-box');
+            } else {
+                messageBox.classList.add('info-box');
+            }
         }
 
+        // Formatear USDT (18 decimales)
         function formatUSDT(amount) {
             return ethers.utils.formatUnits(amount, 18);
         }
-
         function parseUSDT(amount) {
             return ethers.utils.parseUnits(amount.toString(), 18);
         }
 
-        // Conectar MetaMask
-        async function connect() {
-            if (!window.ethereum) {
-                alert('MetaMask no está instalado. Por favor instálalo desde https://metamask.io/');
+        // Detectar wallets instaladas
+        async function detectWallets() {
+            const wallets = [];
+            if (window.ethereum && window.ethereum.isMetaMask) {
+                wallets.push({ name: 'MetaMask', provider: window.ethereum, icon: '🦊' });
+            }
+            if (window.BinanceChain) {
+                wallets.push({ name: 'Binance Wallet', provider: window.BinanceChain, icon: '🔶' });
+            }
+            if (window.okxwallet) {
+                wallets.push({ name: 'OKX Wallet', provider: window.okxwallet, icon: '⭕' });
+            }
+            return wallets;
+        }
+
+        // Mostrar selector de wallets
+        async function showWalletSelector() {
+            const wallets = await detectWallets();
+            if (wallets.length === 0) {
+                alert('No se detectó ninguna wallet compatible. Instala MetaMask, Binance Wallet u OKX Wallet.');
                 return;
             }
+            walletSelector.innerHTML = '';
+            wallets.forEach(w => {
+                const btn = document.createElement('button');
+                btn.className = 'wallet-btn';
+                btn.innerHTML = `${w.icon} ${w.name}`;
+                btn.onclick = () => connectWithWallet(w.provider);
+                walletSelector.appendChild(btn);
+            });
+            walletSelector.classList.remove('hidden');
+        }
+
+        // Conectar con provider seleccionado
+        async function connectWithWallet(provider) {
             try {
-                provider = new ethers.providers.Web3Provider(window.ethereum);
-                await provider.send("eth_requestAccounts", []);
-                signer = provider.getSigner();
-                userAddress = await signer.getAddress();
-                accountInfo.textContent = `Cuenta: ${userAddress}`;
+                const ethersProvider = new ethers.providers.Web3Provider(provider);
+                await ethersProvider.send("eth_requestAccounts", []);
+                const signer = ethersProvider.getSigner();
+                const address = await signer.getAddress();
+                const network = await ethersProvider.getNetwork();
 
-                const network = await provider.getNetwork();
-                networkInfo.textContent = `Red: ${network.name} (chainId: ${network.chainId})`;
-
-                // Verificar que estamos en BSC mainnet
+                // Verificar red
                 if (network.chainId !== BSC_MAINNET_CHAIN_ID) {
-                    showMessage('⚠️ Por favor cambia a BNB Smart Chain Mainnet en MetaMask.', true);
-                } else {
-                    showMessage('Conectado correctamente a BSC Mainnet.');
+                    showMessage(`⚠️ Cambia a ${BSC_MAINNET_NAME} en tu wallet.`, 'error');
+                    return;
                 }
+
+                // Guardar todo
+                window.provider = ethersProvider;
+                window.signer = signer;
+                window.userAddress = address;
+                provider = ethersProvider;
+                signer = signer;
+                userAddress = address;
+
+                accountInfo.textContent = `Cuenta: ${userAddress}`;
+                networkInfo.textContent = `Red: ${BSC_MAINNET_NAME} (chainId: ${network.chainId})`;
 
                 contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
 
@@ -219,130 +466,123 @@
 
                 // Cargar datos del usuario
                 await loadUserData();
+
+                // Ocultar selector
+                walletSelector.classList.add('hidden');
+                showMessage('Conectado exitosamente.', 'success');
             } catch (error) {
                 console.error(error);
-                showMessage('Error al conectar: ' + error.message, true);
+                showMessage('Error al conectar: ' + error.message, 'error');
             }
         }
 
-        // Cargar datos del usuario actual
+        // Cargar datos del usuario
         async function loadUserData() {
             if (!contract || !userAddress) return;
             try {
                 const userData = await contract.usuariosRegistrados(userAddress);
-                // userData es una tupla: [direccion, fecha, nivel, cuposAsignados, cuposUsados, ganancias, activo]
-                document.getElementById('userAddress').textContent = userData.direccionUsuario;
-                document.getElementById('userNivel').textContent = userData.nivelActual.toString();
-                document.getElementById('userCuposAsignados').textContent = userData.cuposAsignados.toString();
-                document.getElementById('userCuposUsados').textContent = userData.cuposUsados.toString();
-                document.getElementById('userGanancias').textContent = formatUSDT(userData.gananciasAcumuladas);
-                document.getElementById('userActivo').textContent = userData.estadoActivo ? 'Sí' : 'No';
-
-                // Mostrar secciones según si está registrado
+                // Si la dirección no es cero, está registrado
                 if (userData.direccionUsuario !== ethers.constants.AddressZero) {
-                    userInfoDiv.classList.remove('hidden');
-                    userActionsDiv.classList.remove('hidden');
+                    document.getElementById('userAddressDisplay').textContent = userData.direccionUsuario;
+                    document.getElementById('userNivel').textContent = userData.nivelActual.toString();
+                    document.getElementById('userCuposAsignados').textContent = userData.cuposAsignados.toString();
+                    document.getElementById('userCuposUsados').textContent = userData.cuposUsados.toString();
+                    document.getElementById('userGanancias').textContent = formatUSDT(userData.gananciasAcumuladas);
+                    document.getElementById('userActivo').textContent = userData.estadoActivo ? 'Sí' : 'No';
+
+                    userDataCard.classList.remove('hidden');
+                    userActionsCard.classList.remove('hidden');
                 } else {
-                    userInfoDiv.classList.add('hidden');
-                    userActionsDiv.classList.add('hidden');
-                    showMessage('Tu dirección no está registrada en el contrato. Contacta al administrador.');
+                    userDataCard.classList.add('hidden');
+                    userActionsCard.classList.add('hidden');
+                    showMessage('Tu dirección no está registrada en el contrato. Contacta al administrador.', 'info');
                 }
 
-                // Mostrar panel de admin si es el owner
+                // Mostrar panel de admin si es owner
                 if (userAddress.toLowerCase() === ownerAddress.toLowerCase()) {
-                    adminSection.classList.remove('hidden');
+                    adminCard.classList.remove('hidden');
                 } else {
-                    adminSection.classList.add('hidden');
+                    adminCard.classList.add('hidden');
                 }
             } catch (error) {
                 console.error(error);
-                showMessage('Error al cargar datos del usuario: ' + error.message, true);
+                showMessage('Error al cargar datos: ' + error.message, 'error');
             }
         }
+
+        // Evento conectar
+        connectBtn.addEventListener('click', showWalletSelector);
 
         // Acciones de usuario
         document.getElementById('solicitarCuposBtn').addEventListener('click', async () => {
             try {
                 const cantidad = parseInt(document.getElementById('cuposCantidad').value);
-                if (cantidad !== 1 && cantidad !== 2) {
-                    showMessage('Cantidad debe ser 1 o 2', true);
-                    return;
-                }
+                if (cantidad !== 1 && cantidad !== 2) throw new Error('Cantidad debe ser 1 o 2');
                 const tx = await contract.enviarSolicitudCuposExtra(cantidad);
-                showMessage('Enviando solicitud...');
+                showMessage('Enviando solicitud...', 'info');
                 await tx.wait();
-                showMessage('Solicitud enviada con éxito.');
+                showMessage('Solicitud enviada con éxito.', 'success');
             } catch (error) {
-                showMessage('Error: ' + error.message, true);
+                showMessage('Error: ' + error.message, 'error');
             }
         });
 
         document.getElementById('retirarBtn').addEventListener('click', async () => {
             try {
                 const tx = await contract.retirarGanancias();
-                showMessage('Procesando retiro...');
+                showMessage('Procesando retiro...', 'info');
                 await tx.wait();
-                showMessage('Retiro exitoso.');
-                await loadUserData(); // actualizar datos
+                showMessage('Retiro exitoso.', 'success');
+                await loadUserData();
             } catch (error) {
-                showMessage('Error: ' + error.message, true);
+                showMessage('Error: ' + error.message, 'error');
             }
         });
 
         // Acciones de admin
         document.getElementById('registrarUsuarioBtn').addEventListener('click', async () => {
             try {
-                const newUser = document.getElementById('newUserAddress').value;
-                if (!ethers.utils.isAddress(newUser)) {
-                    showMessage('Dirección inválida', true);
-                    return;
-                }
-                const tx = await contract.registrarNuevoUsuario(newUser);
-                showMessage('Registrando...');
+                const addr = document.getElementById('newUserAddress').value;
+                if (!ethers.utils.isAddress(addr)) throw new Error('Dirección inválida');
+                const tx = await contract.registrarNuevoUsuario(addr);
+                showMessage('Registrando...', 'info');
                 await tx.wait();
-                showMessage('Usuario registrado.');
+                showMessage('Usuario registrado.', 'success');
                 document.getElementById('newUserAddress').value = '';
             } catch (error) {
-                showMessage('Error: ' + error.message, true);
+                showMessage('Error: ' + error.message, 'error');
             }
         });
 
         document.getElementById('actualizarNivelBtn').addEventListener('click', async () => {
             try {
-                const user = document.getElementById('updateUserAddress').value;
+                const addr = document.getElementById('updateUserAddress').value;
                 const nivel = parseInt(document.getElementById('newNivel').value);
-                if (!ethers.utils.isAddress(user) || nivel < 2) {
-                    showMessage('Datos inválidos', true);
-                    return;
-                }
-                const tx = await contract.actualizarNivelUsuario(user, nivel);
-                showMessage('Actualizando nivel...');
+                if (!ethers.utils.isAddress(addr) || nivel < 2) throw new Error('Datos inválidos');
+                const tx = await contract.actualizarNivelUsuario(addr, nivel);
+                showMessage('Actualizando nivel...', 'info');
                 await tx.wait();
-                showMessage('Nivel actualizado.');
+                showMessage('Nivel actualizado.', 'success');
             } catch (error) {
-                showMessage('Error: ' + error.message, true);
+                showMessage('Error: ' + error.message, 'error');
             }
         });
 
         document.getElementById('registrarOperacionBtn').addEventListener('click', async () => {
             try {
-                const user = document.getElementById('operacionUserAddress').value;
-                const monto = document.getElementById('operacionMonto').value;
-                if (!ethers.utils.isAddress(user) || parseFloat(monto) <= 0) {
-                    showMessage('Datos inválidos', true);
-                    return;
-                }
+                const addr = document.getElementById('operacionUserAddress').value;
+                const monto = parseFloat(document.getElementById('operacionMonto').value);
+                if (!ethers.utils.isAddress(addr) || monto <= 0) throw new Error('Datos inválidos');
                 const montoWei = parseUSDT(monto);
-                const tx = await contract.registrarOperacion(user, montoWei);
-                showMessage('Registrando operación...');
+                const tx = await contract.registrarOperacion(addr, montoWei);
+                showMessage('Registrando operación...', 'info');
                 await tx.wait();
-                showMessage('Operación registrada.');
+                showMessage('Operación registrada.', 'success');
             } catch (error) {
-                showMessage('Error: ' + error.message, true);
+                showMessage('Error: ' + error.message, 'error');
             }
         });
 
-        // Ver solicitudes (simplificado: muestra las últimas 10 no aprobadas)
         document.getElementById('verSolicitudesBtn').addEventListener('click', async () => {
             try {
                 const total = await contract.contadorSolicitudes();
@@ -352,12 +592,17 @@
                     const sol = await contract.solicitudesCupos(i);
                     if (!sol.solicitudAprobada && sol.usuarioSolicitante !== ethers.constants.AddressZero) {
                         const div = document.createElement('div');
-                        div.innerHTML = `ID: ${sol.idSolicitud} - Usuario: ${sol.usuarioSolicitante} - Cantidad: ${sol.cantidadSolicitada} - Fecha: ${new Date(sol.fechaSolicitud * 1000).toLocaleString()}`;
+                        div.style.padding = '8px';
+                        div.style.borderBottom = '1px solid #ccc';
+                        div.innerHTML = `<strong>ID ${sol.idSolicitud}</strong>: ${sol.usuarioSolicitante} - Solicita ${sol.cantidadSolicitada} cupo(s) - ${new Date(sol.fechaSolicitud * 1000).toLocaleString()}`;
                         lista.appendChild(div);
                     }
                 }
+                if (lista.children.length === 0) {
+                    lista.innerHTML = '<p>No hay solicitudes pendientes.</p>';
+                }
             } catch (error) {
-                showMessage('Error: ' + error.message, true);
+                showMessage('Error: ' + error.message, 'error');
             }
         });
 
@@ -365,73 +610,90 @@
             try {
                 const id = parseInt(document.getElementById('solicitudId').value);
                 const cantidad = parseInt(document.getElementById('cantidadAprobar').value);
-                if (id <= 0 || cantidad < 1 || cantidad > 2) {
-                    showMessage('ID o cantidad inválidos', true);
-                    return;
-                }
+                if (id <= 0 || cantidad < 1 || cantidad > 2) throw new Error('ID o cantidad inválidos');
                 const tx = await contract.aprobarSolicitudCupos(id, true, cantidad);
-                showMessage('Aprobando...');
+                showMessage('Aprobando...', 'info');
                 await tx.wait();
-                showMessage('Solicitud aprobada.');
+                showMessage('Solicitud aprobada.', 'success');
             } catch (error) {
-                showMessage('Error: ' + error.message, true);
+                showMessage('Error: ' + error.message, 'error');
             }
         });
 
         document.getElementById('rechazarSolicitudBtn').addEventListener('click', async () => {
             try {
                 const id = parseInt(document.getElementById('solicitudId').value);
-                if (id <= 0) {
-                    showMessage('ID inválido', true);
-                    return;
-                }
+                if (id <= 0) throw new Error('ID inválido');
                 const tx = await contract.aprobarSolicitudCupos(id, false, 0);
-                showMessage('Rechazando...');
+                showMessage('Rechazando...', 'info');
                 await tx.wait();
-                showMessage('Solicitud rechazada.');
+                showMessage('Solicitud rechazada.', 'success');
             } catch (error) {
-                showMessage('Error: ' + error.message, true);
+                showMessage('Error: ' + error.message, 'error');
             }
         });
 
         document.getElementById('actualizarCarteraBtn').addEventListener('click', async () => {
             try {
                 const nueva = document.getElementById('nuevaCartera').value;
-                if (!ethers.utils.isAddress(nueva)) {
-                    showMessage('Dirección inválida', true);
-                    return;
-                }
+                if (!ethers.utils.isAddress(nueva)) throw new Error('Dirección inválida');
                 const tx = await contract.actualizarCarteraEmpresa(nueva);
-                showMessage('Actualizando...');
+                showMessage('Actualizando cartera...', 'info');
                 await tx.wait();
-                showMessage('Cartera actualizada.');
+                showMessage('Cartera actualizada.', 'success');
             } catch (error) {
-                showMessage('Error: ' + error.message, true);
+                showMessage('Error: ' + error.message, 'error');
             }
         });
 
-        // Evento de cambio de cuenta en MetaMask
+        // Escuchar cambios de cuenta/red en MetaMask
         if (window.ethereum) {
             window.ethereum.on('accountsChanged', (accounts) => {
                 if (accounts.length === 0) {
                     // Desconectado
-                    accountInfo.textContent = 'Cuenta: No conectada';
-                    userInfoDiv.classList.add('hidden');
-                    userActionsDiv.classList.add('hidden');
-                    adminSection.classList.add('hidden');
+                    accountInfo.textContent = 'Cuenta: -';
+                    userDataCard.classList.add('hidden');
+                    userActionsCard.classList.add('hidden');
+                    adminCard.classList.add('hidden');
+                    networkInfo.textContent = 'No conectado';
                 } else {
                     userAddress = accounts[0];
                     accountInfo.textContent = `Cuenta: ${userAddress}`;
                     if (contract) loadUserData();
                 }
             });
-
-            window.ethereum.on('chainChanged', () => {
-                window.location.reload();
+            window.ethereum.on('chainChanged', () => window.location.reload());
+        }
+        if (window.BinanceChain) {
+            window.BinanceChain.on('accountsChanged', (accounts) => {
+                if (accounts.length === 0) {
+                    accountInfo.textContent = 'Cuenta: -';
+                    userDataCard.classList.add('hidden');
+                    userActionsCard.classList.add('hidden');
+                    adminCard.classList.add('hidden');
+                    networkInfo.textContent = 'No conectado';
+                } else {
+                    userAddress = accounts[0];
+                    accountInfo.textContent = `Cuenta: ${userAddress}`;
+                    if (contract) loadUserData();
+                }
             });
         }
-
-        connectBtn.addEventListener('click', connect);
+        if (window.okxwallet) {
+            window.okxwallet.on('accountsChanged', (accounts) => {
+                if (accounts.length === 0) {
+                    accountInfo.textContent = 'Cuenta: -';
+                    userDataCard.classList.add('hidden');
+                    userActionsCard.classList.add('hidden');
+                    adminCard.classList.add('hidden');
+                    networkInfo.textContent = 'No conectado';
+                } else {
+                    userAddress = accounts[0];
+                    accountInfo.textContent = `Cuenta: ${userAddress}`;
+                    if (contract) loadUserData();
+                }
+            });
+        }
     </script>
 </body>
 </html>
