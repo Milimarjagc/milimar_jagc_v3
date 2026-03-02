@@ -4,31 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Milimar V5 - Plataforma de Liderazgo</title>
-    <!-- Font Awesome para iconos -->
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <!-- Ethers.js -->
     <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             color: #333;
         }
-
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
         }
-
-        /* Header */
         .header {
             background: rgba(255,255,255,0.95);
             border-radius: 20px;
@@ -37,23 +29,13 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
             text-align: center;
         }
-
         .header h1 {
             font-size: 2.5em;
             color: #4a5568;
             margin-bottom: 10px;
         }
-
-        .header h1 i {
-            color: #667eea;
-            margin-right: 10px;
-        }
-
-        .header p {
-            color: #718096;
-            font-size: 1.1em;
-        }
-
+        .header h1 i { color: #667eea; margin-right: 10px; }
+        .header p { color: #718096; font-size: 1.1em; }
         .wallet-info {
             display: flex;
             justify-content: center;
@@ -61,7 +43,6 @@
             flex-wrap: wrap;
             margin-top: 20px;
         }
-
         .wallet-card {
             background: #f7fafc;
             border-radius: 12px;
@@ -71,12 +52,7 @@
             gap: 15px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.05);
         }
-
-        .wallet-card i {
-            font-size: 2em;
-            color: #667eea;
-        }
-
+        .wallet-card i { font-size: 2em; color: #667eea; }
         .btn {
             background: #667eea;
             color: white;
@@ -88,51 +64,30 @@
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 4px 6px rgba(102,126,234,0.3);
+            margin: 5px;
         }
-
         .btn:hover {
             background: #5a67d8;
             transform: translateY(-2px);
             box-shadow: 0 6px 8px rgba(102,126,234,0.4);
         }
-
         .btn-outline {
             background: transparent;
             border: 2px solid #667eea;
             color: #667eea;
             box-shadow: none;
         }
-
-        .btn-outline:hover {
-            background: #667eea;
-            color: white;
-        }
-
-        .btn-success {
-            background: #48bb78;
-            box-shadow: 0 4px 6px rgba(72,187,120,0.3);
-        }
-
-        .btn-success:hover {
-            background: #38a169;
-        }
-
-        .btn-warning {
-            background: #ed8936;
-            box-shadow: 0 4px 6px rgba(237,137,54,0.3);
-        }
-
-        .btn-warning:hover {
-            background: #dd6b20;
-        }
-
+        .btn-outline:hover { background: #667eea; color: white; }
+        .btn-success { background: #48bb78; }
+        .btn-success:hover { background: #38a169; }
+        .btn-warning { background: #ed8936; }
+        .btn-warning:hover { background: #dd6b20; }
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 20px;
             margin: 20px 0;
         }
-
         .card {
             background: white;
             border-radius: 20px;
@@ -140,11 +95,7 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             transition: transform 0.3s ease;
         }
-
-        .card:hover {
-            transform: translateY(-5px);
-        }
-
+        .card:hover { transform: translateY(-5px); }
         .card h2 {
             color: #4a5568;
             font-size: 1.5em;
@@ -152,51 +103,38 @@
             border-bottom: 2px solid #e2e8f0;
             padding-bottom: 10px;
         }
-
-        .card h2 i {
-            color: #667eea;
-            margin-right: 10px;
-        }
-
+        .card h2 i { color: #667eea; margin-right: 10px; }
         .stats {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 15px;
             margin-top: 15px;
         }
-
         .stat-item {
             background: #f7fafc;
             border-radius: 12px;
             padding: 15px;
             text-align: center;
         }
-
         .stat-item .label {
             color: #718096;
             font-size: 0.9em;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
-
         .stat-item .value {
             color: #2d3748;
             font-size: 1.8em;
             font-weight: bold;
             margin-top: 5px;
         }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
+        .form-group { margin-bottom: 15px; }
         .form-group label {
             display: block;
             color: #4a5568;
             font-weight: 600;
             margin-bottom: 5px;
         }
-
         .form-group input {
             width: 100%;
             padding: 12px;
@@ -205,18 +143,15 @@
             font-size: 1em;
             transition: border-color 0.3s;
         }
-
         .form-group input:focus {
             outline: none;
             border-color: #667eea;
         }
-
         .admin-section {
             border-top: 3px solid #ed8936;
             margin-top: 30px;
             padding-top: 20px;
         }
-
         .message {
             background: #fefcbf;
             border-left: 4px solid #ecc94b;
@@ -227,44 +162,20 @@
             align-items: center;
             gap: 10px;
         }
-
-        .message.error {
-            background: #fed7d7;
-            border-left-color: #f56565;
-        }
-
-        .message.success {
-            background: #c6f6d5;
-            border-left-color: #48bb78;
-        }
-
-        .hidden {
-            display: none;
-        }
-
+        .message.error { background: #fed7d7; border-left-color: #f56565; }
+        .message.success { background: #c6f6d5; border-left-color: #48bb78; }
+        .hidden { display: none; }
         .loading {
             text-align: center;
             padding: 40px;
             color: #718096;
         }
-
-        .loading i {
-            font-size: 3em;
-            margin-bottom: 10px;
-            color: #667eea;
-        }
-
+        .loading i { font-size: 3em; margin-bottom: 10px; color: #667eea; }
         .footer {
             text-align: center;
             margin-top: 40px;
             color: white;
             opacity: 0.8;
-        }
-
-        @media (max-width: 768px) {
-            .header h1 {
-                font-size: 2em;
-            }
         }
     </style>
 </head>
@@ -311,22 +222,10 @@
                 <div class="card">
                     <h2><i class="fas fa-user"></i> Mi perfil</h2>
                     <div class="stats">
-                        <div class="stat-item">
-                            <div class="label">Nivel</div>
-                            <div class="value" id="userNivel">-</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="label">Directos</div>
-                            <div class="value" id="userDirectos">-</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="label">Red total</div>
-                            <div class="value" id="userRedTotal">-</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="label">Días restantes</div>
-                            <div class="value" id="userDias">-</div>
-                        </div>
+                        <div class="stat-item"><div class="label">Nivel</div><div class="value" id="userNivel">-</div></div>
+                        <div class="stat-item"><div class="label">Directos</div><div class="value" id="userDirectos">-</div></div>
+                        <div class="stat-item"><div class="label">Red total</div><div class="value" id="userRedTotal">-</div></div>
+                        <div class="stat-item"><div class="label">Días rest.</div><div class="value" id="userDias">-</div></div>
                     </div>
                     <div style="margin-top: 20px;">
                         <p><strong>Saldo pendiente:</strong> <span id="userSaldo">0</span> USDT</p>
@@ -334,30 +233,14 @@
                         <p><strong>Total retirado:</strong> <span id="userRetirado">0</span> USDT</p>
                     </div>
                 </div>
-
                 <div class="card">
                     <h2><i class="fas fa-chart-line"></i> Mi red</h2>
                     <div class="stats">
-                        <div class="stat-item">
-                            <div class="label">Nivel 1</div>
-                            <div class="value" id="redNivel1">0</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="label">Nivel 2</div>
-                            <div class="value" id="redNivel2">0</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="label">Nivel 3</div>
-                            <div class="value" id="redNivel3">0</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="label">Nivel 4</div>
-                            <div class="value" id="redNivel4">0</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="label">Nivel 5</div>
-                            <div class="value" id="redNivel5">0</div>
-                        </div>
+                        <div class="stat-item"><div class="label">N1</div><div class="value" id="redNivel1">0</div></div>
+                        <div class="stat-item"><div class="label">N2</div><div class="value" id="redNivel2">0</div></div>
+                        <div class="stat-item"><div class="label">N3</div><div class="value" id="redNivel3">0</div></div>
+                        <div class="stat-item"><div class="label">N4</div><div class="value" id="redNivel4">0</div></div>
+                        <div class="stat-item"><div class="label">N5</div><div class="value" id="redNivel5">0</div></div>
                     </div>
                 </div>
             </div>
@@ -366,27 +249,24 @@
             <div class="grid">
                 <div class="card">
                     <h2><i class="fas fa-user-plus"></i> Registrarme</h2>
-                    <p>Si aún no estás registrado, ingresa tu patrocinador.</p>
+                    <p>Ingresa tu patrocinador</p>
                     <div class="form-group">
-                        <label>Dirección del patrocinador</label>
-                        <input type="text" id="patrocinadorInput" placeholder="0x...">
+                        <input type="text" id="patrocinadorInput" placeholder="Dirección del patrocinador">
                     </div>
                     <button class="btn btn-success" id="registrarmeBtn">
                         <i class="fas fa-check-circle"></i> Registrarme (10 USDT)
                     </button>
                 </div>
-
                 <div class="card">
                     <h2><i class="fas fa-sync-alt"></i> Renovar suscripción</h2>
-                    <p>Paga otros 10 USDT para extender tu membresía.</p>
+                    <p>Extiende tu membresía (10 USDT)</p>
                     <button class="btn btn-warning" id="renovarBtn">
-                        <i class="fas fa-redo-alt"></i> Renovar (10 USDT)
+                        <i class="fas fa-redo-alt"></i> Renovar
                     </button>
                 </div>
-
                 <div class="card">
                     <h2><i class="fas fa-money-bill-wave"></i> Retirar ganancias</h2>
-                    <p>Mínimo 10 USDT, máximo 1000 USDT por transacción.</p>
+                    <p>Mínimo 10 USDT</p>
                     <button class="btn btn-success" id="retirarBtn">
                         <i class="fas fa-hand-holding-usd"></i> Retirar
                     </button>
@@ -394,67 +274,45 @@
             </div>
         </div>
 
-        <!-- Panel de administración (solo visible para owner) -->
+        <!-- Panel de administración (solo owner) -->
         <div id="adminSection" class="hidden">
             <div class="card admin-section">
                 <h2><i class="fas fa-tools"></i> Administración</h2>
                 <div class="grid">
                     <div>
                         <h3>Registrar usuario</h3>
-                        <div class="form-group">
-                            <input type="text" id="newUserAddress" placeholder="Dirección">
-                        </div>
+                        <input type="text" id="newUserAddress" placeholder="Dirección">
                         <button class="btn" id="registrarUsuarioBtn">Registrar</button>
                     </div>
                     <div>
                         <h3>Actualizar nivel</h3>
-                        <div class="form-group">
-                            <input type="text" id="updateUserAddress" placeholder="Usuario">
-                        </div>
-                        <div class="form-group">
-                            <input type="number" id="newNivel" placeholder="Nuevo nivel" min="2">
-                        </div>
+                        <input type="text" id="updateUserAddress" placeholder="Usuario">
+                        <input type="number" id="newNivel" placeholder="Nuevo nivel" min="2">
                         <button class="btn" id="actualizarNivelBtn">Actualizar</button>
                     </div>
                     <div>
                         <h3>Otorgar cupos extra</h3>
-                        <div class="form-group">
-                            <input type="text" id="cuposUser" placeholder="Líder">
-                        </div>
-                        <div class="form-group">
-                            <input type="number" id="cuposCantidad" placeholder="Cantidad" min="1">
-                        </div>
+                        <input type="text" id="cuposUser" placeholder="Líder">
+                        <input type="number" id="cuposCantidad" placeholder="Cantidad" min="1">
                         <button class="btn" id="otorgarCuposBtn">Otorgar</button>
                     </div>
                     <div>
                         <h3>Premiar líder (pool)</h3>
-                        <div class="form-group">
-                            <input type="text" id="premiarUser" placeholder="Líder">
-                        </div>
-                        <div class="form-group">
-                            <input type="number" id="premiarMonto" placeholder="Monto USDT" step="0.01">
-                        </div>
+                        <input type="text" id="premiarUser" placeholder="Líder">
+                        <input type="number" id="premiarMonto" placeholder="Monto USDT" step="0.01">
                         <button class="btn" id="premiarBtn">Premiar</button>
                     </div>
                     <div>
                         <h3>Fondo solidaridad</h3>
-                        <div class="form-group">
-                            <input type="text" id="solidaridadUser" placeholder="Beneficiario">
-                        </div>
-                        <div class="form-group">
-                            <input type="number" id="solidaridadMonto" placeholder="Monto USDT">
-                        </div>
-                        <div class="form-group">
-                            <input type="text" id="solidaridadMotivo" placeholder="Motivo">
-                        </div>
+                        <input type="text" id="solidaridadUser" placeholder="Beneficiario">
+                        <input type="number" id="solidaridadMonto" placeholder="Monto USDT">
+                        <input type="text" id="solidaridadMotivo" placeholder="Motivo">
                         <button class="btn" id="solidaridadBtn">Usar fondo</button>
                     </div>
                     <div>
-                        <h3>Cambiar parámetros</h3>
-                        <div class="form-group">
-                            <input type="number" id="nuevoPrecio" placeholder="Nuevo precio" step="0.01">
-                        </div>
-                        <button class="btn" id="actualizarPrecioBtn">Actualizar precio</button>
+                        <h3>Cambiar precio</h3>
+                        <input type="number" id="nuevoPrecio" placeholder="Nuevo precio USDT" step="0.01">
+                        <button class="btn" id="actualizarPrecioBtn">Actualizar</button>
                     </div>
                     <div>
                         <h3>Modo pausa</h3>
@@ -462,12 +320,8 @@
                     </div>
                     <div>
                         <h3>Bonos recurrentes</h3>
-                        <div class="form-group">
-                            <input type="text" id="bonosLista" placeholder="Direcciones separadas por coma">
-                        </div>
-                        <div class="form-group">
-                            <input type="number" id="bonosMonto" placeholder="Monto por persona" step="0.01">
-                        </div>
+                        <input type="text" id="bonosLista" placeholder="Direcciones (separadas por coma)">
+                        <input type="number" id="bonosMonto" placeholder="Monto por persona" step="0.01">
                         <button class="btn" id="pagarBonosBtn">Pagar bonos</button>
                     </div>
                 </div>
@@ -481,13 +335,14 @@
     </div>
 
     <script>
-        // Configuración
+        // ---------- CONFIGURACIÓN ----------
         const CONTRACT_ADDRESS = "0x35425E6416f799C30938cBc159523B43C1c358B2";
         const BSC_MAINNET_CHAIN_ID = 56;
         const USDT_DECIMALS = 18;
 
-        // ABI mínimo necesario
+        // ---------- ABI COMPLETO ----------
         const CONTRACT_ABI = [
+            "tuple(uint256 saldoPendiente, uint256 totalGanado, uint256 totalRetirado, uint256 directos, uint256 redTotal, uint256 diasRestantes, bool activo) consultarEstado(address)",
             "function tokenUSDT() view returns (address)",
             "function billeteraEmpresa() view returns (address)",
             "function precioSuscripcion() view returns (uint256)",
@@ -504,10 +359,14 @@
             "function bonosRecurrentesActivados() view returns (bool)",
             "function emergencyMode() view returns (bool)",
             "function pausado() view returns (bool)",
-            "function usuarios(address) view returns (bool registrado, address patrocinador, uint256 saldoPendiente, uint256 totalGanado, uint256 totalRetirado, uint256 contadorDirectos, uint256 redTotal, uint256[5] memory conteoNiveles, uint256 cuposExtraAdmin, uint256 vencimiento, uint256[5] memory gananciasNiveles, bool bonoN3Reclamado, uint256 fechaRegistro, uint256 ultimaActividad, bool activo)",
+            "function usuarios(address) view returns (bool registrado, address patrocinador, uint256 saldoPendiente, uint256 totalGanado, uint256 totalRetirado, uint256 contadorDirectos, uint256 redTotal, uint256[5] conteoNiveles, uint256 cuposExtraAdmin, uint256 vencimiento, uint256[5] gananciasNiveles, bool bonoN3Reclamado, uint256 fechaRegistro, uint256 ultimaActividad, bool activo)",
             "function listaUsuarios(uint256) view returns (address)",
             "function totalUsuarios() view returns (uint256)",
             "function owner() view returns (address)",
+            "function verDetalleRed(address) view returns (uint256[5] memory)",
+            "function verDetalleGanancias(address) view returns (uint256[5] memory)",
+            "function usuarioEnIndice(uint256) view returns (address)",
+            "function obtenerInactivos(uint256) view returns (address[] memory)",
             "function unirse(address) external",
             "function renovarSuscripcion() external",
             "function retirarGanancias() external",
@@ -526,10 +385,7 @@
             "function reemplazarUsuario(address,address) external",
             "function recuperarTokenExterno(address,uint256) external",
             "function activateEmergencyMode() external",
-            "function pagarBonosRecurrentes(address[],uint256) external",
-            "function consultarEstado(address) view returns (tuple(uint256 saldoPendiente, uint256 totalGanado, uint256 totalRetirado, uint256 directos, uint256 redTotal, uint256 diasRestantes, bool activo))",
-            "function verDetalleRed(address) view returns (uint256[5] memory)",
-            "function verDetalleGanancias(address) view returns (uint256[5] memory)"
+            "function pagarBonosRecurrentes(address[],uint256) external"
         ];
 
         // Elementos DOM
@@ -543,7 +399,6 @@
         const adminSection = document.getElementById('adminSection');
         const contractAddressDisplay = document.getElementById('contractAddressDisplay');
 
-        // Variables globales
         let provider, signer, contract, userAddress, ownerAddress;
 
         // Mostrar mensaje
@@ -553,23 +408,19 @@
             messageBox.classList.add(type);
         }
 
-        // Formatear USDT
-        function formatUSDT(amount) {
-            return ethers.utils.formatUnits(amount, USDT_DECIMALS);
-        }
+        function formatUSDT(amount) { return ethers.utils.formatUnits(amount, USDT_DECIMALS); }
+        function parseUSDT(amount) { return ethers.utils.parseUnits(amount.toString(), USDT_DECIMALS); }
 
-        function parseUSDT(amount) {
-            return ethers.utils.parseUnits(amount.toString(), USDT_DECIMALS);
-        }
-
-        // Detectar wallets instaladas
+        // Detectar wallets instaladas (versión mejorada)
         async function detectWallets() {
             const wallets = [];
             if (window.ethereum && window.ethereum.isMetaMask) {
                 wallets.push({ name: 'MetaMask', provider: window.ethereum, icon: 'fab fa-metamask' });
             }
             if (window.BinanceChain) {
-                wallets.push({ name: 'Binance Wallet', provider: window.BinanceChain, icon: 'fas fa-dog' }); // Icono temporal
+                wallets.push({ name: 'Binance Wallet', provider: window.BinanceChain, icon: 'fas fa-dog' });
+            } else if (window.ethereum && window.ethereum.isBinance) {
+                wallets.push({ name: 'Binance Wallet', provider: window.ethereum, icon: 'fas fa-dog' });
             }
             if (window.okxwallet) {
                 wallets.push({ name: 'OKX Wallet', provider: window.okxwallet, icon: 'fas fa-bolt' });
@@ -614,7 +465,6 @@
                     return;
                 }
 
-                // Guardar todo
                 provider = ethersProvider;
                 signer = signer;
                 userAddress = address;
@@ -625,9 +475,7 @@
                 contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
                 ownerAddress = await contract.owner();
 
-                // Cargar datos
                 await loadUserData();
-
                 loading.classList.add('hidden');
             } catch (error) {
                 console.error(error);
@@ -640,13 +488,10 @@
         async function loadUserData() {
             if (!contract || !userAddress) return;
             try {
-                // Verificar si el usuario está registrado
                 const user = await contract.usuarios(userAddress);
                 if (user.registrado) {
-                    // Mostrar sección de usuario
                     userSection.classList.remove('hidden');
 
-                    // Consultar estado usando la función auxiliar
                     const estado = await contract.consultarEstado(userAddress);
                     document.getElementById('userSaldo').textContent = formatUSDT(estado.saldoPendiente);
                     document.getElementById('userGanado').textContent = formatUSDT(estado.totalGanado);
@@ -654,10 +499,9 @@
                     document.getElementById('userDirectos').textContent = estado.directos.toString();
                     document.getElementById('userRedTotal').textContent = estado.redTotal.toString();
                     document.getElementById('userDias').textContent = estado.diasRestantes.toString();
-                    document.getElementById('userNivel').textContent = '?'; // El nivel no está en el estado, lo sacamos de usuarios
-                    // Podemos obtener más datos si es necesario
+                    // Nivel no está en estado, lo obtenemos de user (pero no es crítico)
+                    document.getElementById('userNivel').textContent = '?';
 
-                    // Detalle de red
                     const red = await contract.verDetalleRed(userAddress);
                     document.getElementById('redNivel1').textContent = red[0].toString();
                     document.getElementById('redNivel2').textContent = red[1].toString();
@@ -665,14 +509,12 @@
                     document.getElementById('redNivel4').textContent = red[3].toString();
                     document.getElementById('redNivel5').textContent = red[4].toString();
 
-                    // Si es owner, mostrar panel admin
                     if (userAddress.toLowerCase() === ownerAddress.toLowerCase()) {
                         adminSection.classList.remove('hidden');
                     } else {
                         adminSection.classList.add('hidden');
                     }
                 } else {
-                    // Usuario no registrado, ocultar secciones
                     userSection.classList.add('hidden');
                     adminSection.classList.add('hidden');
                     showMessage('Tu dirección no está registrada. Puedes registrarte con un patrocinador.', 'info');
@@ -683,17 +525,13 @@
             }
         }
 
-        // Evento conectar
         connectBtn.addEventListener('click', showWalletSelector);
 
-        // ---- Acciones de usuario ----
+        // ---------- Acciones de usuario ----------
         document.getElementById('registrarmeBtn').addEventListener('click', async () => {
             try {
                 const patrocinador = document.getElementById('patrocinadorInput').value;
-                if (!ethers.utils.isAddress(patrocinador)) {
-                    showMessage('Dirección de patrocinador inválida', 'error');
-                    return;
-                }
+                if (!ethers.utils.isAddress(patrocinador)) throw new Error('Dirección inválida');
                 const tx = await contract.unirse(patrocinador);
                 showMessage('Registrando... Confirma la transacción.', 'info');
                 await tx.wait();
@@ -728,7 +566,7 @@
             }
         });
 
-        // ---- Acciones de administración ----
+        // ---------- Acciones de administración ----------
         document.getElementById('registrarUsuarioBtn').addEventListener('click', async () => {
             try {
                 const addr = document.getElementById('newUserAddress').value;
@@ -845,4 +683,4 @@
         contractAddressDisplay.textContent = CONTRACT_ADDRESS;
     </script>
 </body>
-    </html>
+</html>
