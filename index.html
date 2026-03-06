@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>Milimar JAGC | Oficina Virtual BSC</title>
     <!-- Fuentes futuristas -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
@@ -27,16 +27,20 @@
             overflow-x: hidden;
             position: relative;
         }
-        /* Fondo de partículas (canvas) */
-        #particles-canvas {
+        /* Fondo de red global (imagen semitransparente) */
+        body::before {
+            content: "";
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -1;
+            background-image: url('https://images.pexels.com/photos/8370752/pexels-photo-8370752.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.15;
+            z-index: -2;
             pointer-events: none;
-            background: radial-gradient(circle at 20% 30%, #0a1a2f, #030614);
         }
         /* Overlay de neón (sutil) */
         .neon-overlay {
@@ -60,7 +64,7 @@
         /* Header con glitch */
         .glitch {
             font-family: 'Orbitron', sans-serif;
-            font-size: 4rem;
+            font-size: clamp(2.5rem, 8vw, 4rem);
             font-weight: 900;
             text-transform: uppercase;
             position: relative;
@@ -68,6 +72,8 @@
             animation: glitch 725ms infinite;
             color: #a0f0ff;
             letter-spacing: 0.15em;
+            line-height: 1.2;
+            word-break: break-word;
         }
         @keyframes glitch {
             0% { text-shadow: 0.05em 0 0 rgba(255,0,100,0.3), -0.05em -0.025em 0 rgba(0,255,255,0.3); }
@@ -81,16 +87,19 @@
             color: #80ffff;
             text-shadow: 0 0 10px cyan;
             letter-spacing: 0.3em;
+            font-size: clamp(0.7rem, 3vw, 1rem);
         }
         /* Tarjetas con efecto de vidrio neón */
         .neon-card {
-            background: rgba(10, 20, 30, 0.6);
-            backdrop-filter: blur(15px);
+            background: rgba(10, 20, 30, 0.7);
+            backdrop-filter: blur(12px);
             border: 1px solid rgba(0, 255, 255, 0.3);
             border-radius: 2rem;
             box-shadow: 0 0 30px rgba(0, 255, 255, 0.2), inset 0 0 20px rgba(0, 255, 255, 0.1);
             transition: all 0.3s ease;
             animation: fadeUp 0.5s ease-out;
+            width: 100%;
+            overflow: hidden;
         }
         .neon-card:hover {
             border-color: #00ffff;
@@ -114,6 +123,8 @@
             transition: 0.3s;
             box-shadow: 0 0 15px #00ffff;
             cursor: pointer;
+            width: 100%;
+            font-size: clamp(0.8rem, 2.5vw, 1rem);
         }
         .btn-neon:hover {
             background: #00ffff;
@@ -142,11 +153,19 @@
             font-size: 14px;
             font-weight: bold;
             transition: 0.3s;
-            margin: 0 4px;
+            margin: 4px;
             font-family: 'Orbitron', sans-serif;
             border: 2px solid;
             background: rgba(0,0,0,0.4);
             backdrop-filter: blur(5px);
+            flex: 0 0 auto;
+        }
+        @media (max-width: 640px) {
+            .node-neon {
+                width: 50px;
+                height: 50px;
+                font-size: 12px;
+            }
         }
         .node-filled-neon {
             border-color: #00ffff;
@@ -161,14 +180,16 @@
         }
         /* Estadísticas con números neón */
         .stat-neon {
-            font-size: 2rem;
+            font-size: clamp(1.5rem, 5vw, 2rem);
             font-weight: 900;
             color: #00ffff;
             text-shadow: 0 0 20px #00ffff;
+            line-height: 1.2;
+            word-break: break-word;
         }
         /* Tabs futuristas */
         .tab-neon {
-            padding: 10px 25px;
+            padding: 10px 20px;
             border-radius: 60px;
             font-family: 'Orbitron', sans-serif;
             font-weight: 600;
@@ -178,6 +199,8 @@
             border: 1px solid #00ffff;
             color: #00ffff;
             box-shadow: 0 0 10px #00ffff;
+            font-size: clamp(0.7rem, 2vw, 1rem);
+            white-space: nowrap;
         }
         .tab-neon.active {
             background: #00ffff;
@@ -194,6 +217,8 @@
             border-radius: 1rem;
             padding: 12px;
             margin-bottom: 8px;
+            font-size: 0.85rem;
+            word-break: break-word;
         }
         /* Modal neón */
         .modal-neon {
@@ -202,6 +227,8 @@
             border: 2px solid #00ffff;
             border-radius: 2rem;
             box-shadow: 0 0 100px #00ffff;
+            max-width: 90%;
+            margin: 0 auto;
         }
         /* Tooltips (usamos title, se ven con estilo por defecto) */
         [title] {
@@ -213,7 +240,7 @@
             position: fixed;
             bottom: 20px;
             z-index: 100;
-            padding: 12px 24px;
+            padding: 10px 20px;
             border-radius: 60px;
             font-weight: bold;
             display: flex;
@@ -225,6 +252,7 @@
             background: rgba(0,0,0,0.5);
             backdrop-filter: blur(10px);
             text-decoration: none;
+            font-size: 0.9rem;
         }
         .telegram-neon {
             left: 20px;
@@ -238,20 +266,19 @@
             color: #25D366;
             box-shadow: 0 0 20px #25D366;
         }
+        @media (max-width: 640px) {
+            .floating-neon {
+                padding: 8px 12px;
+                font-size: 0.8rem;
+            }
+            .whatsapp-neon {
+                left: 80px;
+            }
+        }
         .floating-neon:hover {
             transform: scale(1.1);
             background: currentColor;
             color: black;
-        }
-        /* Imagen representativa (bloque blockchain) */
-        .img-blockchain {
-            width: 100%;
-            max-height: 200px;
-            object-fit: cover;
-            border-radius: 2rem;
-            border: 3px solid #00ffff;
-            box-shadow: 0 0 50px #00ffff;
-            margin-bottom: 1rem;
         }
         /* Enlace de invitación */
         .input-neon {
@@ -262,6 +289,8 @@
             padding: 10px 20px;
             outline: none;
             box-shadow: 0 0 15px #00ffff;
+            width: 100%;
+            font-size: 0.9rem;
         }
         .input-neon:focus {
             border-color: #ff00ff;
@@ -290,11 +319,36 @@
             color: #00ffff;
             box-shadow: 0 0 15px #00ffff;
         }
+        /* Acordeón personalizado */
+        details.neon-card > summary {
+            list-style: none;
+            cursor: pointer;
+            font-weight: bold;
+            color: #00ffff;
+            padding: 1rem;
+            border-radius: 2rem;
+            transition: 0.3s;
+        }
+        details.neon-card > summary::-webkit-details-marker {
+            display: none;
+        }
+        details.neon-card[open] {
+            background: rgba(10, 20, 30, 0.8);
+        }
+        /* Ajustes de grid responsivos */
+        .grid-cols-responsive {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 0.75rem;
+        }
+        @media (max-width: 640px) {
+            .grid-cols-responsive {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
     </style>
 </head>
 <body>
-    <!-- Canvas de partículas -->
-    <canvas id="particles-canvas"></canvas>
     <div class="neon-overlay"></div>
 
     <!-- Botones flotantes (neón) -->
@@ -306,40 +360,33 @@
     </a>
 
     <!-- Modal de confirmación (neón) -->
-    <div id="confirmModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden justify-center items-center z-50">
-        <div class="modal-neon p-8 max-w-md w-full text-center">
-            <i class="fas fa-exclamation-triangle text-5xl text-cyan-400 mb-4"></i>
-            <h3 id="modalTitle" class="text-2xl font-bold text-cyan-400 mb-4" style="font-family: 'Orbitron';">¿Confirmar?</h3>
-            <p id="modalMessage" class="text-white/80 mb-6"></p>
-            <div class="flex gap-4 justify-center">
-                <button id="modalConfirm" class="btn-neon">SÍ</button>
-                <button id="modalCancel" class="btn-neon secondary">NO</button>
+    <div id="confirmModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden justify-center items-center z-50 p-4">
+        <div class="modal-neon p-6 w-full max-w-md text-center">
+            <i class="fas fa-exclamation-triangle text-4xl text-cyan-400 mb-3"></i>
+            <h3 id="modalTitle" class="text-xl font-bold text-cyan-400 mb-3" style="font-family: 'Orbitron';">¿Confirmar?</h3>
+            <p id="modalMessage" class="text-white/80 mb-4 text-sm"></p>
+            <div class="flex gap-3 justify-center">
+                <button id="modalConfirm" class="btn-neon text-sm py-2 px-4">SÍ</button>
+                <button id="modalCancel" class="btn-neon secondary text-sm py-2 px-4">NO</button>
             </div>
         </div>
     </div>
 
-    <div id="toast" class="fixed bottom-20 right-5 glass-card p-4 hidden z-50">
+    <div id="toast" class="fixed bottom-20 right-5 neon-card p-3 hidden z-50 max-w-xs">
         <p id="toastMsg" class="text-sm"></p>
     </div>
 
     <div class="container-neon">
         <header class="text-center py-6">
-            <!-- Imagen representativa: bloque blockchain (rectangular) -->
-            <img src="https://images.pexels.com/photos/8370752/pexels-photo-8370752.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" 
-                 alt="Blockchain network" 
-                 class="img-blockchain"
-                 onerror="this.onerror=null; this.src='https://via.placeholder.com/800x200?text=Red+Blockchain';">
-            
-            <h1 class="glitch mt-4">MILIMAR JAGC</h1>
-            <p class="subtitle-neon text-sm mt-2">OFICINA VIRTUAL · BSC</p>
-            <!-- Badge de red -->
+            <h1 class="glitch">MILIMAR JAGC</h1>
+            <p class="subtitle-neon mt-2">OFICINA VIRTUAL · BSC</p>
             <div class="mt-2">
                 <span class="network-badge"><i class="fas fa-link"></i> BSC Mainnet (Chain ID 56)</span>
             </div>
         </header>
 
         <!-- Tabs futuristas -->
-        <div class="flex flex-wrap justify-center gap-3 mb-8">
+        <div class="flex flex-wrap justify-center gap-2 mb-6">
             <button id="btnMembresia" class="tab-neon active">MEMBRESÍA</button>
             <button id="btnVault" class="tab-neon">VAULT</button>
             <button id="btnInfoVault" class="tab-neon">📘 INFO VAULT</button>
@@ -348,31 +395,36 @@
         </div>
 
         <!-- Conexión -->
-        <div id="conBox" class="neon-card p-10 text-center mb-6">
-            <button id="btnConnect" class="btn-neon text-xl px-12 py-4">CONECTAR BILLETERA</button>
+        <div id="conBox" class="neon-card p-8 text-center mb-6">
+            <button id="btnConnect" class="btn-neon text-xl py-4 px-8 max-w-md mx-auto block">CONECTAR BILLETERA</button>
         </div>
 
         <!-- SECCIÓN MEMBRESÍA -->
         <div id="seccionMembresia" class="space-y-6">
-            <!-- NUEVA TARJETA INFORMATIVA SOBRE EL CONTRATO -->
-            <div class="neon-card p-6">
-                <h2 class="text-2xl font-bold text-cyan-400 mb-3" style="font-family: 'Orbitron';">📘 ACERCA DE MILIMAR</h2>
-                <p class="text-sm text-white/80 leading-relaxed">
-                    <strong>Milimar</strong> es un contrato inteligente en Binance Smart Chain que gestiona un sistema de membresías y recompensas en red. 
-                    Los participantes activan su membresía pagando 10 USDT y pueden invitar a otros, construyendo una red de hasta 5 niveles.
-                    El contrato distribuye automáticamente las ganancias según las reglas predefinidas: comisiones por referidos directos, bonos por niveles y pool de liderazgo.
-                    Además, cuenta con un fondo de solidaridad y mecanismos de emergencia para proteger los fondos.
-                </p>
-                <p class="text-sm text-white/80 mt-2">
-                    <i class="fas fa-shield-alt text-cyan-400"></i> <strong>Seguridad:</strong> El contrato ha sido auditado y cuenta con pausa de emergencia, retiro de emergencia y límites de transacciones.
-                </p>
-                <p class="text-sm text-white/80 mt-2">
-                    <i class="fas fa-link text-cyan-400"></i> <strong>Red:</strong> BSC Mainnet (Chain ID 56) · Contrato de membresía: <span class="text-cyan-300 text-xs">0x35425E6416f799C30938cBc159523B43C1c358B2</span>
-                </p>
-            </div>
+            <!-- ACORDEÓN: Acerca de Milimar (información del contrato) -->
+            <details class="neon-card p-0" open>
+                <summary class="px-6 py-4 text-cyan-400 font-bold text-lg flex items-center gap-2">
+                    <i class="fas fa-info-circle"></i> 📘 ACERCA DE MILIMAR
+                    <span class="ml-auto text-sm opacity-60">(clic para expandir)</span>
+                </summary>
+                <div class="p-6 pt-0 text-sm text-white/80 leading-relaxed border-t border-cyan-500/30">
+                    <p class="mb-2">
+                        <strong>Milimar</strong> es un contrato inteligente en Binance Smart Chain que gestiona un sistema de membresías y recompensas en red. 
+                        Los participantes activan su membresía pagando 10 USDT y pueden invitar a otros, construyendo una red de hasta 5 niveles.
+                        El contrato distribuye automáticamente las ganancias según las reglas predefinidas: comisiones por referidos directos, bonos por niveles y pool de liderazgo.
+                        Además, cuenta con un fondo de solidaridad y mecanismos de emergencia para proteger los fondos.
+                    </p>
+                    <p class="mb-2">
+                        <i class="fas fa-shield-alt text-cyan-400"></i> <strong>Seguridad:</strong> El contrato ha sido auditado y cuenta con pausa de emergencia, retiro de emergencia y límites de transacciones.
+                    </p>
+                    <p>
+                        <i class="fas fa-link text-cyan-400"></i> <strong>Red:</strong> BSC Mainnet (Chain ID 56) · Contrato de membresía: <span class="text-cyan-300 text-xs break-all">0x35425E6416f799C30938cBc159523B43C1c358B2</span>
+                    </p>
+                </div>
+            </details>
 
-            <!-- Tarjetas de resumen con tooltips -->
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <!-- Tarjetas de resumen con tooltips (grid responsivo) -->
+            <div class="grid grid-cols-responsive gap-3">
                 <div class="neon-card p-4 border-l-4 border-cyan-400" title="Ganancias no retiradas">
                     <p class="text-xs text-cyan-300/60 uppercase">Saldo Pendiente</p>
                     <p id="valSaldo" class="stat-neon">0.00</p>
@@ -391,8 +443,8 @@
                 </div>
             </div>
 
-            <!-- Fondos -->
-            <div class="grid grid-cols-3 gap-3">
+            <!-- Fondos y bonos (grid responsivo) -->
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
                 <div class="neon-card p-3 text-center" title="Fondo solidaridad">
                     <p class="text-xs text-emerald-300/60">Fondo Solidaridad</p>
                     <p id="fondoSolidaridad" class="text-lg font-black text-emerald-300">0.00</p>
@@ -405,10 +457,6 @@
                     <p class="text-xs text-red-300/60">Modo Emergencia</p>
                     <p id="emergencyStatus" class="text-lg font-black text-red-300">INACTIVO</p>
                 </div>
-            </div>
-
-            <!-- Bonos -->
-            <div class="grid grid-cols-2 gap-3">
                 <div class="neon-card p-3 text-center" title="Bono nivel 3">
                     <p class="text-xs text-orange-300/60">Bono Nivel 3</p>
                     <p id="bonoNivel3" class="text-lg font-black text-orange-300">5 USDT</p>
@@ -435,18 +483,18 @@
             </div>
 
             <!-- Detalles por nivel -->
-            <div class="grid md:grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div class="neon-card p-4">
-                    <div class="flex justify-between items-center mb-2">
+                    <div class="flex justify-between items-center mb-2 flex-wrap gap-2">
                         <h3 class="text-cyan-400 font-bold">📊 SOCIOS POR NIVEL</h3>
-                        <button id="btnReloadDetails" class="btn-neon text-xs py-1 px-3">⟳</button>
+                        <button id="btnReloadDetails" class="btn-neon text-xs py-1 px-3">⟳ Recargar</button>
                     </div>
                     <div id="redNiveles" class="space-y-1 text-xs"></div>
                 </div>
                 <div class="neon-card p-4">
-                    <div class="flex justify-between items-center mb-2">
+                    <div class="flex justify-between items-center mb-2 flex-wrap gap-2">
                         <h3 class="text-purple-400 font-bold">💰 GANANCIAS</h3>
-                        <button id="btnReloadGanancias" class="btn-neon text-xs py-1 px-3">⟳</button>
+                        <button id="btnReloadGanancias" class="btn-neon text-xs py-1 px-3">⟳ Recargar</button>
                     </div>
                     <div id="gananciasNiveles" class="space-y-1 text-xs"></div>
                 </div>
@@ -462,8 +510,8 @@
 
             <!-- Panel Admin -->
             <div id="adminSection" class="hidden neon-card p-4 border border-purple-500/50">
-                <h2 class="text-purple-400 font-bold mb-3">⚙️ ADMIN</h2>
-                <div class="grid grid-cols-2 gap-2">
+                <h2 class="text-purple-400 font-bold mb-3 text-center">⚙️ ADMIN</h2>
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
                     <button id="btnPausa" class="btn-neon text-sm py-2">PAUSAR</button>
                     <button id="btnCupos" class="btn-neon text-sm py-2">CUPOS</button>
                     <button id="btnPremiar" class="btn-neon text-sm py-2">PREMIAR</button>
@@ -478,9 +526,9 @@
             <!-- Enlace de invitación + compartir -->
             <div class="neon-card p-4 text-center">
                 <p class="text-xs text-cyan-300/60 mb-1">TU ENLACE DE INVITACIÓN</p>
-                <div class="flex items-center gap-2">
+                <div class="flex flex-col sm:flex-row items-center gap-2">
                     <input id="refLink" readonly class="input-neon flex-1">
-                    <button id="copyLinkBtn" class="btn-neon py-2 px-4">Copiar</button>
+                    <button id="copyLinkBtn" class="btn-neon py-2 px-4 whitespace-nowrap">Copiar</button>
                 </div>
                 <p id="copyMsg" class="text-xs text-green-400 mt-2 hidden">¡Copiado!</p>
                 <div class="flex justify-center gap-3 mt-3">
@@ -493,7 +541,7 @@
             <div class="neon-card p-4">
                 <details class="cursor-pointer">
                     <summary class="text-cyan-400 font-bold list-none flex justify-between items-center">
-                        📘 TUTORIALES <span class="text-xs">(clic)</span>
+                        📘 TUTORIALES <span class="text-xs opacity-60">(clic)</span>
                     </summary>
                     <div class="mt-4 space-y-2 text-sm">
                         <div class="p-3 bg-cyan-950/30 rounded border border-cyan-500/30">🔹 Autorizar USDT: Asegúrate de tener USDT y haz clic en "AUTORIZAR".</div>
@@ -508,7 +556,7 @@
         <!-- SECCIÓN VAULT -->
         <div id="seccionVault" class="hidden space-y-6">
             <div class="neon-card p-6">
-                <h2 class="text-3xl font-bold text-cyan-400 mb-4" style="font-family: 'Orbitron';">🏦 VAULT NEO</h2>
+                <h2 class="text-2xl font-bold text-cyan-400 mb-4" style="font-family: 'Orbitron';">🏦 VAULT DE CRECIMIENTO</h2>
                 <canvas id="vaultChart" style="height: 200px; width: 100%;" class="mb-6"></canvas>
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
                     <div class="neon-card p-3 text-center">
@@ -530,12 +578,12 @@
                 </div>
                 <div class="neon-card p-4 mb-4">
                     <h3 class="text-cyan-400 mb-2">📥 Depositar</h3>
-                    <div class="flex gap-2">
+                    <div class="flex flex-col sm:flex-row gap-2">
                         <input type="number" id="vaultDepositAmount" placeholder="Cantidad (mín. 10)" class="input-neon flex-1">
-                        <button id="btnVaultDeposit" class="btn-neon">Depositar</button>
+                        <button id="btnVaultDeposit" class="btn-neon whitespace-nowrap">Depositar</button>
                     </div>
                 </div>
-                <div class="grid grid-cols-2 gap-3">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                     <div class="neon-card p-4">
                         <h3 class="text-cyan-400 mb-2">📤 Estándar</h3>
                         <input type="number" id="vaultWithdrawStandard" placeholder="Shares" class="input-neon w-full mb-2">
@@ -557,8 +605,7 @@
         <!-- INFO VAULT -->
         <div id="seccionInfoVault" class="hidden space-y-6">
             <div class="neon-card p-6">
-                <h2 class="text-3xl font-bold text-cyan-400 mb-4">📘 ACERCA DEL VAULT</h2>
-                <img src="https://images.pexels.com/photos/844124/pexels-photo-844124.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Gráfico" class="w-full rounded-2xl border-2 border-cyan-400 shadow-lg shadow-cyan-500/50 mb-4">
+                <h2 class="text-2xl font-bold text-cyan-400 mb-4">📘 ACERCA DEL VAULT</h2>
                 <div class="space-y-4">
                     <div class="p-4 bg-cyan-950/30 rounded border border-cyan-500/30">
                         <h3 class="text-cyan-400 font-bold">🔍 ¿Cómo funciona?</h3>
@@ -575,7 +622,7 @@
         <!-- HISTORIAL -->
         <div id="seccionHistorial" class="hidden space-y-6">
             <div class="neon-card p-6">
-                <h2 class="text-3xl font-bold text-cyan-400 mb-4">📜 MI HISTORIAL</h2>
+                <h2 class="text-2xl font-bold text-cyan-400 mb-4">📜 MI HISTORIAL</h2>
                 <div id="historialList" class="space-y-2 max-h-96 overflow-y-auto"></div>
             </div>
         </div>
@@ -583,7 +630,7 @@
         <!-- ARBITRAJE -->
         <div id="seccionArbitraje" class="hidden space-y-6">
             <div class="neon-card p-6 text-center">
-                <h2 class="text-3xl font-bold text-cyan-400 mb-4">🤖 ARBITRAJE</h2>
+                <h2 class="text-2xl font-bold text-cyan-400 mb-4">🤖 ARBITRAJE</h2>
                 <p class="text-lg">Próximamente...</p>
             </div>
         </div>
@@ -716,60 +763,6 @@
             });
         }
 
-        // ========== FUNCIONES DE PARTÍCULAS ==========
-        function initParticles() {
-            const canvas = document.getElementById('particles-canvas');
-            const ctx = canvas.getContext('2d');
-            let width, height;
-            let particles = [];
-
-            function resize() {
-                width = window.innerWidth;
-                height = window.innerHeight;
-                canvas.width = width;
-                canvas.height = height;
-            }
-            window.addEventListener('resize', resize);
-            resize();
-
-            class Particle {
-                constructor() {
-                    this.x = Math.random() * width;
-                    this.y = Math.random() * height;
-                    this.vx = (Math.random() - 0.5) * 0.3;
-                    this.vy = (Math.random() - 0.5) * 0.3;
-                    this.size = Math.random() * 2 + 1;
-                    this.color = `rgba(${Math.floor(Math.random()*100+155)}, ${Math.floor(Math.random()*100+155)}, 255, ${Math.random()*0.5+0.2})`;
-                }
-                update() {
-                    this.x += this.vx;
-                    this.y += this.vy;
-                    if (this.x < 0 || this.x > width) this.vx *= -1;
-                    if (this.y < 0 || this.y > height) this.vy *= -1;
-                }
-                draw() {
-                    ctx.beginPath();
-                    ctx.arc(this.x, this.y, this.size, 0, Math.PI*2);
-                    ctx.fillStyle = this.color;
-                    ctx.fill();
-                }
-            }
-
-            for (let i = 0; i < 100; i++) {
-                particles.push(new Particle());
-            }
-
-            function animate() {
-                ctx.clearRect(0, 0, width, height);
-                particles.forEach(p => {
-                    p.update();
-                    p.draw();
-                });
-                requestAnimationFrame(animate);
-            }
-            animate();
-        }
-
         // ========== FUNCIONES DE CARGA DE DATOS ==========
         async function checkNetwork() {
             const network = await provider.getNetwork();
@@ -881,18 +874,24 @@
                 return;
             }
             try {
+                // Intentar obtener eventos, pero si no hay, mostrar mensaje amigable
                 const filterRegistro = contractMembresia.filters.RegistroGlobal(userAddress);
                 const filterBono = contractMembresia.filters.BonoNivel3Pagado(userAddress);
                 const filterRetiro = contractMembresia.filters.RetiroExitoso(userAddress);
                 const filterPremio = contractMembresia.filters.PremiadoLider(userAddress);
-                const registros = await contractMembresia.queryFilter(filterRegistro, 0, 'latest');
-                const bonos = await contractMembresia.queryFilter(filterBono, 0, 'latest');
-                const retiros = await contractMembresia.queryFilter(filterRetiro, 0, 'latest');
-                const premios = await contractMembresia.queryFilter(filterPremio, 0, 'latest');
+                
+                const [registros, bonos, retiros, premios] = await Promise.all([
+                    contractMembresia.queryFilter(filterRegistro, 0, 'latest').catch(() => []),
+                    contractMembresia.queryFilter(filterBono, 0, 'latest').catch(() => []),
+                    contractMembresia.queryFilter(filterRetiro, 0, 'latest').catch(() => []),
+                    contractMembresia.queryFilter(filterPremio, 0, 'latest').catch(() => [])
+                ]);
+                
                 const todos = [...registros, ...bonos, ...retiros, ...premios];
                 todos.sort((a,b) => b.blockNumber - a.blockNumber);
+                
                 if (todos.length === 0) {
-                    historialDiv.innerHTML = '<p class="text-white/50 text-xs">No hay transacciones aún.</p>';
+                    historialDiv.innerHTML = '<p class="text-white/50 text-xs">No hay transacciones aún. Cuando realices operaciones, aparecerán aquí.</p>';
                     return;
                 }
                 let html = '';
@@ -912,8 +911,8 @@
                 });
                 historialDiv.innerHTML = html;
             } catch (e) {
-                historialDiv.innerHTML = '<p class="text-red-400">Error al cargar historial</p>';
-                console.error(e);
+                console.error('Error cargando historial:', e);
+                historialDiv.innerHTML = '<p class="text-yellow-400 text-xs">No se pudo cargar el historial. Intenta más tarde.</p>';
             }
         }
 
@@ -1266,9 +1265,8 @@
             } catch (e) { showToast('Error: ' + e.message, true); }
         });
 
-        // Inicializar partículas al cargar
+        // Inicializar
         window.addEventListener('load', () => {
-            initParticles();
             if (window.ethereum && window.ethereum.selectedAddress) connect();
         });
     </script>
