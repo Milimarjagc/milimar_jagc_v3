@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Milimar JAGC | Edición NEO</title>
+    <title>Milimar JAGC | Oficina Virtual BSC</title>
     <!-- Fuentes futuristas -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
@@ -68,11 +68,6 @@
             animation: glitch 725ms infinite;
             color: #a0f0ff;
             letter-spacing: 0.15em;
-        }
-        .glitch span {
-            position: absolute;
-            top: 0;
-            left: 0;
         }
         @keyframes glitch {
             0% { text-shadow: 0.05em 0 0 rgba(255,0,100,0.3), -0.05em -0.025em 0 rgba(0,255,255,0.3); }
@@ -248,15 +243,15 @@
             background: currentColor;
             color: black;
         }
-        /* Imagen representativa con borde neón */
-        .img-neon {
+        /* Imagen representativa (bloque blockchain) */
+        .img-blockchain {
+            width: 100%;
+            max-height: 200px;
+            object-fit: cover;
+            border-radius: 2rem;
             border: 3px solid #00ffff;
-            border-radius: 50%;
-            box-shadow: 0 0 40px #00ffff;
-            transition: 0.3s;
-        }
-        .img-neon:hover {
-            transform: rotate(5deg) scale(1.05);
+            box-shadow: 0 0 50px #00ffff;
+            margin-bottom: 1rem;
         }
         /* Enlace de invitación */
         .input-neon {
@@ -283,6 +278,17 @@
             background: #00ffff;
             border-radius: 10px;
             box-shadow: 0 0 10px #00ffff;
+        }
+        /* Badge de red */
+        .network-badge {
+            display: inline-block;
+            background: rgba(0,255,255,0.2);
+            border: 1px solid #00ffff;
+            border-radius: 60px;
+            padding: 5px 15px;
+            font-size: 0.8rem;
+            color: #00ffff;
+            box-shadow: 0 0 15px #00ffff;
         }
     </style>
 </head>
@@ -317,17 +323,19 @@
     </div>
 
     <div class="container-neon">
-        <header class="text-center py-8">
-            <!-- Imagen representativa con efecto neón -->
-            <div class="inline-block relative">
-                <img src="https://images.pexels.com/photos/3943716/pexels-photo-3943716.jpeg?auto=compress&cs=tinysrgb&w=200&h=200&fit=crop" 
-                     alt="Milimar" 
-                     class="img-neon w-24 h-24 object-cover"
-                     onerror="this.onerror=null; this.style.display='none'; this.nextElementSibling.style.display='inline-block';">
-                <div class="hidden text-cyan-400 text-6xl"><i class="fas fa-box-open"></i></div>
-            </div>
+        <header class="text-center py-6">
+            <!-- Imagen representativa: bloque blockchain (rectangular) -->
+            <img src="https://images.pexels.com/photos/8370752/pexels-photo-8370752.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" 
+                 alt="Blockchain network" 
+                 class="img-blockchain"
+                 onerror="this.onerror=null; this.src='https://via.placeholder.com/800x200?text=Red+Blockchain';">
+            
             <h1 class="glitch mt-4">MILIMAR JAGC</h1>
-            <p class="subtitle-neon text-sm mt-2">OFICINA VIRTUAL · NEO EDITION</p>
+            <p class="subtitle-neon text-sm mt-2">OFICINA VIRTUAL · BSC</p>
+            <!-- Badge de red -->
+            <div class="mt-2">
+                <span class="network-badge"><i class="fas fa-link"></i> BSC Mainnet (Chain ID 56)</span>
+            </div>
         </header>
 
         <!-- Tabs futuristas -->
@@ -346,6 +354,23 @@
 
         <!-- SECCIÓN MEMBRESÍA -->
         <div id="seccionMembresia" class="space-y-6">
+            <!-- NUEVA TARJETA INFORMATIVA SOBRE EL CONTRATO -->
+            <div class="neon-card p-6">
+                <h2 class="text-2xl font-bold text-cyan-400 mb-3" style="font-family: 'Orbitron';">📘 ACERCA DE MILIMAR</h2>
+                <p class="text-sm text-white/80 leading-relaxed">
+                    <strong>Milimar</strong> es un contrato inteligente en Binance Smart Chain que gestiona un sistema de membresías y recompensas en red. 
+                    Los participantes activan su membresía pagando 10 USDT y pueden invitar a otros, construyendo una red de hasta 5 niveles.
+                    El contrato distribuye automáticamente las ganancias según las reglas predefinidas: comisiones por referidos directos, bonos por niveles y pool de liderazgo.
+                    Además, cuenta con un fondo de solidaridad y mecanismos de emergencia para proteger los fondos.
+                </p>
+                <p class="text-sm text-white/80 mt-2">
+                    <i class="fas fa-shield-alt text-cyan-400"></i> <strong>Seguridad:</strong> El contrato ha sido auditado y cuenta con pausa de emergencia, retiro de emergencia y límites de transacciones.
+                </p>
+                <p class="text-sm text-white/80 mt-2">
+                    <i class="fas fa-link text-cyan-400"></i> <strong>Red:</strong> BSC Mainnet (Chain ID 56) · Contrato de membresía: <span class="text-cyan-300 text-xs">0x35425E6416f799C30938cBc159523B43C1c358B2</span>
+                </p>
+            </div>
+
             <!-- Tarjetas de resumen con tooltips -->
             <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
                 <div class="neon-card p-4 border-l-4 border-cyan-400" title="Ganancias no retiradas">
@@ -563,7 +588,7 @@
             </div>
         </div>
 
-        <footer class="text-center text-xs text-cyan-700 mt-8">Milimar NEO · BSC · Versión 5</footer>
+        <footer class="text-center text-xs text-cyan-700 mt-8">Milimar · BSC · Versión 5</footer>
     </div>
 
     <script>
@@ -1248,4 +1273,4 @@
         });
     </script>
 </body>
-    </html>
+</html>
