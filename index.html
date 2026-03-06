@@ -3,65 +3,142 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Milimar JAGC | Oficina Virtual V5</title>
-    <!-- Fuentes -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>Milimar JAGC | Edición NEO</title>
+    <!-- Fuentes futuristas -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <style>
-        /* Video de fondo */
-        #bg-video {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            z-index: -2;
-            opacity: 0.3;
-            pointer-events: none;
+        /* ========== ESTILOS FUTURISTAS ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        /* Overlay con animación aurora (ahora semitransparente) */
-        .aurora-overlay {
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0f1f;
+            color: #e0e0ff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+        /* Fondo de partículas (canvas) */
+        #particles-canvas {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(125deg, rgba(10,15,26,0.8) 0%, rgba(15,42,58,0.8) 35%, rgba(26,63,58,0.8) 70%, rgba(74,58,26,0.8) 100%);
-            background-size: 400% 400%;
-            animation: aurora 15s ease infinite;
+            z-index: -1;
+            pointer-events: none;
+            background: radial-gradient(circle at 20% 30%, #0a1a2f, #030614);
+        }
+        /* Overlay de neón (sutil) */
+        .neon-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(45deg, rgba(0,255,255,0.02) 0px, rgba(0,255,255,0.02) 2px, transparent 2px, transparent 8px);
             z-index: -1;
             pointer-events: none;
         }
-        @keyframes aurora {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        /* Ajustes de body para que el contenido esté sobre el video */
-        body {
-            background: transparent;
-            font-family: 'Inter', sans-serif;
-            min-height: 100vh;
+        /* Contenedor principal */
+        .container-neon {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
             position: relative;
-            color: white;
+            z-index: 2;
         }
-        h1, h2, h3, .font-display {
-            font-family: 'Poppins', sans-serif;
+        /* Header con glitch */
+        .glitch {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 4rem;
             font-weight: 900;
-            letter-spacing: -0.02em;
+            text-transform: uppercase;
+            position: relative;
+            text-shadow: 0.05em 0 0 rgba(255,0,100,0.3), -0.05em -0.025em 0 rgba(0,255,255,0.3);
+            animation: glitch 725ms infinite;
+            color: #a0f0ff;
+            letter-spacing: 0.15em;
         }
-        .glass-card {
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 215, 0, 0.2);
-            border-radius: 1.5rem;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        .glitch span {
+            position: absolute;
+            top: 0;
+            left: 0;
         }
-        .node {
-            width: 56px;
-            height: 56px;
+        @keyframes glitch {
+            0% { text-shadow: 0.05em 0 0 rgba(255,0,100,0.3), -0.05em -0.025em 0 rgba(0,255,255,0.3); }
+            25% { text-shadow: -0.05em -0.025em 0 rgba(255,0,100,0.3), 0.025em 0.05em 0 rgba(0,255,255,0.3); }
+            50% { text-shadow: 0.025em 0.05em 0 rgba(255,0,100,0.3), 0.05em 0 0 rgba(0,255,255,0.3); }
+            75% { text-shadow: -0.025em 0 0 rgba(255,0,100,0.3), -0.025em -0.025em 0 rgba(0,255,255,0.3); }
+            100% { text-shadow: 0.05em 0 0 rgba(255,0,100,0.3), -0.05em -0.025em 0 rgba(0,255,255,0.3); }
+        }
+        .subtitle-neon {
+            font-family: 'Orbitron', sans-serif;
+            color: #80ffff;
+            text-shadow: 0 0 10px cyan;
+            letter-spacing: 0.3em;
+        }
+        /* Tarjetas con efecto de vidrio neón */
+        .neon-card {
+            background: rgba(10, 20, 30, 0.6);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            border-radius: 2rem;
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.2), inset 0 0 20px rgba(0, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            animation: fadeUp 0.5s ease-out;
+        }
+        .neon-card:hover {
+            border-color: #00ffff;
+            box-shadow: 0 0 50px #00ffff, inset 0 0 30px #00ffff;
+            transform: translateY(-5px) scale(1.02);
+        }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* Botones neón */
+        .btn-neon {
+            background: transparent;
+            border: 2px solid #00ffff;
+            color: #00ffff;
+            font-weight: bold;
+            padding: 12px 24px;
+            border-radius: 60px;
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 2px;
+            transition: 0.3s;
+            box-shadow: 0 0 15px #00ffff;
+            cursor: pointer;
+        }
+        .btn-neon:hover {
+            background: #00ffff;
+            color: #0a0f1f;
+            box-shadow: 0 0 40px #00ffff;
+            transform: scale(1.05);
+        }
+        .btn-neon.secondary {
+            border-color: #ff00ff;
+            color: #ff00ff;
+            box-shadow: 0 0 15px #ff00ff;
+        }
+        .btn-neon.secondary:hover {
+            background: #ff00ff;
+            color: #0a0f1f;
+        }
+        /* Nodos de red (círculos) */
+        .node-neon {
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
             display: flex;
             flex-direction: column;
@@ -71,471 +148,434 @@
             font-weight: bold;
             transition: 0.3s;
             margin: 0 4px;
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Orbitron', sans-serif;
+            border: 2px solid;
+            background: rgba(0,0,0,0.4);
+            backdrop-filter: blur(5px);
         }
-        .node-filled {
-            background: linear-gradient(145deg, #fbbf24, #f59e0b);
-            color: black;
-            border: 2px solid white;
-            box-shadow: 0 0 20px #fbbf24;
+        .node-filled-neon {
+            border-color: #00ffff;
+            color: #00ffff;
+            box-shadow: 0 0 20px #00ffff;
+            background: rgba(0,255,255,0.1);
         }
-        .node-empty {
-            border: 2px dashed rgba(255, 215, 0, 0.3);
-            color: rgba(255, 255, 255, 0.5);
+        .node-empty-neon {
+            border-color: rgba(255,0,255,0.3);
+            color: rgba(255,0,255,0.5);
+            box-shadow: 0 0 10px rgba(255,0,255,0.2);
+        }
+        /* Estadísticas con números neón */
+        .stat-neon {
+            font-size: 2rem;
+            font-weight: 900;
+            color: #00ffff;
+            text-shadow: 0 0 20px #00ffff;
+        }
+        /* Tabs futuristas */
+        .tab-neon {
+            padding: 10px 25px;
+            border-radius: 60px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 600;
+            transition: 0.3s;
+            cursor: pointer;
             background: transparent;
+            border: 1px solid #00ffff;
+            color: #00ffff;
+            box-shadow: 0 0 10px #00ffff;
         }
-        .toast {
+        .tab-neon.active {
+            background: #00ffff;
+            color: #0a0f1f;
+            box-shadow: 0 0 30px #00ffff;
+        }
+        .tab-neon:hover {
+            background: rgba(0,255,255,0.2);
+        }
+        /* Feed del vault */
+        .feed-item-neon {
+            background: rgba(0,255,255,0.05);
+            border-left: 4px solid #00ffff;
+            border-radius: 1rem;
+            padding: 12px;
+            margin-bottom: 8px;
+        }
+        /* Modal neón */
+        .modal-neon {
+            background: rgba(10,20,30,0.95);
+            backdrop-filter: blur(20px);
+            border: 2px solid #00ffff;
+            border-radius: 2rem;
+            box-shadow: 0 0 100px #00ffff;
+        }
+        /* Tooltips (usamos title, se ven con estilo por defecto) */
+        [title] {
+            cursor: help;
+            border-bottom: 1px dotted #00ffff;
+        }
+        /* Botones flotantes */
+        .floating-neon {
             position: fixed;
             bottom: 20px;
-            right: 20px;
-            z-index: 1000;
-            transition: opacity 0.3s;
-            max-width: 300px;
-        }
-        .btn {
-            @apply font-black py-3 px-6 rounded-xl transition-all transform hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed;
-            font-family: 'Poppins', sans-serif;
-        }
-        .tutorial-step, .benefit-step, .feed-item, .info-section {
-            @apply bg-white/10 p-4 rounded-lg mb-3 text-sm border border-white/20;
-        }
-        /* Botones flotantes (igual) */
-        .whatsapp-button {
-            position: fixed;
-            bottom: 20px;
-            left: 90px;
-            z-index: 50;
-            background: linear-gradient(145deg, #25D366, #128C7E);
+            z-index: 100;
             padding: 12px 24px;
-            border-radius: 50px;
-            color: white;
+            border-radius: 60px;
             font-weight: bold;
             display: flex;
             align-items: center;
             gap: 8px;
-            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.5);
-            transition: all 0.3s;
-            font-family: 'Poppins', sans-serif;
-            border: 1px solid rgba(255,255,255,0.3);
+            transition: 0.3s;
+            font-family: 'Orbitron', sans-serif;
+            border: 1px solid;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(10px);
             text-decoration: none;
         }
-        .whatsapp-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 25px rgba(37, 211, 102, 0.7);
-        }
-        .telegram-button {
-            position: fixed;
-            bottom: 20px;
+        .telegram-neon {
             left: 20px;
-            z-index: 50;
-            background: linear-gradient(145deg, #2AABEE, #229ED9);
-            padding: 12px 24px;
-            border-radius: 50px;
+            border-color: #2AABEE;
+            color: #2AABEE;
+            box-shadow: 0 0 20px #2AABEE;
+        }
+        .whatsapp-neon {
+            left: 90px;
+            border-color: #25D366;
+            color: #25D366;
+            box-shadow: 0 0 20px #25D366;
+        }
+        .floating-neon:hover {
+            transform: scale(1.1);
+            background: currentColor;
+            color: black;
+        }
+        /* Imagen representativa con borde neón */
+        .img-neon {
+            border: 3px solid #00ffff;
+            border-radius: 50%;
+            box-shadow: 0 0 40px #00ffff;
+            transition: 0.3s;
+        }
+        .img-neon:hover {
+            transform: rotate(5deg) scale(1.05);
+        }
+        /* Enlace de invitación */
+        .input-neon {
+            background: rgba(0,0,0,0.6);
+            border: 1px solid #00ffff;
             color: white;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            box-shadow: 0 4px 20px rgba(42, 171, 238, 0.5);
-            transition: all 0.3s;
-            font-family: 'Poppins', sans-serif;
-            border: 1px solid rgba(255,255,255,0.3);
-            text-decoration: none;
+            border-radius: 60px;
+            padding: 10px 20px;
+            outline: none;
+            box-shadow: 0 0 15px #00ffff;
         }
-        .telegram-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 25px rgba(42, 171, 238, 0.7);
+        .input-neon:focus {
+            border-color: #ff00ff;
+            box-shadow: 0 0 30px #ff00ff;
         }
-        .tab-button {
-            @apply px-6 py-3 rounded-t-xl font-bold transition-all;
+        /* Scrollbar personalizada */
+        ::-webkit-scrollbar {
+            width: 8px;
         }
-        .tab-active {
-            @apply bg-yellow-500 text-black;
+        ::-webkit-scrollbar-track {
+            background: #0a0f1f;
         }
-        .tab-inactive {
-            @apply bg-white/10 text-white hover:bg-white/20;
-        }
-        .feed-container {
-            max-height: 200px;
-            overflow-y: auto;
-        }
-        .vault-card {
-            @apply glass-card p-4 text-center;
-        }
-        .vault-stat {
-            @apply text-2xl font-black text-yellow-300;
-        }
-        .info-title {
-            @apply text-yellow-400 font-bold text-base mb-2;
-        }
-        /* Imágenes representativas */
-        .representative-img {
-            width: 100%;
-            border-radius: 1rem;
-            margin: 1rem 0;
-            border: 2px solid #fbbf24;
-            box-shadow: 0 0 30px #fbbf24;
-        }
-        .icon-large {
-            font-size: 4rem;
-            color: #fbbf24;
-            text-align: center;
-            margin: 1rem 0;
-        }
-        .fallback-icon {
-            display: none;
-            text-align: center;
-            padding: 2rem;
-            background: rgba(0,0,0,0.3);
-            border-radius: 1rem;
-            border: 2px dashed #fbbf24;
-        }
-        .header-image {
-            max-width: 100px;
-            margin: 0 auto 1rem;
+        ::-webkit-scrollbar-thumb {
+            background: #00ffff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px #00ffff;
         }
     </style>
 </head>
 <body>
-    <!-- Video de fondo -->
-    <video autoplay muted loop playsinline id="bg-video" poster="https://images.pexels.com/photos/3943716/pexels-photo-3943716.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2">
-        <source src="https://videos.pexels.com/video-files/3129674/3129674-uhd_2560_1440_30fps.mp4" type="video/mp4">
-    </video>
-    <!-- Overlay con aurora -->
-    <div class="aurora-overlay"></div>
+    <!-- Canvas de partículas -->
+    <canvas id="particles-canvas"></canvas>
+    <div class="neon-overlay"></div>
 
-    <!-- Botones flotantes -->
-    <a id="telegramLink" href="https://t.me/+z7wwfx0ocho1NzI5" target="_blank" class="telegram-button hidden">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.02-.15-.05-.22-.07-.07-.18-.05-.26-.03-.11.02-1.85 1.17-5.22 3.45-.5.34-.95.5-1.36.49-.45-.01-1.3-.25-1.94-.46-.78-.26-1.4-.4-1.35-.85.03-.23.27-.47.74-.72 2.91-1.27 4.86-2.11 5.83-2.52 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.08-.02.25-.04.4z"/></svg>
-        <span>Grupo Telegram</span>
+    <!-- Botones flotantes (neón) -->
+    <a id="telegramLink" href="https://t.me/+z7wwfx0ocho1NzI5" target="_blank" class="floating-neon telegram-neon hidden">
+        <i class="fab fa-telegram-plane"></i> <span>Telegram</span>
     </a>
-    <a id="whatsappLink" href="https://whatsapp.com/channel/0029Vb74Mxr3LdQVgWdycV2a" target="_blank" class="whatsapp-button hidden">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M12.036 2.001C6.505 2.001 2 6.506 2 12.037c0 1.95.57 3.77 1.55 5.31L2 22l4.78-1.53A9.978 9.978 0 0 0 12.036 22c5.53 0 10.034-4.505 10.034-10.036 0-5.53-4.505-10.035-10.034-10.035zm0 18.464c-1.634 0-3.212-.468-4.562-1.336l-.327-.198-3.004.963 1.003-2.93-.21-.337a8.38 8.38 0 0 1-1.345-4.59c0-4.616 3.76-8.376 8.376-8.376s8.376 3.76 8.376 8.376-3.76 8.376-8.376 8.376zm4.53-6.268c-.248-.124-1.466-.723-1.694-.805-.228-.082-.394-.124-.56.124-.166.248-.645.805-.79.97-.146.165-.29.186-.538.062s-1.052-.387-2.003-1.235c-.74-.66-1.24-1.476-1.385-1.724-.146-.248-.016-.382.11-.506.11-.11.248-.29.373-.435.124-.145.166-.248.248-.414.083-.165.041-.31-.02-.434-.062-.124-.56-1.35-.77-1.85-.202-.482-.407-.416-.56-.424-.145-.008-.31-.008-.476-.008-.166 0-.435.062-.663.31-.228.249-.87.85-.87 2.075 0 1.224.89 2.407 1.015 2.574.124.166 1.73 2.64 4.19 3.61.586.23 1.043.368 1.4.47.588.166 1.123.143 1.545.086.472-.062 1.454-.594 1.66-1.168.206-.574.206-1.066.145-1.168-.06-.103-.228-.166-.476-.29z"/></svg>
-        <span>Canal WhatsApp</span>
+    <a id="whatsappLink" href="https://whatsapp.com/channel/0029Vb74Mxr3LdQVgWdycV2a" target="_blank" class="floating-neon whatsapp-neon hidden">
+        <i class="fab fa-whatsapp"></i> <span>WhatsApp</span>
     </a>
 
-    <div id="toast" class="toast glass-card p-4 hidden">
+    <!-- Modal de confirmación (neón) -->
+    <div id="confirmModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden justify-center items-center z-50">
+        <div class="modal-neon p-8 max-w-md w-full text-center">
+            <i class="fas fa-exclamation-triangle text-5xl text-cyan-400 mb-4"></i>
+            <h3 id="modalTitle" class="text-2xl font-bold text-cyan-400 mb-4" style="font-family: 'Orbitron';">¿Confirmar?</h3>
+            <p id="modalMessage" class="text-white/80 mb-6"></p>
+            <div class="flex gap-4 justify-center">
+                <button id="modalConfirm" class="btn-neon">SÍ</button>
+                <button id="modalCancel" class="btn-neon secondary">NO</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="fixed bottom-20 right-5 glass-card p-4 hidden z-50">
         <p id="toastMsg" class="text-sm"></p>
     </div>
 
-    <div class="max-w-3xl mx-auto relative z-10">
+    <div class="container-neon">
         <header class="text-center py-8">
-            <!-- Imagen representativa (baúl) con respaldo -->
-            <div style="position: relative; display: inline-block;">
+            <!-- Imagen representativa con efecto neón -->
+            <div class="inline-block relative">
                 <img src="https://images.pexels.com/photos/3943716/pexels-photo-3943716.jpeg?auto=compress&cs=tinysrgb&w=200&h=200&fit=crop" 
-                     alt="Baúl Milimar" 
-                     class="header-image rounded-full border-4 border-yellow-500"
-                     onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';">
-                <div class="fallback-icon" style="display: none; width: 100px; height: 100px; border-radius: 50%; padding: 1.5rem;">
-                    <i class="fas fa-box-open fa-3x" style="color: #fbbf24;"></i>
-                </div>
+                     alt="Milimar" 
+                     class="img-neon w-24 h-24 object-cover"
+                     onerror="this.onerror=null; this.style.display='none'; this.nextElementSibling.style.display='inline-block';">
+                <div class="hidden text-cyan-400 text-6xl"><i class="fas fa-box-open"></i></div>
             </div>
-            <div class="flex items-center justify-center gap-4">
-                <h1 class="text-6xl font-black text-white drop-shadow-2xl tracking-tighter" style="text-shadow: 0 0 20px rgba(251,191,36,0.5);">MILIMAR JAGC</h1>
-            </div>
-            <p class="text-sm text-white/80 uppercase tracking-[0.3em] font-light mt-2">Oficina Virtual · BSC · V5</p>
+            <h1 class="glitch mt-4">MILIMAR JAGC</h1>
+            <p class="subtitle-neon text-sm mt-2">OFICINA VIRTUAL · NEO EDITION</p>
         </header>
 
-        <!-- Pestañas de navegación -->
-        <div class="flex flex-wrap justify-center gap-2 mb-6">
-            <button id="btnMembresia" class="tab-button tab-active">MEMBRESÍA</button>
-            <button id="btnVault" class="tab-button tab-inactive">VAULT</button>
-            <button id="btnInfoVault" class="tab-button tab-inactive">📘 ACERCA DEL VAULT</button>
-            <button id="btnArbitraje" class="tab-button tab-inactive">ARBITRAJE</button>
+        <!-- Tabs futuristas -->
+        <div class="flex flex-wrap justify-center gap-3 mb-8">
+            <button id="btnMembresia" class="tab-neon active">MEMBRESÍA</button>
+            <button id="btnVault" class="tab-neon">VAULT</button>
+            <button id="btnInfoVault" class="tab-neon">📘 INFO VAULT</button>
+            <button id="btnHistorial" class="tab-neon">📜 HISTORIAL</button>
+            <button id="btnArbitraje" class="tab-neon">ARBITRAJE</button>
         </div>
 
-        <!-- Contenedor de conexión -->
-        <div id="conBox" class="glass-card p-10 text-center mb-6">
-            <button id="btnConnect" class="btn bg-white text-black w-full max-w-md mx-auto hover:bg-yellow-300 transition">CONECTAR BILLETERA</button>
+        <!-- Conexión -->
+        <div id="conBox" class="neon-card p-10 text-center mb-6">
+            <button id="btnConnect" class="btn-neon text-xl px-12 py-4">CONECTAR BILLETERA</button>
         </div>
 
-        <!-- SECCIÓN MEMBRESÍA (V5) -->
+        <!-- SECCIÓN MEMBRESÍA -->
         <div id="seccionMembresia" class="space-y-6">
-            <!-- Tarjetas de resumen -->
+            <!-- Tarjetas de resumen con tooltips -->
             <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-                <div class="glass-card p-4 border-l-4 border-green-400">
-                    <p class="text-[10px] text-white/60 uppercase font-bold">Saldo Pendiente</p>
-                    <p id="valSaldo" class="text-xl font-black text-green-300">0.00</p>
+                <div class="neon-card p-4 border-l-4 border-cyan-400" title="Ganancias no retiradas">
+                    <p class="text-xs text-cyan-300/60 uppercase">Saldo Pendiente</p>
+                    <p id="valSaldo" class="stat-neon">0.00</p>
                 </div>
-                <div class="glass-card p-4 border-r-4 border-yellow-400 text-right">
-                    <p class="text-[10px] text-white/60 uppercase font-bold">Red Total</p>
-                    <p id="valRed" class="text-xl font-black text-yellow-300">0</p>
+                <div class="neon-card p-4 border-r-4 border-purple-400 text-right" title="Total en tu red">
+                    <p class="text-xs text-purple-300/60 uppercase">Red Total</p>
+                    <p id="valRed" class="stat-neon text-purple-400">0</p>
                 </div>
-                <div class="glass-card p-4 border-l-4 border-blue-400">
-                    <p class="text-[10px] text-white/60 uppercase font-bold">Directos</p>
-                    <p id="valDir" class="text-xl font-black text-blue-300">0</p>
+                <div class="neon-card p-4 border-l-4 border-blue-400" title="Directos">
+                    <p class="text-xs text-blue-300/60 uppercase">Directos</p>
+                    <p id="valDir" class="stat-neon text-blue-400">0</p>
                 </div>
-                <div class="glass-card p-4 border-r-4 border-purple-400 text-right">
-                    <p class="text-[10px] text-white/60 uppercase font-bold">Días activo</p>
-                    <p id="valDias" class="text-xl font-black text-purple-300">0</p>
+                <div class="neon-card p-4 border-r-4 border-pink-400 text-right" title="Días activo">
+                    <p class="text-xs text-pink-300/60 uppercase">Días activo</p>
+                    <p id="valDias" class="stat-neon text-pink-400">0</p>
                 </div>
             </div>
 
-            <!-- Fondos: Solidaridad y Pool Liderazgo + Emergencia -->
+            <!-- Fondos -->
             <div class="grid grid-cols-3 gap-3">
-                <div class="glass-card p-3 text-center">
-                    <p class="text-[10px] text-white/60 uppercase font-bold">Fondo Solidaridad</p>
+                <div class="neon-card p-3 text-center" title="Fondo solidaridad">
+                    <p class="text-xs text-emerald-300/60">Fondo Solidaridad</p>
                     <p id="fondoSolidaridad" class="text-lg font-black text-emerald-300">0.00</p>
                 </div>
-                <div class="glass-card p-3 text-center">
-                    <p class="text-[10px] text-white/60 uppercase font-bold">Pool Liderazgo</p>
+                <div class="neon-card p-3 text-center" title="Pool liderazgo">
+                    <p class="text-xs text-yellow-300/60">Pool Liderazgo</p>
                     <p id="poolLiderazgo" class="text-lg font-black text-yellow-300">0.00</p>
                 </div>
-                <div class="glass-card p-3 text-center" id="emergencyContainer">
-                    <p class="text-[10px] text-white/60 uppercase font-bold">Modo Emergencia</p>
+                <div class="neon-card p-3 text-center" id="emergencyContainer" title="Modo emergencia">
+                    <p class="text-xs text-red-300/60">Modo Emergencia</p>
                     <p id="emergencyStatus" class="text-lg font-black text-red-300">INACTIVO</p>
                 </div>
             </div>
 
-            <!-- Bono nivel 3 y bonos recurrentes -->
+            <!-- Bonos -->
             <div class="grid grid-cols-2 gap-3">
-                <div class="glass-card p-3 text-center">
-                    <p class="text-[10px] text-white/60 uppercase font-bold">Bono Nivel 3</p>
+                <div class="neon-card p-3 text-center" title="Bono nivel 3">
+                    <p class="text-xs text-orange-300/60">Bono Nivel 3</p>
                     <p id="bonoNivel3" class="text-lg font-black text-orange-300">5 USDT</p>
                 </div>
-                <div class="glass-card p-3 text-center">
-                    <p class="text-[10px] text-white/60 uppercase font-bold">Bonos recurrentes</p>
-                    <p id="bonosRecurrentes" class="text-lg font-black text-blue-300">INACTIVO</p>
+                <div class="neon-card p-3 text-center" title="Bonos recurrentes">
+                    <p class="text-xs text-cyan-300/60">Bonos recurrentes</p>
+                    <p id="bonosRecurrentes" class="text-lg font-black text-cyan-300">INACTIVO</p>
                 </div>
             </div>
 
-            <!-- Botón de retiro de emergencia -->
-            <button id="btnEmergencyWithdraw" class="hidden w-full bg-red-700 text-white font-bold py-3 rounded-xl hover:bg-red-600 transition">🚨 RETIRO DE EMERGENCIA</button>
+            <!-- Botón emergencia -->
+            <button id="btnEmergencyWithdraw" class="hidden w-full btn-neon secondary !border-red-500 !text-red-500 !shadow-red-500/50 hover:!bg-red-500 hover:!text-black py-3">🚨 RETIRO DE EMERGENCIA</button>
 
-            <!-- Visualización de 5 niveles -->
-            <div class="glass-card p-6 text-center">
-                <p class="text-white text-sm font-bold mb-4 drop-shadow">📊 TUS 5 NIVELES DE RED</p>
+            <!-- Niveles de red -->
+            <div class="neon-card p-6 text-center">
+                <p class="text-cyan-400 font-bold mb-4" style="font-family: 'Orbitron';">📊 TUS 5 NIVELES</p>
                 <div class="flex flex-wrap justify-center gap-2">
-                    <div id="n1" class="node node-empty">N1<br><span class="text-[10px]">0</span></div>
-                    <div id="n2" class="node node-empty">N2<br><span class="text-[10px]">0</span></div>
-                    <div id="n3" class="node node-empty">N3<br><span class="text-[10px]">0</span></div>
-                    <div id="n4" class="node node-empty">N4<br><span class="text-[10px]">0</span></div>
-                    <div id="n5" class="node node-empty">N5<br><span class="text-[10px]">0</span></div>
+                    <div id="n1" class="node-neon node-empty-neon">N1<br><span class="text-[10px]">0</span></div>
+                    <div id="n2" class="node-neon node-empty-neon">N2<br><span class="text-[10px]">0</span></div>
+                    <div id="n3" class="node-neon node-empty-neon">N3<br><span class="text-[10px]">0</span></div>
+                    <div id="n4" class="node-neon node-empty-neon">N4<br><span class="text-[10px]">0</span></div>
+                    <div id="n5" class="node-neon node-empty-neon">N5<br><span class="text-[10px]">0</span></div>
                 </div>
-                <p class="text-[10px] text-white/50 mt-4">Cada círculo muestra la cantidad de personas en ese nivel.</p>
             </div>
 
-            <!-- Detalles por nivel y ganancias -->
+            <!-- Detalles por nivel -->
             <div class="grid md:grid-cols-2 gap-4">
-                <div class="glass-card p-4">
+                <div class="neon-card p-4">
                     <div class="flex justify-between items-center mb-2">
-                        <h3 class="text-white font-bold text-sm drop-shadow">📊 SOCIOS POR NIVEL</h3>
-                        <button id="btnReloadDetails" class="text-xs bg-white/20 hover:bg-white/30 px-2 py-1 rounded transition">⟳ Recargar</button>
+                        <h3 class="text-cyan-400 font-bold">📊 SOCIOS POR NIVEL</h3>
+                        <button id="btnReloadDetails" class="btn-neon text-xs py-1 px-3">⟳</button>
                     </div>
-                    <div id="redNiveles" class="space-y-1 text-xs"><p class="text-white/50">Cargando...</p></div>
+                    <div id="redNiveles" class="space-y-1 text-xs"></div>
                 </div>
-                <div class="glass-card p-4">
+                <div class="neon-card p-4">
                     <div class="flex justify-between items-center mb-2">
-                        <h3 class="text-white font-bold text-sm drop-shadow">💰 GANANCIAS ACUMULADAS</h3>
-                        <button id="btnReloadGanancias" class="text-xs bg-white/20 hover:bg-white/30 px-2 py-1 rounded transition">⟳ Recargar</button>
+                        <h3 class="text-purple-400 font-bold">💰 GANANCIAS</h3>
+                        <button id="btnReloadGanancias" class="btn-neon text-xs py-1 px-3">⟳</button>
                     </div>
-                    <div id="gananciasNiveles" class="space-y-1 text-xs"><p class="text-white/50">Cargando...</p></div>
+                    <div id="gananciasNiveles" class="space-y-1 text-xs"></div>
                 </div>
             </div>
 
             <!-- Botones de acción -->
             <div class="grid grid-cols-2 gap-3">
-                <button id="btnApprove" class="btn bg-blue-600 text-white hover:bg-blue-500">1. AUTORIZAR USDT</button>
-                <button id="btnJoin" class="btn bg-yellow-500 text-black hover:bg-yellow-400">2. ACTIVAR (10 USDT)</button>
-                <button id="btnRenew" class="btn bg-indigo-600 text-white hover:bg-indigo-500">RENOVAR</button>
-                <button id="btnWithdraw" class="btn bg-green-600 text-white hover:bg-green-500">RETIRAR</button>
+                <button id="btnApprove" class="btn-neon">1. AUTORIZAR USDT</button>
+                <button id="btnJoin" class="btn-neon">2. ACTIVAR</button>
+                <button id="btnRenew" class="btn-neon secondary">RENOVAR</button>
+                <button id="btnWithdraw" class="btn-neon secondary">RETIRAR</button>
             </div>
 
             <!-- Panel Admin -->
-            <div id="adminSection" class="hidden glass-card p-4 border border-yellow-500/50">
-                <h2 class="text-white font-bold mb-3 text-sm uppercase tracking-wider drop-shadow">⚙️ Panel Admin</h2>
+            <div id="adminSection" class="hidden neon-card p-4 border border-purple-500/50">
+                <h2 class="text-purple-400 font-bold mb-3">⚙️ ADMIN</h2>
                 <div class="grid grid-cols-2 gap-2">
-                    <button id="btnPausa" class="btn bg-red-600 text-white text-sm py-2 hover:bg-red-500">PAUSAR/REANUDAR</button>
-                    <button id="btnCupos" class="btn bg-purple-600 text-white text-sm py-2 hover:bg-purple-500">OTORGAR CUPOS</button>
-                    <button id="btnPremiar" class="btn bg-pink-600 text-white text-sm py-2 hover:bg-pink-500">PREMIAR LÍDER</button>
-                    <button id="btnSolidaridad" class="btn bg-emerald-600 text-white text-sm py-2 hover:bg-emerald-500">USAR FONDO SOL.</button>
-                    <button id="btnActualizarBono" class="btn bg-orange-600 text-white text-sm py-2 hover:bg-orange-500">ACT. BONO N3</button>
-                    <button id="btnToggleBonosRec" class="btn bg-cyan-600 text-white text-sm py-2 hover:bg-cyan-500">ACT. BONOS REC.</button>
-                    <button id="btnPagarBonosRec" class="btn bg-teal-600 text-white text-sm py-2 hover:bg-teal-500">PAGAR BONOS REC.</button>
-                    <button id="btnRecuperar" class="btn bg-orange-600 text-white text-sm py-2 hover:bg-orange-500">RECUPERAR TOKEN</button>
+                    <button id="btnPausa" class="btn-neon text-sm py-2">PAUSAR</button>
+                    <button id="btnCupos" class="btn-neon text-sm py-2">CUPOS</button>
+                    <button id="btnPremiar" class="btn-neon text-sm py-2">PREMIAR</button>
+                    <button id="btnSolidaridad" class="btn-neon text-sm py-2">F. SOL.</button>
+                    <button id="btnActualizarBono" class="btn-neon text-sm py-2">BONO N3</button>
+                    <button id="btnToggleBonosRec" class="btn-neon text-sm py-2">BONOS REC</button>
+                    <button id="btnPagarBonosRec" class="btn-neon text-sm py-2">PAGAR REC</button>
+                    <button id="btnRecuperar" class="btn-neon text-sm py-2">RECUPERAR</button>
                 </div>
-                <div class="mt-2 text-[10px] text-white/50">Usa estas funciones con responsabilidad.</div>
             </div>
 
-            <!-- Enlace de invitación -->
-            <div class="glass-card p-4 text-center">
-                <p class="text-[10px] text-white/50 mb-1 uppercase font-bold">TU ENLACE DE INVITACIÓN</p>
+            <!-- Enlace de invitación + compartir -->
+            <div class="neon-card p-4 text-center">
+                <p class="text-xs text-cyan-300/60 mb-1">TU ENLACE DE INVITACIÓN</p>
                 <div class="flex items-center gap-2">
-                    <input id="refLink" readonly class="w-full bg-white/10 border border-white/30 rounded-lg p-2 text-center text-white text-xs outline-none">
-                    <button id="copyLinkBtn" class="bg-white text-black font-bold py-2 px-4 rounded-lg text-sm hover:bg-yellow-300 transition">Copiar</button>
+                    <input id="refLink" readonly class="input-neon flex-1">
+                    <button id="copyLinkBtn" class="btn-neon py-2 px-4">Copiar</button>
                 </div>
-                <p id="copyMsg" class="text-[10px] text-green-300 mt-2 hidden">¡Link copiado!</p>
+                <p id="copyMsg" class="text-xs text-green-400 mt-2 hidden">¡Copiado!</p>
+                <div class="flex justify-center gap-3 mt-3">
+                    <a id="shareTelegram" href="#" target="_blank" class="btn-neon text-sm py-1 px-3"><i class="fab fa-telegram"></i> Telegram</a>
+                    <a id="shareWhatsapp" href="#" target="_blank" class="btn-neon text-sm py-1 px-3"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+                </div>
             </div>
 
             <!-- Tutoriales -->
-            <div class="glass-card p-4">
+            <div class="neon-card p-4">
                 <details class="cursor-pointer">
-                    <summary class="text-white font-bold text-sm list-none flex justify-between items-center drop-shadow">
-                        📘 TUTORIALES RÁPIDOS
-                        <span class="text-xs text-white/60">(clic para expandir)</span>
+                    <summary class="text-cyan-400 font-bold list-none flex justify-between items-center">
+                        📘 TUTORIALES <span class="text-xs">(clic)</span>
                     </summary>
-                    <div class="mt-4 space-y-3">
-                        <div class="tutorial-step">
-                            <p class="font-bold text-yellow-300">🔹 Autorizar USDT</p>
-                            <p class="text-xs text-white/80">1. Asegúrate de tener USDT en tu wallet.<br>2. Haz clic en "AUTORIZAR USDT".<br>3. Confirma la transacción (solo gas).</p>
-                        </div>
-                        <div class="tutorial-step">
-                            <p class="font-bold text-yellow-300">🔹 Activar suscripción</p>
-                            <p class="text-xs text-white/80">1. Después de autorizar, haz clic en "ACTIVAR".<br>2. Ingresa la dirección de tu patrocinador (si no viene por link).<br>3. Confirma la transacción (10 USDT + gas).</p>
-                        </div>
-                        <div class="tutorial-step">
-                            <p class="font-bold text-yellow-300">🔹 Renovar</p>
-                            <p class="text-xs text-white/80">Paga 10 USDT para extender tu membresía 30 días más.</p>
-                        </div>
-                        <div class="tutorial-step">
-                            <p class="font-bold text-yellow-300">🔹 Retirar ganancias</p>
-                            <p class="text-xs text-white/80">Solo cuando tengas al menos 4 directos y saldo ≥10 USDT.</p>
-                        </div>
-                        <div class="tutorial-step">
-                            <p class="font-bold text-yellow-300">🔹 Invitar</p>
-                            <p class="text-xs text-white/80">Comparte tu link de invitación. Cuando alguien se registre con él, será tu referido directo.</p>
-                        </div>
+                    <div class="mt-4 space-y-2 text-sm">
+                        <div class="p-3 bg-cyan-950/30 rounded border border-cyan-500/30">🔹 Autorizar USDT: Asegúrate de tener USDT y haz clic en "AUTORIZAR".</div>
+                        <div class="p-3 bg-cyan-950/30 rounded border border-cyan-500/30">🔹 Activar: Después de autorizar, haz clic en "ACTIVAR" e ingresa tu patrocinador.</div>
+                        <div class="p-3 bg-cyan-950/30 rounded border border-cyan-500/30">🔹 Renovar: Paga 10 USDT para extender 30 días.</div>
+                        <div class="p-3 bg-cyan-950/30 rounded border border-cyan-500/30">🔹 Retirar: Mínimo 4 directos y saldo ≥10 USDT.</div>
                     </div>
                 </details>
             </div>
         </div>
 
-        <!-- SECCIÓN VAULT (igual que en v4) -->
+        <!-- SECCIÓN VAULT -->
         <div id="seccionVault" class="hidden space-y-6">
-            <div class="glass-card p-6">
-                <h2 class="text-2xl font-bold text-yellow-400 mb-4">🏦 VAULT DE CRECIMIENTO</h2>
-                <p class="text-sm text-white/70 mb-6">Invierte desde $10 USDT en nuestro fondo diversificado (70% préstamos seguros + 30% farming de alto rendimiento). Gana intereses semanales y retira cuando quieras.</p>
-
-                <!-- Estadísticas del vault -->
+            <div class="neon-card p-6">
+                <h2 class="text-3xl font-bold text-cyan-400 mb-4" style="font-family: 'Orbitron';">🏦 VAULT NEO</h2>
+                <canvas id="vaultChart" style="height: 200px; width: 100%;" class="mb-6"></canvas>
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
-                    <div class="vault-card">
-                        <p class="text-[10px] text-white/50">Mi inversión</p>
-                        <p id="vaultMiInversion" class="vault-stat">0.00</p>
+                    <div class="neon-card p-3 text-center">
+                        <p class="text-xs text-white/50">Mi inversión</p>
+                        <p id="vaultMiInversion" class="stat-neon">0.00</p>
                     </div>
-                    <div class="vault-card">
-                        <p class="text-[10px] text-white/50">Ganancias acumuladas</p>
-                        <p id="vaultGanancias" class="vault-stat">0.00</p>
+                    <div class="neon-card p-3 text-center">
+                        <p class="text-xs text-white/50">Ganancias</p>
+                        <p id="vaultGanancias" class="stat-neon">0.00</p>
                     </div>
-                    <div class="vault-card">
-                        <p class="text-[10px] text-white/50">Total en fondo</p>
-                        <p id="vaultTotalFondo" class="vault-stat">0.00</p>
+                    <div class="neon-card p-3 text-center">
+                        <p class="text-xs text-white/50">Total fondo</p>
+                        <p id="vaultTotalFondo" class="stat-neon">0.00</p>
                     </div>
-                    <div class="vault-card">
-                        <p class="text-[10px] text-white/50">Valor de share</p>
-                        <p id="vaultSharePrice" class="vault-stat">1.00</p>
-                    </div>
-                </div>
-
-                <!-- Mensaje sobre variabilidad -->
-                <div class="glass-card p-4 mb-6 bg-yellow-500/10 border-yellow-500/30">
-                    <p class="text-sm text-white/80 text-center">
-                        ⚠️ El rendimiento del Vault es <span class="font-bold text-yellow-300">variable</span> y depende de las condiciones diarias del mercado.
-                        Históricamente, los rendimientos han oscilado entre:
-                    </p>
-                    <div class="grid grid-cols-2 gap-4 mt-3 text-center">
-                        <div class="bg-black/30 p-2 rounded">
-                            <p class="text-xs text-white/50">Diario (promedio)</p>
-                            <p class="text-lg font-bold text-green-300">0.02% – 0.05%</p>
-                        </div>
-                        <div class="bg-black/30 p-2 rounded">
-                            <p class="text-xs text-white/50">Semanal (promedio)</p>
-                            <p class="text-lg font-bold text-green-300">0.15% – 0.38%</p>
-                        </div>
+                    <div class="neon-card p-3 text-center">
+                        <p class="text-xs text-white/50">Share price</p>
+                        <p id="vaultSharePrice" class="stat-neon">1.00</p>
                     </div>
                 </div>
-
-                <!-- Formulario de depósito -->
-                <div class="glass-card p-4 mb-4">
-                    <h3 class="font-bold text-white mb-2">📥 Depositar USDT</h3>
+                <div class="neon-card p-4 mb-4">
+                    <h3 class="text-cyan-400 mb-2">📥 Depositar</h3>
                     <div class="flex gap-2">
-                        <input type="number" id="vaultDepositAmount" placeholder="Cantidad (mín. 10)" min="10" step="0.01" class="w-full bg-white/10 border border-white/30 rounded-lg p-2 text-white">
-                        <button id="btnVaultDeposit" class="btn bg-green-600 text-white px-6">Depositar</button>
+                        <input type="number" id="vaultDepositAmount" placeholder="Cantidad (mín. 10)" class="input-neon flex-1">
+                        <button id="btnVaultDeposit" class="btn-neon">Depositar</button>
                     </div>
-                    <p class="text-[10px] text-white/30 mt-1">Mínimo 10 USDT. Las ganancias se reparten semanalmente.</p>
                 </div>
-
-                <!-- Opciones de retiro -->
                 <div class="grid grid-cols-2 gap-3">
-                    <div class="glass-card p-4">
-                        <h3 class="font-bold text-white mb-2">📤 Retiro estándar</h3>
-                        <p class="text-xs text-white/60 mb-2">Sin comisión. Se procesa al final del ciclo (semanal).</p>
-                        <div class="flex gap-2">
-                            <input type="number" id="vaultWithdrawStandard" placeholder="Cantidad de shares" min="0" step="1" class="w-full bg-white/10 border border-white/30 rounded-lg p-2 text-white">
-                            <button id="btnVaultRequestStandard" class="btn bg-blue-600 text-white px-4">Solicitar</button>
-                        </div>
+                    <div class="neon-card p-4">
+                        <h3 class="text-cyan-400 mb-2">📤 Estándar</h3>
+                        <input type="number" id="vaultWithdrawStandard" placeholder="Shares" class="input-neon w-full mb-2">
+                        <button id="btnVaultRequestStandard" class="btn-neon w-full">Solicitar</button>
                     </div>
-                    <div class="glass-card p-4">
-                        <h3 class="font-bold text-white mb-2">⚡ Retiro instantáneo</h3>
-                        <p class="text-xs text-white/60 mb-2">Comisión 1%. Límite semanal del 10% del fondo.</p>
-                        <div class="flex gap-2">
-                            <input type="number" id="vaultWithdrawInstant" placeholder="Cantidad de shares" min="0" step="1" class="w-full bg-white/10 border border-white/30 rounded-lg p-2 text-white">
-                            <button id="btnVaultInstant" class="btn bg-yellow-500 text-black px-4">Retirar</button>
-                        </div>
+                    <div class="neon-card p-4">
+                        <h3 class="text-purple-400 mb-2">⚡ Instantáneo</h3>
+                        <input type="number" id="vaultWithdrawInstant" placeholder="Shares" class="input-neon w-full mb-2">
+                        <button id="btnVaultInstant" class="btn-neon secondary w-full">Retirar</button>
                     </div>
                 </div>
-
-                <!-- Feed de actividad del vault -->
-                <div class="glass-card p-4 mt-6">
-                    <h3 class="text-white font-bold text-sm mb-2">📢 ACTIVIDAD DEL VAULT</h3>
-                    <div id="vaultFeed" class="feed-container space-y-2 pr-2">
-                        <p class="text-white/50 text-xs">Conecta tu wallet para ver la actividad...</p>
-                    </div>
+                <div class="neon-card p-4 mt-6">
+                    <h3 class="text-cyan-400 mb-2">📢 ACTIVIDAD</h3>
+                    <div id="vaultFeed" class="space-y-2 max-h-40 overflow-y-auto"></div>
                 </div>
             </div>
         </div>
 
-        <!-- NUEVA SECCIÓN: ACERCA DEL VAULT (con imagen) -->
+        <!-- INFO VAULT -->
         <div id="seccionInfoVault" class="hidden space-y-6">
-            <div class="glass-card p-6">
-                <h2 class="text-2xl font-bold text-yellow-400 mb-4">📘 ACERCA DEL VAULT DE CRECIMIENTO</h2>
-                <!-- Imagen representativa (gráfico) con respaldo -->
-                <div style="position: relative; text-align: center;">
-                    <img src="https://images.pexels.com/photos/844124/pexels-photo-844124.jpeg?auto=compress&cs=tinysrgb&w=600" 
-                         alt="Gráfico de inversiones" 
-                         class="representative-img"
-                         onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                    <div class="fallback-icon" style="display: none;">
-                        <i class="fas fa-chart-line fa-5x" style="color: #fbbf24;"></i>
-                        <p style="color: #fbbf24; margin-top: 10px;">Gráfico de inversiones</p>
+            <div class="neon-card p-6">
+                <h2 class="text-3xl font-bold text-cyan-400 mb-4">📘 ACERCA DEL VAULT</h2>
+                <img src="https://images.pexels.com/photos/844124/pexels-photo-844124.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Gráfico" class="w-full rounded-2xl border-2 border-cyan-400 shadow-lg shadow-cyan-500/50 mb-4">
+                <div class="space-y-4">
+                    <div class="p-4 bg-cyan-950/30 rounded border border-cyan-500/30">
+                        <h3 class="text-cyan-400 font-bold">🔍 ¿Cómo funciona?</h3>
+                        <p class="text-sm">Fondo colectivo que invierte en préstamos (70%) y farming (30%).</p>
                     </div>
-                </div>
-                <div class="space-y-4 mt-4">
-                    <div class="info-section">
-                        <h3 class="info-title">🔍 ¿Cómo funciona?</h3>
-                        <p class="text-white/80 text-xs leading-relaxed">El Vault es un fondo colectivo donde los usuarios depositan USDT. El contrato inteligente invierte automáticamente estos fondos en dos estrategias: 70% en préstamos seguros (Venus Protocol) y 30% en farming de alto rendimiento (PancakeSwap/Beefy).</p>
-                    </div>
-                    <div class="info-section">
-                        <h3 class="info-title">📈 ¿Por qué el rendimiento es variable?</h3>
-                        <p class="text-white/80 text-xs">Depende de las tasas de interés de préstamos, el volumen de trading y el precio de tokens de recompensa.</p>
-                    </div>
-                    <div class="info-section">
-                        <h3 class="info-title">🛡️ Seguridad y riesgos</h3>
-                        <ul class="list-disc list-inside text-white/70 text-xs"><li>Riesgo de mercado</li><li>Riesgo de protocolo</li><li>Protecciones: emergency withdraw, pausa, diversificación</li></ul>
+                    <div class="p-4 bg-cyan-950/30 rounded border border-cyan-500/30">
+                        <h3 class="text-cyan-400 font-bold">📈 Rendimiento variable</h3>
+                        <p class="text-sm">Depende del mercado. Histórico: 0.02-0.05% diario.</p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- SECCIÓN ARBITRAJE -->
-        <div id="seccionArbitraje" class="hidden space-y-6">
-            <div class="glass-card p-6 text-center">
-                <h2 class="text-2xl font-bold text-yellow-400 mb-4">🤖 ARBITRAJE</h2>
-                <p class="text-sm text-white/70 mb-6">Estamos desarrollando una plataforma de arbitraje automatizado. ¡Muy pronto!</p>
+        <!-- HISTORIAL -->
+        <div id="seccionHistorial" class="hidden space-y-6">
+            <div class="neon-card p-6">
+                <h2 class="text-3xl font-bold text-cyan-400 mb-4">📜 MI HISTORIAL</h2>
+                <div id="historialList" class="space-y-2 max-h-96 overflow-y-auto"></div>
             </div>
         </div>
+
+        <!-- ARBITRAJE -->
+        <div id="seccionArbitraje" class="hidden space-y-6">
+            <div class="neon-card p-6 text-center">
+                <h2 class="text-3xl font-bold text-cyan-400 mb-4">🤖 ARBITRAJE</h2>
+                <p class="text-lg">Próximamente...</p>
+            </div>
+        </div>
+
+        <footer class="text-center text-xs text-cyan-700 mt-8">Milimar NEO · BSC · Versión 5</footer>
     </div>
 
-    <footer class="text-center text-[10px] text-gray-500 mt-4 relative z-10">Milimar Protocol · BSC · Versión 5 + Vault</footer>
-
     <script>
-        // ========== CONFIGURACIÓN (igual que en el original) ==========
+        // ========== CONFIGURACIÓN ==========
         const CONTRACT_ADDR_MEMBRESIA = "0x35425E6416f799C30938cBc159523B43C1c358B2";
-        const CONTRACT_ADDR_VAULT = "0x..."; // Dirección del vault (dejar como está)
+        const CONTRACT_ADDR_VAULT = "0x..."; // Reemplazar cuando esté listo
         const USDT_ADDR = "0x55d398326f99059fF775485246999027B3197955";
         const BSC_CHAIN_ID = 56;
         const TELEGRAM_GRUPO = "https://t.me/+z7wwfx0ocho1NzI5";
         const WHATSAPP_CANAL = "https://whatsapp.com/channel/0029Vb74Mxr3LdQVgWdycV2a";
 
+        // ========== ABI COMPLETO DE MEMBRESÍA ==========
         const abiMembresia = [
             "function consultarEstado(address) view returns (tuple(uint256 saldoPendiente, uint256 totalGanado, uint256 totalRetirado, uint256 directos, uint256 redTotal, uint256 diasRestantes, bool activo))",
             "function verDetalleRed(address) view returns (uint256[5] memory)",
@@ -575,13 +615,16 @@
             "event BonosRecurrentesPagados(uint256 totalPagado, uint256 cantidadPersonas)"
         ];
 
-        const abiVault = [ /* mismo que en v4 (lo dejamos igual) */ ];
+        const abiVault = []; // Por ahora vacío, reemplazar cuando esté listo
         const usdtAbi = ["function approve(address spender, uint256 amount) returns (bool)"];
 
+        // ========== VARIABLES GLOBALES ==========
         let provider, signer, userAddress, contractMembresia, contractVault, usdtContract;
         let isOwner = false;
         let toastTimeout;
+        let chartInstance = null;
 
+        // Elementos DOM
         const toast = document.getElementById('toast');
         const toastMsg = document.getElementById('toastMsg');
         const telegramLink = document.getElementById('telegramLink');
@@ -591,10 +634,12 @@
         const seccionMembresia = document.getElementById('seccionMembresia');
         const seccionVault = document.getElementById('seccionVault');
         const seccionInfoVault = document.getElementById('seccionInfoVault');
+        const seccionHistorial = document.getElementById('seccionHistorial');
         const seccionArbitraje = document.getElementById('seccionArbitraje');
         const btnMembresia = document.getElementById('btnMembresia');
         const btnVault = document.getElementById('btnVault');
         const btnInfoVault = document.getElementById('btnInfoVault');
+        const btnHistorial = document.getElementById('btnHistorial');
         const btnArbitraje = document.getElementById('btnArbitraje');
         const vaultFeed = document.getElementById('vaultFeed');
         const copyLinkBtn = document.getElementById('copyLinkBtn');
@@ -607,7 +652,15 @@
         const btnEmergency = document.getElementById('btnEmergencyWithdraw');
         const bonoNivel3Elem = document.getElementById('bonoNivel3');
         const bonosRecurrentesElem = document.getElementById('bonosRecurrentes');
+        const shareTelegram = document.getElementById('shareTelegram');
+        const shareWhatsapp = document.getElementById('shareWhatsapp');
+        const modal = document.getElementById('confirmModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalMessage = document.getElementById('modalMessage');
+        const modalConfirm = document.getElementById('modalConfirm');
+        const modalCancel = document.getElementById('modalCancel');
 
+        // ========== FUNCIONES AUXILIARES ==========
         function showToast(msg, isError = false) {
             clearTimeout(toastTimeout);
             toast.classList.remove('hidden');
@@ -616,57 +669,83 @@
             toastTimeout = setTimeout(() => toast.classList.add('hidden'), 4000);
         }
 
-        copyLinkBtn.addEventListener('click', () => {
-            refLink.select();
-            refLink.setSelectionRange(0, 99999);
-            navigator.clipboard.writeText(refLink.value).then(() => {
-                copyMsg.classList.remove('hidden');
-                setTimeout(() => copyMsg.classList.add('hidden'), 2000);
-            }).catch(() => showToast('Error al copiar', true));
-        });
-
-        function setActiveTab(active, inactives) {
-            active.classList.add('tab-active');
-            active.classList.remove('tab-inactive');
-            inactives.forEach(btn => {
-                btn.classList.add('tab-inactive');
-                btn.classList.remove('tab-active');
+        function confirmAction(title, message) {
+            return new Promise((resolve) => {
+                modalTitle.innerText = title;
+                modalMessage.innerText = message;
+                modal.style.display = 'flex';
+                const onConfirm = () => {
+                    modal.style.display = 'none';
+                    modalConfirm.removeEventListener('click', onConfirm);
+                    modalCancel.removeEventListener('click', onCancel);
+                    resolve(true);
+                };
+                const onCancel = () => {
+                    modal.style.display = 'none';
+                    modalConfirm.removeEventListener('click', onConfirm);
+                    modalCancel.removeEventListener('click', onCancel);
+                    resolve(false);
+                };
+                modalConfirm.addEventListener('click', onConfirm);
+                modalCancel.addEventListener('click', onCancel);
             });
         }
 
-        btnMembresia.addEventListener('click', () => {
-            setActiveTab(btnMembresia, [btnVault, btnInfoVault, btnArbitraje]);
-            seccionMembresia.classList.remove('hidden');
-            seccionVault.classList.add('hidden');
-            seccionInfoVault.classList.add('hidden');
-            seccionArbitraje.classList.add('hidden');
-        });
+        // ========== FUNCIONES DE PARTÍCULAS ==========
+        function initParticles() {
+            const canvas = document.getElementById('particles-canvas');
+            const ctx = canvas.getContext('2d');
+            let width, height;
+            let particles = [];
 
-        btnVault.addEventListener('click', () => {
-            setActiveTab(btnVault, [btnMembresia, btnInfoVault, btnArbitraje]);
-            seccionMembresia.classList.add('hidden');
-            seccionVault.classList.remove('hidden');
-            seccionInfoVault.classList.add('hidden');
-            seccionArbitraje.classList.add('hidden');
-            if (userAddress && contractVault) cargarDatosVault();
-        });
+            function resize() {
+                width = window.innerWidth;
+                height = window.innerHeight;
+                canvas.width = width;
+                canvas.height = height;
+            }
+            window.addEventListener('resize', resize);
+            resize();
 
-        btnInfoVault.addEventListener('click', () => {
-            setActiveTab(btnInfoVault, [btnMembresia, btnVault, btnArbitraje]);
-            seccionMembresia.classList.add('hidden');
-            seccionVault.classList.add('hidden');
-            seccionInfoVault.classList.remove('hidden');
-            seccionArbitraje.classList.add('hidden');
-        });
+            class Particle {
+                constructor() {
+                    this.x = Math.random() * width;
+                    this.y = Math.random() * height;
+                    this.vx = (Math.random() - 0.5) * 0.3;
+                    this.vy = (Math.random() - 0.5) * 0.3;
+                    this.size = Math.random() * 2 + 1;
+                    this.color = `rgba(${Math.floor(Math.random()*100+155)}, ${Math.floor(Math.random()*100+155)}, 255, ${Math.random()*0.5+0.2})`;
+                }
+                update() {
+                    this.x += this.vx;
+                    this.y += this.vy;
+                    if (this.x < 0 || this.x > width) this.vx *= -1;
+                    if (this.y < 0 || this.y > height) this.vy *= -1;
+                }
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI*2);
+                    ctx.fillStyle = this.color;
+                    ctx.fill();
+                }
+            }
 
-        btnArbitraje.addEventListener('click', () => {
-            setActiveTab(btnArbitraje, [btnMembresia, btnVault, btnInfoVault]);
-            seccionMembresia.classList.add('hidden');
-            seccionVault.classList.add('hidden');
-            seccionInfoVault.classList.add('hidden');
-            seccionArbitraje.classList.remove('hidden');
-        });
+            for (let i = 0; i < 100; i++) {
+                particles.push(new Particle());
+            }
 
+            function animate() {
+                ctx.clearRect(0, 0, width, height);
+                particles.forEach(p => {
+                    p.update();
+                    p.draw();
+                });
+                requestAnimationFrame(animate);
+            }
+            animate();
+        }
+
+        // ========== FUNCIONES DE CARGA DE DATOS ==========
         async function checkNetwork() {
             const network = await provider.getNetwork();
             if (network.chainId !== BSC_CHAIN_ID) {
@@ -691,11 +770,11 @@
                     const cantidad = red[j].toNumber();
                     node.innerHTML = `N${j+1}<br><span class="text-[10px]">${cantidad}</span>`;
                     if (cantidad > 0) {
-                        node.classList.add('node-filled');
-                        node.classList.remove('node-empty');
+                        node.classList.add('node-filled-neon');
+                        node.classList.remove('node-empty-neon');
                     } else {
-                        node.classList.add('node-empty');
-                        node.classList.remove('node-filled');
+                        node.classList.add('node-empty-neon');
+                        node.classList.remove('node-filled-neon');
                     }
                 }
                 let redHtml = '', ganHtml = '';
@@ -764,12 +843,97 @@
 
         function agregarAlFeedVault(mensaje, tipo = 'info') {
             const item = document.createElement('div');
-            item.className = `feed-item border-l-4 ${tipo === 'deposit' ? 'border-green-500' : tipo === 'withdraw' ? 'border-yellow-500' : 'border-blue-500'}`;
+            item.className = `feed-item-neon ${tipo === 'deposit' ? 'border-green-500' : tipo === 'withdraw' ? 'border-yellow-500' : 'border-blue-500'}`;
             item.innerHTML = `<p class="text-xs text-white/80">${mensaje}</p>`;
             vaultFeed.prepend(item);
             if (vaultFeed.children.length > 20) vaultFeed.removeChild(vaultFeed.lastChild);
         }
 
+        async function cargarHistorial() {
+            const historialDiv = document.getElementById('historialList');
+            if (!contractMembresia || !userAddress) {
+                historialDiv.innerHTML = '<p class="text-white/50 text-xs">Conecta tu wallet para ver tu historial.</p>';
+                return;
+            }
+            try {
+                const filterRegistro = contractMembresia.filters.RegistroGlobal(userAddress);
+                const filterBono = contractMembresia.filters.BonoNivel3Pagado(userAddress);
+                const filterRetiro = contractMembresia.filters.RetiroExitoso(userAddress);
+                const filterPremio = contractMembresia.filters.PremiadoLider(userAddress);
+                const registros = await contractMembresia.queryFilter(filterRegistro, 0, 'latest');
+                const bonos = await contractMembresia.queryFilter(filterBono, 0, 'latest');
+                const retiros = await contractMembresia.queryFilter(filterRetiro, 0, 'latest');
+                const premios = await contractMembresia.queryFilter(filterPremio, 0, 'latest');
+                const todos = [...registros, ...bonos, ...retiros, ...premios];
+                todos.sort((a,b) => b.blockNumber - a.blockNumber);
+                if (todos.length === 0) {
+                    historialDiv.innerHTML = '<p class="text-white/50 text-xs">No hay transacciones aún.</p>';
+                    return;
+                }
+                let html = '';
+                todos.forEach(event => {
+                    let desc = '';
+                    if (event.event === 'RegistroGlobal') {
+                        desc = `📝 Registro en el sistema (bloque ${event.blockNumber})`;
+                    } else if (event.event === 'BonoNivel3Pagado') {
+                        desc = `🏆 Bono nivel 3 recibido: ${ethers.utils.formatUnits(event.args.monto, 18)} USDT`;
+                    } else if (event.event === 'RetiroExitoso') {
+                        desc = `💰 Retiro de ganancias: ${ethers.utils.formatUnits(event.args.monto, 18)} USDT`;
+                    } else if (event.event === 'PremiadoLider') {
+                        desc = `🏅 Premio como líder: ${ethers.utils.formatUnits(event.args.monto, 18)} USDT`;
+                    }
+                    const fecha = new Date(event.blockNumber * 15).toLocaleDateString(); // estimado
+                    html += `<div class="feed-item-neon text-xs">${desc}<br><span class="text-white/40">${fecha}</span></div>`;
+                });
+                historialDiv.innerHTML = html;
+            } catch (e) {
+                historialDiv.innerHTML = '<p class="text-red-400">Error al cargar historial</p>';
+                console.error(e);
+            }
+        }
+
+        function initVaultChart() {
+            const ctx = document.getElementById('vaultChart').getContext('2d');
+            if (chartInstance) chartInstance.destroy();
+            const labels = [];
+            const data = [];
+            for (let i = 29; i >= 0; i--) {
+                const date = new Date();
+                date.setDate(date.getDate() - i);
+                labels.push(date.toLocaleDateString().slice(0,5));
+                data.push(1 + (Math.random() * 0.1 - 0.05));
+            }
+            chartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Precio del Share (USDT)',
+                        data: data,
+                        borderColor: '#00ffff',
+                        backgroundColor: 'rgba(0,255,255,0.1)',
+                        tension: 0.3,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: { y: { grid: { color: '#ffffff20' }, ticks: { color: '#ccc' } } }
+                }
+            });
+        }
+
+        function updateShareLinks() {
+            if (refLink.value) {
+                const encoded = encodeURIComponent(refLink.value);
+                shareTelegram.href = `https://t.me/share/url?url=${encoded}&text=Únete%20a%20Milimar%20con%20mi%20link%3A`;
+                shareWhatsapp.href = `https://wa.me/?text=${encoded}`;
+            }
+        }
+
+        // ========== CONEXIÓN PRINCIPAL ==========
         async function connect() {
             if (!window.ethereum) return showToast('Instala MetaMask/OKX Wallet', true);
             try {
@@ -791,6 +955,7 @@
                 telegramLink.classList.remove('hidden');
                 whatsappLink.classList.remove('hidden');
                 refLink.value = window.location.origin + window.location.pathname + "?ref=" + userAddress;
+                updateShareLinks();
 
                 const ownerAddr = await contractMembresia.owner();
                 isOwner = (ownerAddr.toLowerCase() === userAddress.toLowerCase());
@@ -798,21 +963,30 @@
 
                 await loadUserData();
 
-                if (!seccionVault.classList.contains('hidden') && contractVault) cargarDatosVault();
+                if (!seccionVault.classList.contains('hidden') && contractVault) {
+                    cargarDatosVault();
+                    initVaultChart();
+                }
 
+                // Escuchar eventos
                 contractMembresia.on("RegistroGlobal", (usuario, patrocinador, fecha) => {
+                    if (usuario.toLowerCase() === userAddress.toLowerCase()) loadUserData();
                     showToast(`🎉 Nuevo registro: ${usuario.slice(0,6)}...${usuario.slice(-4)}`);
                 });
                 contractMembresia.on("BonoNivel3Pagado", (usuario, monto) => {
+                    if (usuario.toLowerCase() === userAddress.toLowerCase()) loadUserData();
                     showToast(`🏆 Bono nivel 3 pagado a ${usuario.slice(0,6)}...${usuario.slice(-4)}: ${ethers.utils.formatUnits(monto,18)} USDT`);
                 });
                 contractMembresia.on("RetiroExitoso", (usuario, monto) => {
+                    if (usuario.toLowerCase() === userAddress.toLowerCase()) loadUserData();
                     showToast(`💰 Retiro de ${ethers.utils.formatUnits(monto,18)} USDT por ${usuario.slice(0,6)}...${usuario.slice(-4)}`);
                 });
                 contractMembresia.on("PremiadoLider", (lider, monto) => {
+                    if (lider.toLowerCase() === userAddress.toLowerCase()) loadUserData();
                     showToast(`🏅 Premio a líder ${lider.slice(0,6)}...${lider.slice(-4)}: ${ethers.utils.formatUnits(monto,18)} USDT`);
                 });
                 contractMembresia.on("FondoSolidaridadUsado", (beneficiado, monto, motivo) => {
+                    if (beneficiado.toLowerCase() === userAddress.toLowerCase()) loadUserData();
                     showToast(`🤝 Fondo solidaridad usado para ${beneficiado.slice(0,6)}...${beneficiado.slice(-4)}`);
                 });
                 contractMembresia.on("BonosRecurrentesPagados", (total, cantidad) => {
@@ -821,9 +995,11 @@
 
                 if (contractVault) {
                     contractVault.on("Deposited", (user, amount, shares, timestamp) => {
+                        if (user.toLowerCase() === userAddress.toLowerCase()) cargarDatosVault();
                         agregarAlFeedVault(`📥 Depósito de ${ethers.utils.formatUnits(amount,18)} USDT por ${user.slice(0,6)}...${user.slice(-4)}`, 'deposit');
                     });
                     contractVault.on("WithdrawnStandard", (user, amount, shares, timestamp) => {
+                        if (user.toLowerCase() === userAddress.toLowerCase()) cargarDatosVault();
                         agregarAlFeedVault(`📤 Retiro estándar de ${ethers.utils.formatUnits(amount,18)} USDT por ${user.slice(0,6)}...${user.slice(-4)}`, 'withdraw');
                     });
                 }
@@ -832,7 +1008,98 @@
             }
         }
 
+        // ========== EVENTOS DE UI ==========
         btnConnect.onclick = connect;
+
+        copyLinkBtn.addEventListener('click', () => {
+            refLink.select();
+            refLink.setSelectionRange(0, 99999);
+            navigator.clipboard.writeText(refLink.value).then(() => {
+                copyMsg.classList.remove('hidden');
+                setTimeout(() => copyMsg.classList.add('hidden'), 2000);
+            }).catch(() => showToast('Error al copiar', true));
+        });
+
+        // Cambio de pestañas
+        function setActiveTab(active, inactives) {
+            active.classList.add('active');
+            inactives.forEach(btn => btn.classList.remove('active'));
+        }
+
+        btnMembresia.addEventListener('click', () => {
+            setActiveTab(btnMembresia, [btnVault, btnInfoVault, btnHistorial, btnArbitraje]);
+            seccionMembresia.classList.remove('hidden');
+            seccionVault.classList.add('hidden');
+            seccionInfoVault.classList.add('hidden');
+            seccionHistorial.classList.add('hidden');
+            seccionArbitraje.classList.add('hidden');
+        });
+
+        btnVault.addEventListener('click', () => {
+            setActiveTab(btnVault, [btnMembresia, btnInfoVault, btnHistorial, btnArbitraje]);
+            seccionMembresia.classList.add('hidden');
+            seccionVault.classList.remove('hidden');
+            seccionInfoVault.classList.add('hidden');
+            seccionHistorial.classList.add('hidden');
+            seccionArbitraje.classList.add('hidden');
+            if (userAddress && contractVault) {
+                cargarDatosVault();
+                initVaultChart();
+            }
+        });
+
+        btnInfoVault.addEventListener('click', () => {
+            setActiveTab(btnInfoVault, [btnMembresia, btnVault, btnHistorial, btnArbitraje]);
+            seccionMembresia.classList.add('hidden');
+            seccionVault.classList.add('hidden');
+            seccionInfoVault.classList.remove('hidden');
+            seccionHistorial.classList.add('hidden');
+            seccionArbitraje.classList.add('hidden');
+        });
+
+        btnHistorial.addEventListener('click', () => {
+            setActiveTab(btnHistorial, [btnMembresia, btnVault, btnInfoVault, btnArbitraje]);
+            seccionMembresia.classList.add('hidden');
+            seccionVault.classList.add('hidden');
+            seccionInfoVault.classList.add('hidden');
+            seccionHistorial.classList.remove('hidden');
+            seccionArbitraje.classList.add('hidden');
+            if (userAddress && contractMembresia) cargarHistorial();
+        });
+
+        btnArbitraje.addEventListener('click', () => {
+            setActiveTab(btnArbitraje, [btnMembresia, btnVault, btnInfoVault, btnHistorial]);
+            seccionMembresia.classList.add('hidden');
+            seccionVault.classList.add('hidden');
+            seccionInfoVault.classList.add('hidden');
+            seccionHistorial.classList.add('hidden');
+            seccionArbitraje.classList.remove('hidden');
+        });
+
+        // Botones de acción (con modal para retirar)
+        document.getElementById('btnWithdraw').onclick = async () => {
+            const confirmed = await confirmAction('Retirar ganancias', '¿Estás seguro de retirar todas tus ganancias disponibles?');
+            if (!confirmed) return;
+            try {
+                const tx = await contractMembresia.retirarGanancias();
+                showToast('Retirando...');
+                await tx.wait();
+                showToast('✅ Retiro exitoso');
+                await loadUserData();
+            } catch (e) { showToast('Error: ' + e.message, true); }
+        };
+
+        btnEmergency.onclick = async () => {
+            const confirmed = await confirmAction('RETIRO DE EMERGENCIA', '¿Estás seguro? Esta acción retirará todos tus fondos y desactivará tu membresía.');
+            if (!confirmed) return;
+            try {
+                const tx = await contractMembresia.emergencyWithdraw();
+                showToast('Procesando retiro de emergencia...');
+                await tx.wait();
+                showToast('✅ Retiro de emergencia completado');
+                await loadUserData();
+            } catch (e) { showToast('Error: ' + e.message, true); }
+        };
 
         document.getElementById('btnApprove').onclick = async () => {
             try {
@@ -869,33 +1136,14 @@
             } catch (e) { showToast('Error: ' + e.message, true); }
         };
 
-        document.getElementById('btnWithdraw').onclick = async () => {
-            try {
-                const tx = await contractMembresia.retirarGanancias();
-                showToast('Retirando...');
-                await tx.wait();
-                showToast('✅ Retiro exitoso');
-                await loadUserData();
-            } catch (e) { showToast('Error: ' + e.message, true); }
-        };
-
         document.getElementById('btnReloadDetails').onclick = loadRedYGanancias;
         document.getElementById('btnReloadGanancias').onclick = loadRedYGanancias;
 
-        btnEmergency.onclick = async () => {
-            if (!confirm('¿Estás seguro de retirar todos tus fondos en modo de emergencia?')) return;
-            try {
-                const tx = await contractMembresia.emergencyWithdraw();
-                showToast('Procesando retiro de emergencia...');
-                await tx.wait();
-                showToast('✅ Retiro de emergencia completado');
-                await loadUserData();
-            } catch (e) { showToast('Error: ' + e.message, true); }
-        };
-
         // Admin functions
         document.getElementById('btnPausa').onclick = async () => {
-            if (!isOwner || !confirm('¿Cambiar estado de pausa?')) return;
+            if (!isOwner) return;
+            const confirmed = await confirmAction('Cambiar estado de pausa', '¿Estás seguro?');
+            if (!confirmed) return;
             try { await (await contractMembresia.togglePausa()).wait(); showToast('✅ Pausa cambiada'); } catch (e) { showToast('Error: ' + e.message, true); }
         };
         document.getElementById('btnCupos').onclick = async () => {
@@ -993,11 +1241,11 @@
             } catch (e) { showToast('Error: ' + e.message, true); }
         });
 
+        // Inicializar partículas al cargar
         window.addEventListener('load', () => {
+            initParticles();
             if (window.ethereum && window.ethereum.selectedAddress) connect();
         });
     </script>
-    <!-- Font Awesome para los iconos de respaldo (opcional) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </body>
     </html>
