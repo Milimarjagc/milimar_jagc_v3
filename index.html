@@ -9,17 +9,43 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* Estilo Aurora OSCURO (igual que en v4) */
-        body {
-            background: linear-gradient(125deg, #0a0f1a 0%, #0f2a3a 35%, #1a3f3a 70%, #4a3a1a 100%);
+        /* Video de fondo */
+        #bg-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -2;
+            opacity: 0.3;
+            pointer-events: none;
+        }
+        /* Overlay con animación aurora (ahora semitransparente) */
+        .aurora-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(125deg, rgba(10,15,26,0.8) 0%, rgba(15,42,58,0.8) 35%, rgba(26,63,58,0.8) 70%, rgba(74,58,26,0.8) 100%);
             background-size: 400% 400%;
             animation: aurora 15s ease infinite;
-            font-family: 'Inter', sans-serif;
+            z-index: -1;
+            pointer-events: none;
         }
         @keyframes aurora {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
+        }
+        /* Ajustes de body para que el contenido esté sobre el video */
+        body {
+            background: transparent;
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            position: relative;
+            color: white;
         }
         h1, h2, h3, .font-display {
             font-family: 'Poppins', sans-serif;
@@ -73,7 +99,7 @@
         .tutorial-step, .benefit-step, .feed-item, .info-section {
             @apply bg-white/10 p-4 rounded-lg mb-3 text-sm border border-white/20;
         }
-        /* Botones flotantes */
+        /* Botones flotantes (igual) */
         .whatsapp-button {
             position: fixed;
             bottom: 20px;
@@ -142,11 +168,43 @@
         .info-title {
             @apply text-yellow-400 font-bold text-base mb-2;
         }
+        /* Imágenes representativas */
+        .representative-img {
+            width: 100%;
+            border-radius: 1rem;
+            margin: 1rem 0;
+            border: 2px solid #fbbf24;
+            box-shadow: 0 0 30px #fbbf24;
+        }
+        .icon-large {
+            font-size: 4rem;
+            color: #fbbf24;
+            text-align: center;
+            margin: 1rem 0;
+        }
+        .fallback-icon {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+            background: rgba(0,0,0,0.3);
+            border-radius: 1rem;
+            border: 2px dashed #fbbf24;
+        }
+        .header-image {
+            max-width: 100px;
+            margin: 0 auto 1rem;
+        }
     </style>
 </head>
-<body class="text-white antialiased p-4 min-h-screen relative">
+<body>
+    <!-- Video de fondo -->
+    <video autoplay muted loop playsinline id="bg-video" poster="https://images.pexels.com/photos/3943716/pexels-photo-3943716.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2">
+        <source src="https://videos.pexels.com/video-files/3129674/3129674-uhd_2560_1440_30fps.mp4" type="video/mp4">
+    </video>
+    <!-- Overlay con aurora -->
+    <div class="aurora-overlay"></div>
 
-    <!-- Botones flotantes de Telegram y WhatsApp -->
+    <!-- Botones flotantes -->
     <a id="telegramLink" href="https://t.me/+z7wwfx0ocho1NzI5" target="_blank" class="telegram-button hidden">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.02-.15-.05-.22-.07-.07-.18-.05-.26-.03-.11.02-1.85 1.17-5.22 3.45-.5.34-.95.5-1.36.49-.45-.01-1.3-.25-1.94-.46-.78-.26-1.4-.4-1.35-.85.03-.23.27-.47.74-.72 2.91-1.27 4.86-2.11 5.83-2.52 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.08-.02.25-.04.4z"/></svg>
         <span>Grupo Telegram</span>
@@ -160,8 +218,18 @@
         <p id="toastMsg" class="text-sm"></p>
     </div>
 
-    <div class="max-w-3xl mx-auto">
+    <div class="max-w-3xl mx-auto relative z-10">
         <header class="text-center py-8">
+            <!-- Imagen representativa (baúl) con respaldo -->
+            <div style="position: relative; display: inline-block;">
+                <img src="https://images.pexels.com/photos/3943716/pexels-photo-3943716.jpeg?auto=compress&cs=tinysrgb&w=200&h=200&fit=crop" 
+                     alt="Baúl Milimar" 
+                     class="header-image rounded-full border-4 border-yellow-500"
+                     onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';">
+                <div class="fallback-icon" style="display: none; width: 100px; height: 100px; border-radius: 50%; padding: 1.5rem;">
+                    <i class="fas fa-box-open fa-3x" style="color: #fbbf24;"></i>
+                </div>
+            </div>
             <div class="flex items-center justify-center gap-4">
                 <h1 class="text-6xl font-black text-white drop-shadow-2xl tracking-tighter" style="text-shadow: 0 0 20px rgba(251,191,36,0.5);">MILIMAR JAGC</h1>
             </div>
@@ -219,7 +287,7 @@
                 </div>
             </div>
 
-            <!-- Bono nivel 3 y bonos recurrentes (nuevo) -->
+            <!-- Bono nivel 3 y bonos recurrentes -->
             <div class="grid grid-cols-2 gap-3">
                 <div class="glass-card p-3 text-center">
                     <p class="text-[10px] text-white/60 uppercase font-bold">Bono Nivel 3</p>
@@ -416,11 +484,22 @@
             </div>
         </div>
 
-        <!-- NUEVA SECCIÓN: ACERCA DEL VAULT (informativa) -->
+        <!-- NUEVA SECCIÓN: ACERCA DEL VAULT (con imagen) -->
         <div id="seccionInfoVault" class="hidden space-y-6">
             <div class="glass-card p-6">
                 <h2 class="text-2xl font-bold text-yellow-400 mb-4">📘 ACERCA DEL VAULT DE CRECIMIENTO</h2>
-                <div class="space-y-4">
+                <!-- Imagen representativa (gráfico) con respaldo -->
+                <div style="position: relative; text-align: center;">
+                    <img src="https://images.pexels.com/photos/844124/pexels-photo-844124.jpeg?auto=compress&cs=tinysrgb&w=600" 
+                         alt="Gráfico de inversiones" 
+                         class="representative-img"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                    <div class="fallback-icon" style="display: none;">
+                        <i class="fas fa-chart-line fa-5x" style="color: #fbbf24;"></i>
+                        <p style="color: #fbbf24; margin-top: 10px;">Gráfico de inversiones</p>
+                    </div>
+                </div>
+                <div class="space-y-4 mt-4">
                     <div class="info-section">
                         <h3 class="info-title">🔍 ¿Cómo funciona?</h3>
                         <p class="text-white/80 text-xs leading-relaxed">El Vault es un fondo colectivo donde los usuarios depositan USDT. El contrato inteligente invierte automáticamente estos fondos en dos estrategias: 70% en préstamos seguros (Venus Protocol) y 30% en farming de alto rendimiento (PancakeSwap/Beefy).</p>
@@ -437,7 +516,7 @@
             </div>
         </div>
 
-        <!-- SECCIÓN ARBITRAJE (próximamente) -->
+        <!-- SECCIÓN ARBITRAJE -->
         <div id="seccionArbitraje" class="hidden space-y-6">
             <div class="glass-card p-6 text-center">
                 <h2 class="text-2xl font-bold text-yellow-400 mb-4">🤖 ARBITRAJE</h2>
@@ -446,20 +525,18 @@
         </div>
     </div>
 
-    <footer class="text-center text-[10px] text-gray-500 mt-4">Milimar Protocol · BSC · Versión 5 + Vault</footer>
+    <footer class="text-center text-[10px] text-gray-500 mt-4 relative z-10">Milimar Protocol · BSC · Versión 5 + Vault</footer>
 
     <script>
-        // 🟢 CONFIGURACIÓN ACTUALIZADA CON LA VERSIÓN 5
-        const CONTRACT_ADDR_MEMBRESIA = "0x35425E6416f799C30938cBc159523B43C1c358B2"; // Nuevo contrato V5
-        const CONTRACT_ADDR_VAULT = "0x..."; // Dirección del vault (dejar como está o actualizar)
+        // ========== CONFIGURACIÓN (igual que en el original) ==========
+        const CONTRACT_ADDR_MEMBRESIA = "0x35425E6416f799C30938cBc159523B43C1c358B2";
+        const CONTRACT_ADDR_VAULT = "0x..."; // Dirección del vault (dejar como está)
         const USDT_ADDR = "0x55d398326f99059fF775485246999027B3197955";
         const BSC_CHAIN_ID = 56;
         const TELEGRAM_GRUPO = "https://t.me/+z7wwfx0ocho1NzI5";
         const WHATSAPP_CANAL = "https://whatsapp.com/channel/0029Vb74Mxr3LdQVgWdycV2a";
 
-        // ABI COMPLETO DE LA VERSIÓN 5 (funciones necesarias)
         const abiMembresia = [
-            // Funciones de consulta (con tupla incluida)
             "function consultarEstado(address) view returns (tuple(uint256 saldoPendiente, uint256 totalGanado, uint256 totalRetirado, uint256 directos, uint256 redTotal, uint256 diasRestantes, bool activo))",
             "function verDetalleRed(address) view returns (uint256[5] memory)",
             "function verDetalleGanancias(address) view returns (uint256[5] memory)",
@@ -470,14 +547,10 @@
             "function fondoSolidaridad() view returns (uint256)",
             "function poolLiderazgo() view returns (uint256)",
             "function emergencyMode() view returns (bool)",
-
-            // Funciones de usuario
             "function unirse(address) external",
             "function renovarSuscripcion() external",
             "function retirarGanancias() external",
             "function emergencyWithdraw() external",
-
-            // Funciones de admin
             "function actualizarPrecio(uint256) external",
             "function actualizarMinRetiro(uint256) external",
             "function actualizarMaxRetiro(uint256) external",
@@ -493,8 +566,6 @@
             "function recuperarTokenExterno(address,uint256) external",
             "function activateEmergencyMode() external",
             "function pagarBonosRecurrentes(address[],uint256) external",
-
-            // Eventos
             "event RegistroGlobal(address indexed usuario, address indexed patrocinador, uint256 fecha)",
             "event BonoNivel3Alcanzado(address indexed usuario, uint256 fecha)",
             "event BonoNivel3Pagado(address indexed usuario, uint256 monto)",
@@ -504,16 +575,13 @@
             "event BonosRecurrentesPagados(uint256 totalPagado, uint256 cantidadPersonas)"
         ];
 
-        const abiVault = [ /* mismo que en v4 */ ]; // Lo dejamos igual, no lo tocamos
-
+        const abiVault = [ /* mismo que en v4 (lo dejamos igual) */ ];
         const usdtAbi = ["function approve(address spender, uint256 amount) returns (bool)"];
 
-        // Estado
         let provider, signer, userAddress, contractMembresia, contractVault, usdtContract;
         let isOwner = false;
         let toastTimeout;
 
-        // Elementos DOM
         const toast = document.getElementById('toast');
         const toastMsg = document.getElementById('toastMsg');
         const telegramLink = document.getElementById('telegramLink');
@@ -604,7 +672,7 @@
             if (network.chainId !== BSC_CHAIN_ID) {
                 try {
                     await window.ethereum.request({ method: 'wallet_switchEthereumChain', params: [{ chainId: '0x38' }] });
-                    provider = new ethers.providers.Web3Provider(window.ethereum); // refrescar provider
+                    provider = new ethers.providers.Web3Provider(window.ethereum);
                     return true;
                 } catch {
                     showToast('Cambia a BSC Mainnet en tu wallet', true);
@@ -614,7 +682,6 @@
             return true;
         }
 
-        // Cargar detalles de red y ganancias
         async function loadRedYGanancias() {
             try {
                 const red = await contractMembresia.verDetalleRed(userAddress);
@@ -647,7 +714,6 @@
 
         async function loadUserData() {
             try {
-                // Usamos consultarEstado que devuelve una tupla
                 const estado = await contractMembresia.consultarEstado(userAddress);
                 document.getElementById('valSaldo').innerText = ethers.utils.formatUnits(estado.saldoPendiente, 18);
                 document.getElementById('valDir').innerText = estado.directos.toString();
@@ -681,7 +747,6 @@
         }
 
         async function cargarDatosVault() {
-            // Igual que en v4
             if (!contractVault || !userAddress) return;
             try {
                 const miInversion = await contractVault.balanceOf(userAddress);
@@ -735,7 +800,6 @@
 
                 if (!seccionVault.classList.contains('hidden') && contractVault) cargarDatosVault();
 
-                // Escuchar eventos
                 contractMembresia.on("RegistroGlobal", (usuario, patrocinador, fecha) => {
                     showToast(`🎉 Nuevo registro: ${usuario.slice(0,6)}...${usuario.slice(-4)}`);
                 });
@@ -770,7 +834,6 @@
 
         btnConnect.onclick = connect;
 
-        // Botones de membresía
         document.getElementById('btnApprove').onclick = async () => {
             try {
                 const tx = await usdtContract.approve(CONTRACT_ADDR_MEMBRESIA, ethers.utils.parseUnits("100", 18));
@@ -885,7 +948,7 @@
             try { await (await contractMembresia.recuperarTokenExterno(token, ethers.utils.parseUnits(cant, 18))).wait(); showToast('✅ Tokens recuperados'); } catch (e) { showToast('Error: ' + e.message, true); }
         };
 
-        // Botones del vault (igual que v4)
+        // Botones del vault
         document.getElementById('btnVaultDeposit')?.addEventListener('click', async () => {
             if (!contractVault) return showToast('Vault no desplegado aún', true);
             const amount = document.getElementById('vaultDepositAmount').value;
@@ -930,10 +993,11 @@
             } catch (e) { showToast('Error: ' + e.message, true); }
         });
 
-        // Auto-conectar si la wallet ya está conectada
         window.addEventListener('load', () => {
             if (window.ethereum && window.ethereum.selectedAddress) connect();
         });
     </script>
+    <!-- Font Awesome para los iconos de respaldo (opcional) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </body>
-                            </html>
+    </html>
