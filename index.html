@@ -3,189 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>Milimar JAGC | Depuración Admin</title>
-    <!-- Fuentes futuristas -->
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>Milimar Admin Test</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* (mismos estilos que antes, omito por brevedad, pero deben estar) */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Inter', sans-serif;
             background: #0a0f1f;
-            color: #e0e0ff;
-            min-height: 100vh;
-            overflow-x: hidden;
-            position: relative;
-        }
-        body::before {
-            content: "";
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url('https://images.pexels.com/photos/8370752/pexels-photo-8370752.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');
-            background-size: cover;
-            background-position: center;
-            opacity: 0.15;
-            z-index: -2;
-            pointer-events: none;
-        }
-        .neon-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: repeating-linear-gradient(45deg, rgba(0,255,255,0.02) 0px, rgba(0,255,255,0.02) 2px, transparent 2px, transparent 8px);
-            z-index: -1;
-            pointer-events: none;
-        }
-        .container-neon {
-            max-width: 1200px;
-            margin: 0 auto;
+            color: cyan;
+            font-family: Arial, sans-serif;
             padding: 20px;
-            position: relative;
-            z-index: 2;
         }
-        .glitch {
-            font-family: 'Orbitron', sans-serif;
-            font-size: clamp(2.5rem, 8vw, 4rem);
-            font-weight: 900;
-            text-transform: uppercase;
-            position: relative;
-            text-shadow: 0.05em 0 0 rgba(255,0,100,0.3), -0.05em -0.025em 0 rgba(0,255,255,0.3);
-            animation: glitch 725ms infinite;
-            color: #a0f0ff;
-            letter-spacing: 0.15em;
-            line-height: 1.2;
-            word-break: break-word;
-        }
-        .subtitle-neon {
-            font-family: 'Orbitron', sans-serif;
-            color: #80ffff;
-            text-shadow: 0 0 10px cyan;
-            letter-spacing: 0.3em;
-            font-size: clamp(0.7rem, 3vw, 1rem);
-        }
-        .neon-card {
-            background: rgba(10, 20, 30, 0.7);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(0, 255, 255, 0.3);
-            border-radius: 2rem;
-            box-shadow: 0 0 30px rgba(0, 255, 255, 0.2), inset 0 0 20px rgba(0, 255, 255, 0.1);
-            transition: all 0.3s ease;
-            animation: fadeUp 0.5s ease-out;
-            width: 100%;
-            overflow: hidden;
-        }
-        .btn-neon {
+        button {
             background: transparent;
-            border: 2px solid #00ffff;
-            color: #00ffff;
-            font-weight: bold;
-            padding: 12px 24px;
-            border-radius: 60px;
-            font-family: 'Orbitron', sans-serif;
-            letter-spacing: 2px;
-            transition: 0.3s;
-            box-shadow: 0 0 15px #00ffff;
-            cursor: pointer;
+            border: 2px solid cyan;
+            color: cyan;
+            padding: 15px;
+            margin: 5px;
             width: 100%;
-            font-size: clamp(0.8rem, 2.5vw, 1rem);
+            border-radius: 30px;
+            font-size: 18px;
         }
-        .btn-neon:hover {
-            background: #00ffff;
-            color: #0a0f1f;
-            box-shadow: 0 0 40px #00ffff;
-            transform: scale(1.05);
-        }
-        .btn-neon.secondary {
-            border-color: #ff00ff;
-            color: #ff00ff;
-            box-shadow: 0 0 15px #ff00ff;
-        }
-        .network-badge {
-            display: inline-block;
-            background: rgba(0,255,255,0.2);
-            border: 1px solid #00ffff;
-            border-radius: 60px;
-            padding: 5px 15px;
-            font-size: 0.8rem;
-            color: #00ffff;
-            box-shadow: 0 0 15px #00ffff;
-        }
-        .admin-debug {
-            border: 2px solid #ff00ff;
+        .info {
+            border: 1px solid magenta;
             padding: 10px;
             margin: 10px 0;
-            border-radius: 1rem;
+            color: white;
         }
     </style>
 </head>
 <body>
-    <div class="neon-overlay"></div>
-
-    <!-- Botones flotantes -->
-    <a id="telegramLink" href="https://t.me/+z7wwfx0ocho1NzI5" target="_blank" class="floating-neon telegram-neon hidden">...</a>
-    <a id="whatsappLink" href="https://whatsapp.com/channel/0029Vb74Mxr3LdQVgWdycV2a" target="_blank" class="floating-neon whatsapp-neon hidden">...</a>
-
-    <div id="toast" class="fixed bottom-20 right-5 neon-card p-3 hidden z-50 max-w-xs"></div>
-
-    <div class="container-neon">
-        <header class="text-center py-6">
-            <h1 class="glitch">MILIMAR JAGC</h1>
-            <p class="subtitle-neon mt-2">DEPURACIÓN ADMIN</p>
-            <div class="mt-2">
-                <span class="network-badge"><i class="fas fa-link"></i> BSC Mainnet (Chain ID 56)</span>
-            </div>
-        </header>
-
-        <!-- Conexión -->
-        <div id="conBox" class="neon-card p-8 text-center mb-6">
-            <button id="btnConnect" class="btn-neon text-xl py-4 px-8 max-w-md mx-auto block">CONECTAR BILLETERA</button>
-        </div>
-
-        <!-- Panel de depuración -->
-        <div id="mainPanel" class="hidden space-y-6">
-            <div class="neon-card p-6">
-                <h2 class="text-2xl font-bold text-purple-400 mb-4">🔍 DEPURACIÓN ADMIN</h2>
-                <div class="grid grid-cols-1 gap-3">
-                    <button id="btnCheckOwner" class="btn-neon">🔍 Verificar Owner</button>
-                    <button id="btnTestPausa" class="btn-neon secondary">🛑 Probar PAUSAR (sin permiso)</button>
-                </div>
-                <div id="debugInfo" class="mt-4 p-3 bg-purple-900/30 rounded text-xs"></div>
-            </div>
-
-            <!-- Panel Admin original (con alertas) -->
-            <div id="adminSection" class="hidden neon-card p-4 border border-purple-500/50">
-                <h2 class="text-purple-400 font-bold mb-3 text-center">⚙️ ADMIN (CON ALERTAS)</h2>
-                <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                    <button id="btnPausa" class="btn-neon text-sm py-2">PAUSAR</button>
-                    <button id="btnCupos" class="btn-neon text-sm py-2">CUPOS</button>
-                    <button id="btnPremiar" class="btn-neon text-sm py-2">PREMIAR</button>
-                    <button id="btnSolidaridad" class="btn-neon text-sm py-2">F. SOL.</button>
-                    <button id="btnActualizarBono" class="btn-neon text-sm py-2">BONO N3</button>
-                    <button id="btnToggleBonosRec" class="btn-neon text-sm py-2">BONOS REC</button>
-                    <button id="btnPagarBonosRec" class="btn-neon text-sm py-2">PAGAR REC</button>
-                    <button id="btnRecuperar" class="btn-neon text-sm py-2">RECUPERAR</button>
-                </div>
-            </div>
-        </div>
+    <h1>🧪 TEST ADMIN MILIMAR</h1>
+    <button id="connectBtn">🔌 CONECTAR WALLET</button>
+    <div id="info" class="info">Esperando conexión...</div>
+    <div id="adminPanel" style="display: none;">
+        <button id="btnOwner">🔍 VERIFICAR OWNER</button>
+        <button id="btnPausa">⏸️ PAUSAR</button>
+        <button id="btnCupos">🎫 CUPOS</button>
+        <button id="btnPremiar">🏆 PREMIAR</button>
+        <button id="btnSolidaridad">🤝 F. SOL.</button>
+        <button id="btnBonoN3">💰 BONO N3</button>
+        <button id="btnBonosRec">🔄 BONOS REC</button>
+        <button id="btnPagarRec">💸 PAGAR REC</button>
+        <button id="btnRecuperar">🔙 RECUPERAR</button>
     </div>
 
     <script>
-        // ========== CONFIGURACIÓN ==========
-        const CONTRACT_ADDR_MEMBRESIA = "0x35425E6416f799C30938cBc159523B43C1c358B2";
+        const CONTRACT_ADDR = "0x35425E6416f799C30938cBc159523B43C1c358B2";
         const USDT_ADDR = "0x55d398326f99059fF775485246999027B3197955";
         const BSC_CHAIN_ID = 56;
 
-        // ABI (dejamos solo lo necesario para esta prueba)
-        const abiMembresia = [
+        // ABI completo con todas las funciones de admin
+        const abi = [
             "function owner() view returns (address)",
             "function togglePausa() external",
             "function otorgarCuposExtra(address,uint256) external",
@@ -194,43 +61,23 @@
             "function actualizarBonoNivel3(uint256) external",
             "function setBonosRecurrentesActivados(bool) external",
             "function pagarBonosRecurrentes(address[],uint256) external",
-            "function recuperarTokenExterno(address,uint256) external",
-            "function consultarEstado(address) view returns (tuple(uint256 saldoPendiente, uint256 totalGanado, uint256 totalRetirado, uint256 directos, uint256 redTotal, uint256 diasRestantes, bool activo))",
-            "function unirse(address) external",
-            "function renovarSuscripcion() external",
-            "function retirarGanancias() external",
-            "function emergencyWithdraw() external"
+            "function recuperarTokenExterno(address,uint256) external"
         ];
 
-        const usdtAbi = ["function approve(address spender, uint256 amount) returns (bool)"];
+        let provider, signer, userAddress, contract;
 
-        // ========== VARIABLES ==========
-        let provider, signer, userAddress, contractMembresia, usdtContract;
-        let isOwner = false;
+        const connectBtn = document.getElementById('connectBtn');
+        const infoDiv = document.getElementById('info');
+        const adminPanel = document.getElementById('adminPanel');
 
-        // Elementos
-        const btnConnect = document.getElementById('btnConnect');
-        const conBox = document.getElementById('conBox');
-        const mainPanel = document.getElementById('mainPanel');
-        const adminSection = document.getElementById('adminSection');
-        const debugInfo = document.getElementById('debugInfo');
-        const btnCheckOwner = document.getElementById('btnCheckOwner');
-        const btnTestPausa = document.getElementById('btnTestPausa');
-
-        // Función para mostrar alertas (móvil amigable)
-        function showAlert(msg) {
+        function mostrarAlerta(msg) {
             alert(msg);
+            infoDiv.innerHTML = msg;
         }
 
-        // Función para mostrar en el área de depuración
-        function logDebug(msg) {
-            debugInfo.innerHTML += msg + '<br>';
-        }
-
-        // ========== CONEXIÓN ==========
-        async function connect() {
+        connectBtn.onclick = async () => {
             if (!window.ethereum) {
-                showAlert('Instala MetaMask/OKX Wallet');
+                mostrarAlerta('❌ Instala MetaMask');
                 return;
             }
             try {
@@ -248,191 +95,110 @@
                         signer = provider.getSigner();
                         userAddress = await signer.getAddress();
                     } catch {
-                        showAlert('Cambia a BSC Mainnet en tu wallet');
+                        mostrarAlerta('❌ Cambia a BSC Mainnet');
                         return;
                     }
                 }
 
-                contractMembresia = new ethers.Contract(CONTRACT_ADDR_MEMBRESIA, abiMembresia, signer);
-                usdtContract = new ethers.Contract(USDT_ADDR, usdtAbi, signer);
-
-                conBox.classList.add('hidden');
-                mainPanel.classList.remove('hidden');
-
-                // Verificar owner
-                try {
-                    const ownerAddr = await contractMembresia.owner();
-                    isOwner = (ownerAddr.toLowerCase() === userAddress.toLowerCase());
-                    if (isOwner) {
-                        adminSection.classList.remove('hidden');
-                        showAlert('✅ Eres el owner. Panel admin visible.');
-                    } else {
-                        showAlert('❌ No eres el owner. El panel admin no se mostrará.');
-                    }
-                } catch (e) {
-                    showAlert('Error al obtener owner: ' + e.message);
-                }
+                contract = new ethers.Contract(CONTRACT_ADDR, abi, signer);
+                adminPanel.style.display = 'block';
+                mostrarAlerta('✅ Conectado: ' + userAddress.slice(0,6) + '...');
 
             } catch (e) {
-                showAlert('Error conectando: ' + e.message);
+                mostrarAlerta('❌ Error: ' + e.message);
+            }
+        };
+
+        // Botón verificar owner
+        document.getElementById('btnOwner').onclick = async () => {
+            if (!contract) { mostrarAlerta('Conecta primero'); return; }
+            try {
+                const owner = await contract.owner();
+                const esOwner = (owner.toLowerCase() === userAddress.toLowerCase());
+                mostrarAlerta(`Owner: ${owner}\nTu wallet: ${userAddress}\n¿Eres owner? ${esOwner ? '✅ SI' : '❌ NO'}`);
+            } catch (e) {
+                mostrarAlerta('Error: ' + e.message);
+            }
+        };
+
+        // Función genérica para ejecutar transacciones con alertas
+        async function ejecutarTransaccion(funcion, ...args) {
+            if (!contract) { mostrarAlerta('Conecta primero'); return; }
+            try {
+                mostrarAlerta('⏳ Enviando transacción...');
+                const tx = await funcion(...args);
+                mostrarAlerta('📤 Tx enviada: ' + tx.hash);
+                await tx.wait();
+                mostrarAlerta('✅ Transacción confirmada');
+            } catch (e) {
+                mostrarAlerta('❌ Error: ' + e.message);
             }
         }
 
-        btnConnect.onclick = connect;
+        // Asignar eventos a cada botón
+        document.getElementById('btnPausa').addEventListener('click', () => {
+            ejecutarTransaccion(contract.togglePausa);
+        });
 
-        // Botón verificar owner
-        btnCheckOwner.onclick = async () => {
-            if (!contractMembresia) { showAlert('Conecta primero'); return; }
-            try {
-                const ownerAddr = await contractMembresia.owner();
-                showAlert(`Owner del contrato: ${ownerAddr}\nTu wallet: ${userAddress}\n¿Coinciden? ${ownerAddr.toLowerCase() === userAddress.toLowerCase() ? 'SÍ' : 'NO'}`);
-            } catch (e) {
-                showAlert('Error: ' + e.message);
-            }
-        };
-
-        // Botón probar togglePausa (aunque no sea owner, para ver si la función existe)
-        btnTestPausa.onclick = async () => {
-            if (!contractMembresia) { showAlert('Conecta primero'); return; }
-            try {
-                // Intentamos llamar a togglePausa, pero solo estimamos, no firmamos
-                const gasEstimate = await contractMembresia.estimateGas.togglePausa();
-                showAlert(`✅ La función togglePausa existe. Gas estimado: ${gasEstimate.toString()}`);
-            } catch (e) {
-                showAlert(`❌ Error al estimar gas: ${e.message}. Probablemente la función no existe o requiere permisos.`);
-            }
-        };
-
-        // ========== BOTONES DE ADMIN (con alertas) ==========
-        document.getElementById('btnPausa').onclick = async () => {
-            if (!isOwner) { showAlert('No tienes permisos'); return; }
-            if (!confirm('¿Ejecutar togglePausa?')) return;
-            try {
-                showAlert('Enviando transacción...');
-                const tx = await contractMembresia.togglePausa();
-                showAlert('Transacción enviada: ' + tx.hash);
-                await tx.wait();
-                showAlert('✅ Pausa cambiada');
-            } catch (e) {
-                showAlert('Error: ' + e.message);
-            }
-        };
-
-        document.getElementById('btnCupos').onclick = async () => {
-            if (!isOwner) { showAlert('No tienes permisos'); return; }
+        document.getElementById('btnCupos').addEventListener('click', async () => {
             const lider = prompt('Dirección del líder:');
             if (!lider) return;
             const cant = prompt('Cantidad de cupos:');
             if (!cant) return;
-            try {
-                const tx = await contractMembresia.otorgarCuposExtra(lider, cant);
-                showAlert('Tx enviada: ' + tx.hash);
-                await tx.wait();
-                showAlert('✅ Cupos otorgados');
-            } catch (e) {
-                showAlert('Error: ' + e.message);
-            }
-        };
+            ejecutarTransaccion(contract.otorgarCuposExtra, lider, cant);
+        });
 
-        document.getElementById('btnPremiar').onclick = async () => {
-            if (!isOwner) { showAlert('No tienes permisos'); return; }
+        document.getElementById('btnPremiar').addEventListener('click', async () => {
             const lider = prompt('Dirección del líder:');
             if (!lider) return;
             const monto = prompt('Monto en USDT:');
             if (!monto) return;
-            try {
-                const montoWei = ethers.utils.parseUnits(monto, 18);
-                const tx = await contractMembresia.premiarLider(lider, montoWei);
-                showAlert('Tx enviada: ' + tx.hash);
-                await tx.wait();
-                showAlert('✅ Premio enviado');
-            } catch (e) {
-                showAlert('Error: ' + e.message);
-            }
-        };
+            const montoWei = ethers.utils.parseUnits(monto, 18);
+            ejecutarTransaccion(contract.premiarLider, lider, montoWei);
+        });
 
-        document.getElementById('btnSolidaridad').onclick = async () => {
-            if (!isOwner) { showAlert('No tienes permisos'); return; }
+        document.getElementById('btnSolidaridad').addEventListener('click', async () => {
             const benef = prompt('Dirección del beneficiario:');
             if (!benef) return;
             const monto = prompt('Monto en USDT:');
             if (!monto) return;
             const motivo = prompt('Motivo:');
             if (!motivo) return;
-            try {
-                const montoWei = ethers.utils.parseUnits(monto, 18);
-                const tx = await contractMembresia.usarFondoSolidaridad(benef, montoWei, motivo);
-                showAlert('Tx enviada: ' + tx.hash);
-                await tx.wait();
-                showAlert('✅ Fondo usado');
-            } catch (e) {
-                showAlert('Error: ' + e.message);
-            }
-        };
+            const montoWei = ethers.utils.parseUnits(monto, 18);
+            ejecutarTransaccion(contract.usarFondoSolidaridad, benef, montoWei, motivo);
+        });
 
-        document.getElementById('btnActualizarBono').onclick = async () => {
-            if (!isOwner) { showAlert('No tienes permisos'); return; }
+        document.getElementById('btnBonoN3').addEventListener('click', async () => {
             const nuevo = prompt('Nuevo monto del bono nivel 3 (en USDT):');
             if (!nuevo) return;
-            try {
-                const nuevoWei = ethers.utils.parseUnits(nuevo, 18);
-                const tx = await contractMembresia.actualizarBonoNivel3(nuevoWei);
-                showAlert('Tx enviada: ' + tx.hash);
-                await tx.wait();
-                showAlert('✅ Bono actualizado');
-            } catch (e) {
-                showAlert('Error: ' + e.message);
-            }
-        };
+            const nuevoWei = ethers.utils.parseUnits(nuevo, 18);
+            ejecutarTransaccion(contract.actualizarBonoNivel3, nuevoWei);
+        });
 
-        document.getElementById('btnToggleBonosRec').onclick = async () => {
-            if (!isOwner) { showAlert('No tienes permisos'); return; }
+        document.getElementById('btnBonosRec').addEventListener('click', async () => {
             const estado = prompt('Activar bonos recurrentes? (true/false):');
             if (estado === null) return;
-            try {
-                const tx = await contractMembresia.setBonosRecurrentesActivados(estado === 'true');
-                showAlert('Tx enviada: ' + tx.hash);
-                await tx.wait();
-                showAlert('✅ Estado cambiado');
-            } catch (e) {
-                showAlert('Error: ' + e.message);
-            }
-        };
+            ejecutarTransaccion(contract.setBonosRecurrentesActivados, estado === 'true');
+        });
 
-        document.getElementById('btnPagarBonosRec').onclick = async () => {
-            if (!isOwner) { showAlert('No tienes permisos'); return; }
+        document.getElementById('btnPagarRec').addEventListener('click', async () => {
             const lista = prompt('Lista de direcciones separadas por coma:');
             if (!lista) return;
             const monto = prompt('Monto por persona (USDT):');
             if (!monto) return;
             const direcciones = lista.split(',').map(s => s.trim()).filter(s => s !== '');
-            try {
-                const montoWei = ethers.utils.parseUnits(monto, 18);
-                const tx = await contractMembresia.pagarBonosRecurrentes(direcciones, montoWei);
-                showAlert('Tx enviada: ' + tx.hash);
-                await tx.wait();
-                showAlert('✅ Bonos pagados');
-            } catch (e) {
-                showAlert('Error: ' + e.message);
-            }
-        };
+            const montoWei = ethers.utils.parseUnits(monto, 18);
+            ejecutarTransaccion(contract.pagarBonosRecurrentes, direcciones, montoWei);
+        });
 
-        document.getElementById('btnRecuperar').onclick = async () => {
-            if (!isOwner) { showAlert('No tienes permisos'); return; }
+        document.getElementById('btnRecuperar').addEventListener('click', async () => {
             const token = prompt('Dirección del token (no USDT):');
             if (!token) return;
             const cant = prompt('Cantidad:');
             if (!cant) return;
-            try {
-                const cantWei = ethers.utils.parseUnits(cant, 18);
-                const tx = await contractMembresia.recuperarTokenExterno(token, cantWei);
-                showAlert('Tx enviada: ' + tx.hash);
-                await tx.wait();
-                showAlert('✅ Tokens recuperados');
-            } catch (e) {
-                showAlert('Error: ' + e.message);
-            }
-        };
+            const cantWei = ethers.utils.parseUnits(cant, 18);
+            ejecutarTransaccion(contract.recuperarTokenExterno, token, cantWei);
+        });
     </script>
 </body>
 </html>
