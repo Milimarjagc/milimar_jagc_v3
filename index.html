@@ -125,7 +125,7 @@
             border: 1px solid rgba(0, 255, 255, 0.3);
             box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
         }
-        /* Botones flotantes de redes sociales (pequeños) */
+        /* Botones flotantes de redes sociales */
         .floating-buttons {
             position: fixed;
             bottom: 20px;
@@ -156,7 +156,7 @@
             box-shadow: 0 0 40px #00ffff;
             transform: scale(1.05);
         }
-        /* Tarjetas con efecto hielo (glassmorphism) y neón */
+        /* Tarjetas con efecto hielo y neón */
         .card {
             background: rgba(10, 20, 30, 0.6);
             backdrop-filter: blur(15px);
@@ -207,7 +207,7 @@
             padding: 8px 18px;
             font-size: 0.9rem;
         }
-        /* Estadísticas con neón */
+        /* Estadísticas */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -370,22 +370,50 @@
             color: #aaa;
             font-size: 0.85rem;
         }
+        /* Visualización de niveles */
+        .niveles-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .nivel-item {
+            background: rgba(0, 255, 255, 0.15);
+            border: 1px solid #00ffff;
+            border-radius: 50px;
+            padding: 10px 20px;
+            text-align: center;
+            min-width: 80px;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+        }
+        .nivel-num {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #00ffff;
+        }
+        .nivel-cant {
+            font-size: 2rem;
+            font-weight: 800;
+            color: white;
+            text-shadow: 0 0 15px #00ffff;
+        }
     </style>
 </head>
 <body>
-    <!-- Video de fondo: red global (fuente Pexels) -->
+    <!-- Video de fondo: red global -->
     <video autoplay muted loop playsinline id="bg-video" poster="https://images.pexels.com/photos/15566764/pexels-photo-15566764.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1">
         <source src="https://videos.pexels.com/video-files/3129674/3129674-uhd_2560_1440_30fps.mp4" type="video/mp4">
     </video>
     <div class="overlay"></div>
 
-    <!-- Selector de idioma (pequeño) -->
+    <!-- Selector de idioma -->
     <div class="lang-selector">
         <button class="lang-btn active" id="lang-es"><i class="fas fa-language"></i> ES</button>
         <button class="lang-btn" id="lang-en"><i class="fas fa-language"></i> EN</button>
     </div>
 
-    <!-- Botones flotantes de redes sociales -->
+    <!-- Botones flotantes de redes -->
     <div class="floating-buttons">
         <a href="https://t.me/+z7wwfx0ocho1NzI5" target="_blank" class="floating-btn">
             <i class="fab fa-telegram-plane"></i> <span data-i18n="telegram">Telegram</span>
@@ -420,85 +448,114 @@
             <p data-i18n="loading">Cargando datos...</p>
         </div>
 
-        <!-- Panel principal (visible al conectar) -->
+        <!-- Panel principal -->
         <div id="mainPanel" class="hidden">
-            <!-- Estadísticas globales -->
+            <!-- Tarjetas de resumen -->
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-label" data-i18n="pendingBalance">Saldo pendiente</div>
+                    <div class="stat-value" id="valSaldo">0.00</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label" data-i18n="directs">Directos</div>
+                    <div class="stat-value" id="valDir">0</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label" data-i18n="totalNetwork">Red total</div>
+                    <div class="stat-value" id="valRed">0</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label" data-i18n="daysActive">Días activo</div>
+                    <div class="stat-value" id="valDias">0</div>
+                </div>
+            </div>
+
+            <!-- Pools -->
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-label" data-i18n="solidarityFund">Fondo solidaridad</div>
+                    <div class="stat-value" id="fondoSolidaridad">0.00</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label" data-i18n="leadershipPool">Pool liderazgo</div>
+                    <div class="stat-value" id="poolLiderazgo">0.00</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label" data-i18n="emergency">Emergencia</div>
+                    <div class="stat-value" id="emergencyStatus">INACTIVO</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label" data-i18n="members">Miembros</div>
+                    <div class="stat-value" id="totalUsuarios">0</div>
+                </div>
+            </div>
+
+            <!-- Visualización de niveles -->
             <div class="card">
-                <h2 style="display: flex; align-items: center; gap: 10px;"><i class="fas fa-chart-line" style="color: #00ffff;"></i> <span data-i18n="fundStatus">Estado del fondo</span></h2>
-                <div class="stats-grid">
-                    <div class="stat-item">
-                        <div class="stat-label" data-i18n="totalActive">Total activos</div>
-                        <div class="stat-value" id="totalActivos">0</div>
+                <h2 style="text-align:center;" data-i18n="yourNetwork">Tu red de 5 niveles</h2>
+                <div class="niveles-container" id="nivelesContainer">
+                    <div class="nivel-item">
+                        <div class="nivel-num">N1</div>
+                        <div class="nivel-cant" id="n1">0</div>
                     </div>
-                    <div class="stat-item">
-                        <div class="stat-label" data-i18n="totalShares">Participaciones</div>
-                        <div class="stat-value" id="totalShares">0</div>
+                    <div class="nivel-item">
+                        <div class="nivel-num">N2</div>
+                        <div class="nivel-cant" id="n2">0</div>
                     </div>
-                    <div class="stat-item">
-                        <div class="stat-label" data-i18n="sharePrice">Valor participación</div>
-                        <div class="stat-value" id="precioShare">1.00</div>
+                    <div class="nivel-item">
+                        <div class="nivel-num">N3</div>
+                        <div class="nivel-cant" id="n3">0</div>
                     </div>
-                    <div class="stat-item">
-                        <div class="stat-label" data-i18n="members">Miembros</div>
-                        <div class="stat-value" id="totalUsuarios">0</div>
+                    <div class="nivel-item">
+                        <div class="nivel-num">N4</div>
+                        <div class="nivel-cant" id="n4">0</div>
+                    </div>
+                    <div class="nivel-item">
+                        <div class="nivel-num">N5</div>
+                        <div class="nivel-cant" id="n5">0</div>
                     </div>
                 </div>
             </div>
 
-            <!-- Datos del usuario + recompensas -->
+            <!-- Detalles de red y ganancias -->
             <div class="grid-2">
                 <div class="card">
-                    <h3 style="color: #00ffff;"><i class="fas fa-user"></i> <span data-i18n="myPosition">Mi posición</span></h3>
-                    <p><strong data-i18n="myShares">Mis participaciones:</strong> <span id="misShares">0</span></p>
-                    <p><strong data-i18n="myBalance">Mi saldo (USDT):</strong> <span id="miSaldo">0.00</span></p>
-                    <p><strong data-i18n="invitedBy">Invitado por:</strong> <span id="miReferidor">0x...</span></p>
-                    <p><strong data-i18n="bonusPref">Preferencia bonos:</strong> <span id="preferenciaBono">RETIRAR</span></p>
-                    <button class="btn btn-small btn-secondary" id="cambiarPreferenciaBtn" data-i18n="changePref">Cambiar preferencia</button>
+                    <h3 data-i18n="networkDetail">Detalle de red</h3>
+                    <div id="redNiveles"></div>
                 </div>
-                <div class="card" style="border-left: 4px solid #00ffff;">
-                    <h3 style="color: #00ffff;"><i class="fas fa-gift"></i> <span data-i18n="bonus">Bonificación</span></h3>
-                    <p style="font-size: 3rem; font-weight: 700; color: #00ffff; text-shadow: 0 0 30px #00ffff;" id="recompensasPendientes">0.00</p>
-                    <p data-i18n="availableToClaim">USDT disponibles para reclamar</p>
-                    <button class="btn btn-small" id="reclamarRecompensasBtn" data-i18n="claim">Reclamar</button>
+                <div class="card">
+                    <h3 data-i18n="earningsDetail">Ganancias por nivel</h3>
+                    <div id="gananciasNiveles"></div>
                 </div>
             </div>
 
-            <!-- Acciones: depósito y retiro -->
+            <!-- Botones de acción -->
             <div class="grid-2">
                 <div class="card">
-                    <h3><i class="fas fa-arrow-down"></i> <span data-i18n="deposit">Depositar</span></h3>
+                    <h3 data-i18n="register">Registro</h3>
                     <div class="form-group">
-                        <label data-i18n="amountMin">Cantidad (mín. 10 USDT)</label>
-                        <input type="number" id="depositAmount" placeholder="Ej: 10" min="10" step="0.01">
+                        <label data-i18n="sponsorAddress">Dirección del patrocinador</label>
+                        <input type="text" id="sponsorInput" placeholder="0x...">
                     </div>
-                    <button class="btn" id="depositarAutoBtn"><i class="fas fa-magic"></i> <span data-i18n="depositAuto">Depositar (hereda referido)</span></button>
+                    <button class="btn" id="btnJoin" data-i18n="activate">Activar (10 USDT)</button>
                 </div>
                 <div class="card">
-                    <h3><i class="fas fa-arrow-up"></i> <span data-i18n="withdraw">Retirar</span></h3>
-                    <div class="form-group">
-                        <label data-i18n="sharesToWithdraw">Participaciones a retirar</label>
-                        <input type="number" id="withdrawShares" placeholder="Ej: 10" min="0" step="1">
-                    </div>
-                    <button class="btn btn-secondary" id="retirarBtn" data-i18n="withdrawBtn">Retirar</button>
+                    <h3 data-i18n="renew">Renovar</h3>
+                    <button class="btn btn-secondary" id="btnRenew" data-i18n="renewBtn">Renovar suscripción</button>
+                </div>
+                <div class="card">
+                    <h3 data-i18n="withdraw">Retirar</h3>
+                    <button class="btn btn-secondary" id="btnWithdraw" data-i18n="withdrawBtn">Retirar ganancias</button>
+                </div>
+                <div class="card">
+                    <h3 data-i18n="emergency">Emergencia</h3>
+                    <button class="btn btn-danger" id="btnEmergencyWithdraw" data-i18n="emergencyWithdraw">Retiro de emergencia</button>
                 </div>
             </div>
 
-            <!-- Acordeón: detalles del contrato -->
-            <details>
-                <summary><i class="fas fa-code"></i> <span data-i18n="contractDetails">Detalles del contrato</span></summary>
-                <div class="contract-detail">
-                    <span id="contractAddressDisplay">0x35425E6416f799C30938cBc159523B43C1c358B2</span>
-                    <button class="copy-btn" id="copyAddressBtn"><i class="fas fa-copy"></i> <span data-i18n="copy">Copiar</span></button>
-                    <a href="https://bscscan.com/address/0x35425E6416f799C30938cBc159523B43C1c358B2" target="_blank">
-                        <i class="fas fa-external-link-alt"></i> <span data-i18n="viewBscScan">Ver en BscScan</span>
-                    </a>
-                </div>
-                <p style="margin-top: 10px; color: #aaa;" data-i18n="contractVerified">Contrato verificado. Código fuente disponible.</p>
-            </details>
-
-            <!-- Panel de administración (solo visible para owner) -->
+            <!-- Panel de administración -->
             <div id="adminPanel" class="card admin-panel hidden">
-                <h3 style="color: #00ffff;"><i class="fas fa-crown"></i> <span data-i18n="admin">Administración</span></h3>
+                <h3 style="color:#00ffff;"><i class="fas fa-crown"></i> <span data-i18n="admin">Administración</span></h3>
                 <div class="grid-2">
                     <div>
                         <h4 data-i18n="distributeProfit">Distribuir ganancia</h4>
@@ -531,16 +588,27 @@
                         <h4 data-i18n="emergency">Emergencia</h4>
                         <button class="btn btn-small btn-secondary" id="activarEmergenciaBtn" data-i18n="activate">Activar</button>
                         <button class="btn btn-small btn-secondary" id="desactivarEmergenciaBtn" data-i18n="deactivate">Desactivar</button>
-                        <button class="btn btn-small btn-secondary" id="retiroEmergenciaBtn" style="margin-top:5px;" data-i18n="emergencyWithdraw">Retiro emergencia</button>
                     </div>
                 </div>
-                <div style="margin-top: 20px;">
+                <div style="margin-top:20px;">
                     <p><strong data-i18n="accruedFees">Comisiones acumuladas:</strong> <span id="comisionesAcumuladas">0</span> USDT</p>
-                    <p><strong data-i18n="leadershipPool">Pool de liderazgo:</strong> <span id="poolLiderazgo">0</span> USDT</p>
-                    <p><strong data-i18n="referralPool">Pool de referidos:</strong> <span id="poolReferidos">0</span> USDT</p>
-                    <p><strong data-i18n="emergencyMode">Modo emergencia:</strong> <span id="emergenciaEstado">Inactivo</span></p>
+                    <p><strong data-i18n="leadershipPool">Pool liderazgo:</strong> <span id="poolLiderazgoAdmin">0</span> USDT</p>
+                    <p><strong data-i18n="solidarityFund">Fondo solidaridad:</strong> <span id="fondoSolidaridadAdmin">0</span> USDT</p>
                 </div>
             </div>
+
+            <!-- Detalles del contrato -->
+            <details>
+                <summary><i class="fas fa-code"></i> <span data-i18n="contractDetails">Detalles del contrato</span></summary>
+                <div class="contract-detail">
+                    <span id="contractAddressDisplay">0x35425E6416f799C30938cBc159523B43C1c358B2</span>
+                    <button class="copy-btn" id="copyAddressBtn"><i class="fas fa-copy"></i> <span data-i18n="copy">Copiar</span></button>
+                    <a href="https://bscscan.com/address/0x35425E6416f799C30938cBc159523B43C1c358B2" target="_blank">
+                        <i class="fas fa-external-link-alt"></i> <span data-i18n="viewBscScan">Ver en BscScan</span>
+                    </a>
+                </div>
+                <p style="margin-top:10px; color:#aaa;" data-i18n="contractVerified">Contrato verificado · Código fuente disponible</p>
+            </details>
         </div>
 
         <div class="footer">
@@ -553,13 +621,16 @@
         const CONTRACT_ADDRESS = "0x35425E6416f799C30938cBc159523B43C1c358B2";
         const BSC_MAINNET_CHAIN_ID = 56;
 
-        // ABI (versión simplificada para el ejemplo, en producción usar el completo)
+        // ABI mínimo para membresía
         const CONTRACT_ABI = [
-            "function totalUsuarios() view returns (uint256)",
-            "function consultarEstado(address) view returns (uint256,uint256,uint256,uint256,uint256,uint256,bool)",
+            "function consultarEstado(address) view returns (uint256 saldoPendiente, uint256 totalGanado, uint256 totalRetirado, uint256 directos, uint256 redTotal, uint256 diasRestantes, bool activo)",
             "function verDetalleRed(address) view returns (uint256[5] memory)",
             "function verDetalleGanancias(address) view returns (uint256[5] memory)",
-            "function usuarios(address) view returns (bool registrado, address patrocinador, uint256 saldoPendiente, uint256 totalGanado, uint256 totalRetirado, uint256 contadorDirectos, uint256 redTotal, uint256[5] conteoNiveles, uint256 cuposExtraAdmin, uint256 vencimiento, uint256[5] gananciasNiveles, bool bonoN3Reclamado, uint256 fechaRegistro, uint256 ultimaActividad, bool activo)",
+            "function totalUsuarios() view returns (uint256)",
+            "function fondoSolidaridad() view returns (uint256)",
+            "function poolLiderazgo() view returns (uint256)",
+            "function emergencyMode() view returns (bool)",
+            "function owner() view returns (address)",
             "function unirse(address) external",
             "function renovarSuscripcion() external",
             "function retirarGanancias() external",
@@ -567,14 +638,8 @@
             "function distribuirGanancia(uint256) external",
             "function asignarRecompensaReferido(address,uint256) external",
             "function retirarComisiones(uint256,address) external",
-            "function premiarLider(address,uint256) external",
             "function activarEmergencia() external",
-            "function desactivarEmergencia() external",
-            "function owner() view returns (address)",
-            "function poolLiderazgo() view returns (uint256)",
-            "function fondoSolidaridad() view returns (uint256)",
-            "function comisionesAcumuladas() view returns (uint256)",
-            "function setPreferenciaBono(uint8) external" // 0=RETIRAR,1=INVERTIR
+            "function desactivarEmergencia() external"
         ];
 
         // Traducciones
@@ -586,44 +651,38 @@
                 disconnected: "Desconectado",
                 connect: "Conectar",
                 loading: "Cargando datos...",
-                fundStatus: "Estado del fondo",
-                totalActive: "Total activos",
-                totalShares: "Participaciones",
-                sharePrice: "Valor participación",
+                pendingBalance: "Saldo pendiente",
+                directs: "Directos",
+                totalNetwork: "Red total",
+                daysActive: "Días activo",
+                solidarityFund: "Fondo solidaridad",
+                leadershipPool: "Pool liderazgo",
+                emergency: "Emergencia",
                 members: "Miembros",
-                myPosition: "Mi posición",
-                myShares: "Mis participaciones",
-                myBalance: "Mi saldo (USDT)",
-                invitedBy: "Invitado por",
-                bonusPref: "Preferencia bonos",
-                changePref: "Cambiar preferencia",
-                bonus: "Bonificación",
-                availableToClaim: "USDT disponibles para reclamar",
-                claim: "Reclamar",
-                deposit: "Depositar",
-                amountMin: "Cantidad (mín. 10 USDT)",
-                depositAuto: "Depositar (hereda referido)",
+                yourNetwork: "Tu red de 5 niveles",
+                networkDetail: "Detalle de red",
+                earningsDetail: "Ganancias por nivel",
+                register: "Registro",
+                sponsorAddress: "Dirección del patrocinador",
+                activate: "Activar (10 USDT)",
+                renew: "Renovar",
+                renewBtn: "Renovar suscripción",
                 withdraw: "Retirar",
-                sharesToWithdraw: "Participaciones a retirar",
-                withdrawBtn: "Retirar",
-                contractDetails: "Detalles del contrato",
-                copy: "Copiar",
-                viewBscScan: "Ver en BscScan",
-                contractVerified: "Contrato verificado. Código fuente disponible.",
+                withdrawBtn: "Retirar ganancias",
+                emergencyWithdraw: "Retiro de emergencia",
                 admin: "Administración",
                 distributeProfit: "Distribuir ganancia",
                 distribute: "Distribuir",
                 assignReward: "Asignar recompensa",
                 assign: "Asignar",
                 withdrawFees: "Retirar comisiones",
-                emergency: "Emergencia",
                 activate: "Activar",
                 deactivate: "Desactivar",
-                emergencyWithdraw: "Retiro emergencia",
                 accruedFees: "Comisiones acumuladas",
-                leadershipPool: "Pool de liderazgo",
-                referralPool: "Pool de referidos",
-                emergencyMode: "Modo emergencia",
+                contractDetails: "Detalles del contrato",
+                copy: "Copiar",
+                viewBscScan: "Ver en BscScan",
+                contractVerified: "Contrato verificado · Código fuente disponible",
                 globalNetwork: "Red Global"
             },
             en: {
@@ -633,44 +692,38 @@
                 disconnected: "Disconnected",
                 connect: "Connect",
                 loading: "Loading data...",
-                fundStatus: "Fund Status",
-                totalActive: "Total Assets",
-                totalShares: "Shares",
-                sharePrice: "Share Price",
-                members: "Members",
-                myPosition: "My Position",
-                myShares: "My Shares",
-                myBalance: "My Balance (USDT)",
-                invitedBy: "Invited by",
-                bonusPref: "Bonus Preference",
-                changePref: "Change Preference",
-                bonus: "Bonus",
-                availableToClaim: "USDT available to claim",
-                claim: "Claim",
-                deposit: "Deposit",
-                amountMin: "Amount (min. 10 USDT)",
-                depositAuto: "Deposit (inherits referrer)",
-                withdraw: "Withdraw",
-                sharesToWithdraw: "Shares to withdraw",
-                withdrawBtn: "Withdraw",
-                contractDetails: "Contract Details",
-                copy: "Copy",
-                viewBscScan: "View on BscScan",
-                contractVerified: "Contract verified. Source code available.",
-                admin: "Administration",
-                distributeProfit: "Distribute Profit",
-                distribute: "Distribute",
-                assignReward: "Assign Reward",
-                assign: "Assign",
-                withdrawFees: "Withdraw Fees",
+                pendingBalance: "Pending balance",
+                directs: "Directs",
+                totalNetwork: "Total network",
+                daysActive: "Days active",
+                solidarityFund: "Solidarity fund",
+                leadershipPool: "Leadership pool",
                 emergency: "Emergency",
+                members: "Members",
+                yourNetwork: "Your 5-level network",
+                networkDetail: "Network detail",
+                earningsDetail: "Earnings by level",
+                register: "Register",
+                sponsorAddress: "Sponsor address",
+                activate: "Activate (10 USDT)",
+                renew: "Renew",
+                renewBtn: "Renew subscription",
+                withdraw: "Withdraw",
+                withdrawBtn: "Withdraw earnings",
+                emergencyWithdraw: "Emergency withdraw",
+                admin: "Administration",
+                distributeProfit: "Distribute profit",
+                distribute: "Distribute",
+                assignReward: "Assign reward",
+                assign: "Assign",
+                withdrawFees: "Withdraw fees",
                 activate: "Activate",
                 deactivate: "Deactivate",
-                emergencyWithdraw: "Emergency Withdraw",
-                accruedFees: "Accrued Fees",
-                leadershipPool: "Leadership Pool",
-                referralPool: "Referral Pool",
-                emergencyMode: "Emergency Mode",
+                accruedFees: "Accrued fees",
+                contractDetails: "Contract details",
+                copy: "Copy",
+                viewBscScan: "View on BscScan",
+                contractVerified: "Contract verified · Source code available",
                 globalNetwork: "Global Network"
             }
         };
@@ -684,7 +737,6 @@
                     el.innerText = translations[lang][key];
                 }
             });
-            // Actualizar botones de idioma
             document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
             document.getElementById(`lang-${lang}`).classList.add('active');
         }
@@ -805,42 +857,63 @@
 
         async function loadAllData() {
             try {
-                // Datos globales
+                // Total usuarios
                 const totalUsers = await contract.totalUsuarios();
                 document.getElementById('totalUsuarios').textContent = totalUsers.toString();
 
-                // Datos del usuario
-                const user = await contract.usuarios(userAddress);
-                if (user.registrado) {
-                    // Consultar estado
-                    const estado = await contract.consultarEstado(userAddress);
-                    document.getElementById('misShares').textContent = '0'; // shares no aplican en membresía
-                    document.getElementById('miSaldo').textContent = formatUSDT(estado.saldoPendiente);
-                    document.getElementById('recompensasPendientes').textContent = '0'; // recompensas pendientes no aplican aquí
-                    // Preferencia bono (simulada)
-                    document.getElementById('preferenciaBono').textContent = 'RETIRAR';
-                    document.getElementById('miReferidor').textContent = user.patrocinador === ethers.constants.AddressZero ? 'Ninguno' : user.patrocinador.slice(0,6) + '...' + user.patrocinador.slice(-4);
+                // Datos del usuario (si está registrado)
+                const estado = await contract.consultarEstado(userAddress);
+                if (estado.activo) {
+                    document.getElementById('valSaldo').textContent = formatUSDT(estado.saldoPendiente);
+                    document.getElementById('valDir').textContent = estado.directos.toString();
+                    document.getElementById('valRed').textContent = estado.redTotal.toString();
+                    document.getElementById('valDias').textContent = estado.diasRestantes.toString();
 
-                    // Si es owner, mostrar panel admin
-                    if (userAddress.toLowerCase() === ownerAddress.toLowerCase()) {
-                        adminPanel.classList.remove('hidden');
-                        const poolLiderazgo = await contract.poolLiderazgo();
-                        const poolSolidaridad = await contract.fondoSolidaridad();
-                        const comisiones = await contract.comisionesAcumuladas();
-                        document.getElementById('poolLiderazgo').textContent = formatUSDT(poolLiderazgo);
-                        document.getElementById('poolReferidos').textContent = formatUSDT(poolSolidaridad);
-                        document.getElementById('comisionesAcumuladas').textContent = formatUSDT(comisiones);
-                        // emergencia (no está en el contrato original, lo omitimos)
-                    } else {
-                        adminPanel.classList.add('hidden');
+                    // Detalle de red
+                    const red = await contract.verDetalleRed(userAddress);
+                    for (let i = 0; i < 5; i++) {
+                        document.getElementById(`n${i+1}`).textContent = red[i].toString();
                     }
+
+                    // Detalle de ganancias por nivel
+                    const ganancias = await contract.verDetalleGanancias(userAddress);
+                    let redHtml = '', ganHtml = '';
+                    for (let i = 0; i < 5; i++) {
+                        redHtml += `<p>Nivel ${i+1}: <strong>${red[i].toString()}</strong></p>`;
+                        ganHtml += `<p>Nivel ${i+1}: <strong>${formatUSDT(ganancias[i])} USDT</strong></p>`;
+                    }
+                    document.getElementById('redNiveles').innerHTML = redHtml;
+                    document.getElementById('gananciasNiveles').innerHTML = ganHtml;
                 } else {
-                    // Usuario no registrado
-                    document.getElementById('misShares').textContent = '0';
-                    document.getElementById('miSaldo').textContent = '0.00';
-                    document.getElementById('recompensasPendientes').textContent = '0.00';
-                    document.getElementById('preferenciaBono').textContent = 'RETIRAR';
-                    document.getElementById('miReferidor').textContent = 'Ninguno';
+                    // Usuario no registrado: mostrar valores por defecto
+                    document.getElementById('valSaldo').textContent = '0.00';
+                    document.getElementById('valDir').textContent = '0';
+                    document.getElementById('valRed').textContent = '0';
+                    document.getElementById('valDias').textContent = '0';
+                    for (let i = 1; i <= 5; i++) document.getElementById(`n${i}`).textContent = '0';
+                    document.getElementById('redNiveles').innerHTML = '<p>No registrado</p>';
+                    document.getElementById('gananciasNiveles').innerHTML = '<p>No registrado</p>';
+                }
+
+                // Pools globales
+                const fondo = await contract.fondoSolidaridad();
+                const pool = await contract.poolLiderazgo();
+                document.getElementById('fondoSolidaridad').textContent = formatUSDT(fondo);
+                document.getElementById('poolLiderazgo').textContent = formatUSDT(pool);
+                document.getElementById('fondoSolidaridadAdmin').textContent = formatUSDT(fondo);
+                document.getElementById('poolLiderazgoAdmin').textContent = formatUSDT(pool);
+
+                // Modo emergencia
+                const emergency = await contract.emergencyMode();
+                document.getElementById('emergencyStatus').textContent = emergency ? 'ACTIVO' : 'INACTIVO';
+
+                // Si es admin, mostrar panel admin
+                if (userAddress.toLowerCase() === ownerAddress.toLowerCase()) {
+                    adminPanel.classList.remove('hidden');
+                    // comisionesAcumuladas no está en el contrato original, lo omitimos o lo dejamos en 0
+                    document.getElementById('comisionesAcumuladas').textContent = '0';
+                } else {
+                    adminPanel.classList.add('hidden');
                 }
             } catch (error) {
                 showMessage('Error cargando datos: ' + error.message, 'error');
@@ -849,16 +922,40 @@
 
         connectBtn.addEventListener('click', connect);
 
-        // Botones de usuario
-        document.getElementById('depositarAutoBtn').addEventListener('click', async () => {
-            // En membresía, depositar no aplica; se usa unirse o renovar
-            showMessage('Esta función no está disponible en membresía', 'error');
+        // Acciones de usuario
+        document.getElementById('btnJoin').addEventListener('click', async () => {
+            const sponsor = document.getElementById('sponsorInput').value;
+            if (!ethers.utils.isAddress(sponsor)) {
+                showMessage('Dirección de patrocinador inválida', 'error');
+                return;
+            }
+            try {
+                const tx = await contract.unirse(sponsor);
+                showMessage('Registrando...', 'info');
+                await tx.wait();
+                showMessage('✅ Registro exitoso', 'success');
+                await loadAllData();
+            } catch (error) {
+                showMessage('Error: ' + error.message, 'error');
+            }
         });
 
-        document.getElementById('retirarBtn').addEventListener('click', async () => {
+        document.getElementById('btnRenew').addEventListener('click', async () => {
+            try {
+                const tx = await contract.renovarSuscripcion();
+                showMessage('Renovando...', 'info');
+                await tx.wait();
+                showMessage('✅ Renovación exitosa', 'success');
+                await loadAllData();
+            } catch (error) {
+                showMessage('Error: ' + error.message, 'error');
+            }
+        });
+
+        document.getElementById('btnWithdraw').addEventListener('click', async () => {
             try {
                 const tx = await contract.retirarGanancias();
-                showMessage('Procesando retiro...', 'info');
+                showMessage('Retirando...', 'info');
                 await tx.wait();
                 showMessage('✅ Retiro exitoso', 'success');
                 await loadAllData();
@@ -867,28 +964,43 @@
             }
         });
 
-        document.getElementById('reclamarRecompensasBtn').addEventListener('click', async () => {
-            // No aplica en membresía
-            showMessage('Función no disponible', 'error');
+        document.getElementById('btnEmergencyWithdraw').addEventListener('click', async () => {
+            try {
+                const tx = await contract.emergencyWithdraw();
+                showMessage('Retiro de emergencia...', 'info');
+                await tx.wait();
+                showMessage('✅ Retiro completado', 'success');
+                await loadAllData();
+            } catch (error) {
+                showMessage('Error: ' + error.message, 'error');
+            }
         });
 
-        document.getElementById('cambiarPreferenciaBtn').addEventListener('click', async () => {
-            const opcion = prompt('Elige: 0 = RETIRAR, 1 = INVERTIR');
-            if (opcion !== '0' && opcion !== '1') return;
-            // Simular cambio (no implementado en contrato original)
-            document.getElementById('preferenciaBono').textContent = opcion === '0' ? 'RETIRAR' : 'INVERTIR';
-            showMessage('Preferencia actualizada (simulado)', 'success');
-        });
-
-        // Admin (solo algunos ejemplos)
+        // Admin
         document.getElementById('distribuirGananciaBtn').addEventListener('click', async () => {
             const profit = document.getElementById('profitAmount').value;
-            if (!profit || profit <= 0) return showMessage('Ingresa ganancia válida', 'error');
+            if (!profit || profit <= 0) return showMessage('Ganancia inválida', 'error');
             try {
                 const tx = await contract.distribuirGanancia(parseUSDT(profit));
                 showMessage('Distribuyendo...', 'info');
                 await tx.wait();
                 showMessage('✅ Ganancia distribuida', 'success');
+                await loadAllData();
+            } catch (error) {
+                showMessage('Error: ' + error.message, 'error');
+            }
+        });
+
+        document.getElementById('asignarRecompensaBtn').addEventListener('click', async () => {
+            const referidor = document.getElementById('asignarReferido').value;
+            const cantidad = document.getElementById('asignarCantidad').value;
+            if (!ethers.utils.isAddress(referidor)) return showMessage('Dirección inválida', 'error');
+            if (!cantidad || cantidad <= 0) return showMessage('Cantidad inválida', 'error');
+            try {
+                const tx = await contract.asignarRecompensaReferido(referidor, parseUSDT(cantidad));
+                showMessage('Asignando...', 'info');
+                await tx.wait();
+                showMessage('✅ Recompensa asignada', 'success');
                 await loadAllData();
             } catch (error) {
                 showMessage('Error: ' + error.message, 'error');
@@ -929,18 +1041,6 @@
                 showMessage('Desactivando emergencia...', 'info');
                 await tx.wait();
                 showMessage('✅ Emergencia desactivada', 'success');
-                await loadAllData();
-            } catch (error) {
-                showMessage('Error: ' + error.message, 'error');
-            }
-        });
-
-        document.getElementById('retiroEmergenciaBtn').addEventListener('click', async () => {
-            try {
-                const tx = await contract.emergencyWithdraw();
-                showMessage('Procesando retiro de emergencia...', 'info');
-                await tx.wait();
-                showMessage('✅ Retiro completado', 'success');
                 await loadAllData();
             } catch (error) {
                 showMessage('Error: ' + error.message, 'error');
