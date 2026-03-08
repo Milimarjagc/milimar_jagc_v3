@@ -11,7 +11,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* Video de fondo galaxia */
+        /* Video de fondo galaxia/órbitas */
         body {
             font-family: 'Inter', sans-serif;
             position: relative;
@@ -26,7 +26,7 @@
             height: 100%;
             object-fit: cover;
             z-index: -2;
-            opacity: 0.3; /* Más oscuro */
+            opacity: 0.35;
             pointer-events: none;
         }
         .overlay {
@@ -623,7 +623,7 @@
 
         // 🟢 CONFIGURACIÓN (copia exacta del original)
         const CONTRACT_ADDR_MEMBRESIA = "0x35425E6416f799C30938cBc159523B43C1c358B2";
-        const CONTRACT_ADDR_VAULT = "0x...";
+        const CONTRACT_ADDR_VAULT = "0x..."; // Dirección del vault (actualizar si es necesario)
         const USDT_ADDR = "0x55d398326f99059fF775485246999027B3197955";
         const BSC_CHAIN_ID = 56;
         const TELEGRAM_GRUPO = "https://t.me/+z7wwfx0ocho1NzI5";
@@ -668,7 +668,7 @@
             "event BonosRecurrentesPagados(uint256 totalPagado, uint256 cantidadPersonas)"
         ];
 
-        const abiVault = [];
+        const abiVault = []; // Vault no implementado, se deja vacío
         const usdtAbi = ["function approve(address spender, uint256 amount) returns (bool)"];
 
         let provider, signer, userAddress, contractMembresia, contractVault, usdtContract;
@@ -927,6 +927,7 @@
 
         btnConnect.onclick = connect;
 
+        // Botones de membresía (exactamente como en el original)
         document.getElementById('btnApprove').onclick = async () => {
             try {
                 const tx = await usdtContract.approve(CONTRACT_ADDR_MEMBRESIA, ethers.utils.parseUnits("100", 18));
@@ -986,49 +987,42 @@
             } catch (e) { showToast('Error: ' + e.message, true); }
         };
 
-        // Admin functions con console.log para depuración
+        // Admin functions (exactamente como en el original)
         document.getElementById('btnPausa').onclick = async () => {
-            console.log('btnPausa clicked');
             if (!isOwner || !confirm('¿Cambiar estado de pausa?')) return;
             try { await (await contractMembresia.togglePausa()).wait(); showToast('✅ Pausa cambiada'); } catch (e) { showToast('Error: ' + e.message, true); }
         };
         document.getElementById('btnCupos').onclick = async () => {
-            console.log('btnCupos clicked');
             if (!isOwner) return;
             const lider = prompt('Dirección del líder:'); const cant = prompt('Cantidad de cupos:');
             if (!lider || !cant) return;
             try { await (await contractMembresia.otorgarCuposExtra(lider, cant)).wait(); showToast('✅ Cupos otorgados'); } catch (e) { showToast('Error: ' + e.message, true); }
         };
         document.getElementById('btnPremiar').onclick = async () => {
-            console.log('btnPremiar clicked');
             if (!isOwner) return;
             const lider = prompt('Dirección del líder:'); const monto = prompt('Monto en USDT:');
             if (!lider || !monto) return;
             try { await (await contractMembresia.premiarLider(lider, ethers.utils.parseUnits(monto, 18))).wait(); showToast('✅ Premio enviado'); } catch (e) { showToast('Error: ' + e.message, true); }
         };
         document.getElementById('btnSolidaridad').onclick = async () => {
-            console.log('btnSolidaridad clicked');
             if (!isOwner) return;
             const benef = prompt('Dirección del beneficiario:'); const monto = prompt('Monto en USDT:'); const motivo = prompt('Motivo:');
             if (!benef || !monto || !motivo) return;
             try { await (await contractMembresia.usarFondoSolidaridad(benef, ethers.utils.parseUnits(monto, 18), motivo)).wait(); showToast('✅ Fondo usado'); } catch (e) { showToast('Error: ' + e.message, true); }
         };
         document.getElementById('btnActualizarBono').onclick = async () => {
-            console.log('btnActualizarBono clicked');
             if (!isOwner) return;
             const nuevo = prompt('Nuevo monto del bono nivel 3 (en USDT):');
             if (!nuevo) return;
             try { await (await contractMembresia.actualizarBonoNivel3(ethers.utils.parseUnits(nuevo, 18))).wait(); showToast('✅ Bono actualizado'); } catch (e) { showToast('Error: ' + e.message, true); }
         };
         document.getElementById('btnToggleBonosRec').onclick = async () => {
-            console.log('btnToggleBonosRec clicked');
             if (!isOwner) return;
             const estado = prompt('Activar bonos recurrentes? (true/false):');
             if (estado === null) return;
             try { await (await contractMembresia.setBonosRecurrentesActivados(estado === 'true')).wait(); showToast('✅ Estado cambiado'); } catch (e) { showToast('Error: ' + e.message, true); }
         };
         document.getElementById('btnPagarBonosRec').onclick = async () => {
-            console.log('btnPagarBonosRec clicked');
             if (!isOwner) return;
             const lista = prompt('Lista de direcciones separadas por coma:');
             const monto = prompt('Monto por persona (USDT):');
@@ -1042,13 +1036,13 @@
             } catch (e) { showToast('Error: ' + e.message, true); }
         };
         document.getElementById('btnRecuperar').onclick = async () => {
-            console.log('btnRecuperar clicked');
             if (!isOwner) return;
             const token = prompt('Dirección del token (no USDT):'); const cant = prompt('Cantidad:');
             if (!token || !cant) return;
             try { await (await contractMembresia.recuperarTokenExterno(token, ethers.utils.parseUnits(cant, 18))).wait(); showToast('✅ Tokens recuperados'); } catch (e) { showToast('Error: ' + e.message, true); }
         };
 
+        // Botones del vault (igual que original)
         document.getElementById('btnVaultDeposit')?.addEventListener('click', async () => {
             if (!contractVault) return showToast('Vault no desplegado aún', true);
             const amount = document.getElementById('vaultDepositAmount').value;
