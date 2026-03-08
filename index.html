@@ -26,7 +26,7 @@
             height: 100%;
             object-fit: cover;
             z-index: -2;
-            opacity: 0.35;
+            opacity: 0.3;
             pointer-events: none;
         }
         .overlay {
@@ -212,7 +212,55 @@
             color: black;
             box-shadow: 0 0 15px #00ffff;
         }
-        /* Estilo para acordeón de características */
+        /* Selector de wallets */
+        .wallet-selector {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(0,0,0,0.7);
+            border-radius: 20px;
+            border: 1px solid #00ffff;
+        }
+        .wallet-btn {
+            background: rgba(0,255,255,0.1);
+            border: 1px solid #00ffff;
+            color: white;
+            padding: 12px;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+        }
+        .wallet-btn:hover {
+            background: rgba(0,255,255,0.3);
+            box-shadow: 0 0 20px #00ffff;
+        }
+        .wallet-btn i {
+            font-size: 1.5rem;
+        }
+        .network-warning {
+            background: rgba(255,100,100,0.3);
+            border: 1px solid #ff6666;
+            border-radius: 20px;
+            padding: 15px;
+            margin: 10px 0;
+            text-align: center;
+        }
+        .switch-network-btn {
+            background: #ff6666;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 40px;
+            margin-top: 10px;
+            cursor: pointer;
+            font-weight: bold;
+        }
         .contract-feature {
             background: rgba(255,255,255,0.05);
             border-radius: 12px;
@@ -229,11 +277,39 @@
             font-size: 0.9rem;
             line-height: 1.5;
         }
+        .message {
+            background: rgba(30, 58, 138, 0.5);
+            border-left: 4px solid #fbbf24;
+            padding: 16px;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+        .message.error {
+            background: rgba(127, 29, 29, 0.5);
+            border-left-color: #ef4444;
+        }
+        .message.success {
+            background: rgba(20, 83, 45, 0.5);
+            border-left-color: #10b981;
+        }
+        .hidden {
+            display: none;
+        }
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #9ca3af;
+        }
+        .loading i {
+            font-size: 3rem;
+            color: #fbbf24;
+            margin-bottom: 16px;
+        }
     </style>
 </head>
 <body class="text-white antialiased p-4 min-h-screen relative">
 
-    <!-- Video de fondo galaxia/órbitas (más oscuro) -->
+    <!-- Video de fondo galaxia/órbitas -->
     <video autoplay muted loop playsinline id="bg-video" poster="https://images.pexels.com/photos/1169754/pexels-photo-1169754.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1">
         <source src="https://videos.pexels.com/video-files/1851190/1851190-uhd_2560_1440_30fps.mp4" type="video/mp4">
     </video>
@@ -267,6 +343,13 @@
             <p class="text-sm text-white/80 uppercase tracking-[0.3em] font-light mt-2">Oficina Virtual · BSC · V5</p>
         </header>
 
+        <!-- Contenedor de conexión y selector de wallets -->
+        <div id="conBox" class="glass-card p-10 text-center mb-6">
+            <button id="btnConnect" class="btn bg-white text-black w-full max-w-md mx-auto hover:bg-cyan-300 transition">CONECTAR BILLETERA</button>
+            <div id="walletSelector" class="hidden"></div>
+            <div id="networkError" class="hidden network-warning"></div>
+        </div>
+
         <!-- Pestañas de navegación -->
         <div class="flex flex-wrap justify-center gap-2 mb-6">
             <button id="btnMembresia" class="tab-button tab-active">MEMBRESÍA</button>
@@ -275,9 +358,11 @@
             <button id="btnArbitraje" class="tab-button tab-inactive">ARBITRAJE</button>
         </div>
 
-        <!-- Contenedor de conexión -->
-        <div id="conBox" class="glass-card p-10 text-center mb-6">
-            <button id="btnConnect" class="btn bg-white text-black w-full max-w-md mx-auto hover:bg-cyan-300 transition">CONECTAR BILLETERA</button>
+        <!-- Mensajes y loading -->
+        <div id="messageBox" class="message hidden"></div>
+        <div id="loading" class="loading hidden">
+            <i class="fas fa-circle-notch fa-spin"></i>
+            <p>Cargando datos...</p>
         </div>
 
         <!-- SECCIÓN MEMBRESÍA (V5) -->
@@ -432,7 +517,7 @@
                     </details>
                 </div>
 
-                <!-- Características del Contrato (nuevo) -->
+                <!-- Características del Contrato -->
                 <div class="glass-card p-4">
                     <details class="cursor-pointer">
                         <summary class="text-white font-bold text-sm list-none flex justify-between items-center drop-shadow">
@@ -470,13 +555,12 @@
             </div>
         </div>
 
-        <!-- SECCIÓN VAULT (igual que en v4) -->
+        <!-- SECCIÓN VAULT -->
         <div id="seccionVault" class="hidden space-y-6">
             <div class="glass-card p-6">
                 <h2 class="text-2xl font-bold text-cyan-400 mb-4">🏦 VAULT DE CRECIMIENTO</h2>
                 <p class="text-sm text-white/70 mb-6">Invierte desde $10 USDT en nuestro fondo diversificado (70% préstamos seguros + 30% farming de alto rendimiento). Gana intereses semanales y retira cuando quieras.</p>
 
-                <!-- Estadísticas del vault -->
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
                     <div class="vault-card">
                         <p class="text-[10px] text-white/50">Mi inversión</p>
@@ -496,7 +580,6 @@
                     </div>
                 </div>
 
-                <!-- Mensaje sobre variabilidad -->
                 <div class="glass-card p-4 mb-6 bg-cyan-500/10 border-cyan-500/30">
                     <p class="text-sm text-white/80 text-center">
                         ⚠️ El rendimiento del Vault es <span class="font-bold text-cyan-300">variable</span> y depende de las condiciones diarias del mercado.
@@ -514,7 +597,6 @@
                     </div>
                 </div>
 
-                <!-- Formulario de depósito -->
                 <div class="glass-card p-4 mb-4">
                     <h3 class="font-bold text-white mb-2">📥 Depositar USDT</h3>
                     <div class="flex gap-2">
@@ -524,7 +606,6 @@
                     <p class="text-[10px] text-white/30 mt-1">Mínimo 10 USDT. Las ganancias se reparten semanalmente.</p>
                 </div>
 
-                <!-- Opciones de retiro -->
                 <div class="grid grid-cols-2 gap-3">
                     <div class="glass-card p-4">
                         <h3 class="font-bold text-white mb-2">📤 Retiro estándar</h3>
@@ -544,7 +625,6 @@
                     </div>
                 </div>
 
-                <!-- Feed de actividad del vault -->
                 <div class="glass-card p-4 mt-6">
                     <h3 class="text-white font-bold text-sm mb-2">📢 ACTIVIDAD DEL VAULT</h3>
                     <div id="vaultFeed" class="feed-container space-y-2 pr-2">
@@ -554,7 +634,7 @@
             </div>
         </div>
 
-        <!-- SECCIÓN ACERCA DEL VAULT (informativa) -->
+        <!-- SECCIÓN ACERCA DEL VAULT -->
         <div id="seccionInfoVault" class="hidden space-y-6">
             <div class="glass-card p-6">
                 <h2 class="text-2xl font-bold text-cyan-400 mb-4">📘 ACERCA DEL VAULT DE CRECIMIENTO</h2>
@@ -575,7 +655,7 @@
             </div>
         </div>
 
-        <!-- SECCIÓN ARBITRAJE (próximamente) -->
+        <!-- SECCIÓN ARBITRAJE -->
         <div id="seccionArbitraje" class="hidden space-y-6">
             <div class="glass-card p-6 text-center">
                 <h2 class="text-2xl font-bold text-purple-400 mb-4">🤖 ARBITRAJE</h2>
@@ -587,7 +667,7 @@
     <footer class="text-center text-[10px] text-gray-500 mt-4">Milimar Protocol · BSC · Versión 5 + Vault</footer>
 
     <script>
-        // Traducciones para el selector de idioma
+        // Traducciones
         const translations = {
             es: {
                 connectWallet: "CONECTAR BILLETERA",
@@ -621,13 +701,11 @@
         document.getElementById('lang-es').addEventListener('click', () => setLanguage('es'));
         document.getElementById('lang-en').addEventListener('click', () => setLanguage('en'));
 
-        // 🟢 CONFIGURACIÓN (copia exacta del original)
+        // Configuración
         const CONTRACT_ADDR_MEMBRESIA = "0x35425E6416f799C30938cBc159523B43C1c358B2";
         const CONTRACT_ADDR_VAULT = "0x..."; // Dirección del vault (actualizar si es necesario)
         const USDT_ADDR = "0x55d398326f99059fF775485246999027B3197955";
         const BSC_CHAIN_ID = 56;
-        const TELEGRAM_GRUPO = "https://t.me/+z7wwfx0ocho1NzI5";
-        const WHATSAPP_CANAL = "https://whatsapp.com/channel/0029Vb74Mxr3LdQVgWdycV2a";
 
         const abiMembresia = [
             "function consultarEstado(address) view returns (tuple(uint256 saldoPendiente, uint256 totalGanado, uint256 totalRetirado, uint256 directos, uint256 redTotal, uint256 diasRestantes, bool activo))",
@@ -668,19 +746,24 @@
             "event BonosRecurrentesPagados(uint256 totalPagado, uint256 cantidadPersonas)"
         ];
 
-        const abiVault = []; // Vault no implementado, se deja vacío
+        const abiVault = [];
         const usdtAbi = ["function approve(address spender, uint256 amount) returns (bool)"];
 
         let provider, signer, userAddress, contractMembresia, contractVault, usdtContract;
         let isOwner = false;
         let toastTimeout;
 
+        // Elementos DOM
         const toast = document.getElementById('toast');
         const toastMsg = document.getElementById('toastMsg');
         const telegramLink = document.getElementById('telegramLink');
         const whatsappLink = document.getElementById('whatsappLink');
         const btnConnect = document.getElementById('btnConnect');
         const conBox = document.getElementById('conBox');
+        const walletSelector = document.getElementById('walletSelector');
+        const networkError = document.getElementById('networkError');
+        const messageBox = document.getElementById('messageBox');
+        const loading = document.getElementById('loading');
         const seccionMembresia = document.getElementById('seccionMembresia');
         const seccionVault = document.getElementById('seccionVault');
         const seccionInfoVault = document.getElementById('seccionInfoVault');
@@ -701,6 +784,12 @@
         const bonoNivel3Elem = document.getElementById('bonoNivel3');
         const bonosRecurrentesElem = document.getElementById('bonosRecurrentes');
 
+        function showMessage(text, type = 'info') {
+            messageBox.classList.remove('hidden', 'error', 'success');
+            messageBox.innerHTML = `<i class="fas ${type === 'error' ? 'fa-exclamation-circle' : type === 'success' ? 'fa-check-circle' : 'fa-info-circle'}"></i> ${text}`;
+            messageBox.classList.add(type);
+        }
+
         function showToast(msg, isError = false) {
             clearTimeout(toastTimeout);
             toast.classList.remove('hidden');
@@ -709,72 +798,162 @@
             toastTimeout = setTimeout(() => toast.classList.add('hidden'), 4000);
         }
 
-        copyLinkBtn.addEventListener('click', () => {
-            refLink.select();
-            refLink.setSelectionRange(0, 99999);
-            navigator.clipboard.writeText(refLink.value).then(() => {
-                copyMsg.classList.remove('hidden');
-                setTimeout(() => copyMsg.classList.add('hidden'), 2000);
-            }).catch(() => showToast('Error al copiar', true));
-        });
+        function formatUSDT(amount) {
+            return ethers.utils.formatUnits(amount, 18);
+        }
 
-        function setActiveTab(active, inactives) {
-            active.classList.add('tab-active');
-            active.classList.remove('tab-inactive');
-            inactives.forEach(btn => {
-                btn.classList.add('tab-inactive');
-                btn.classList.remove('tab-active');
+        function parseUSDT(amount) {
+            return ethers.utils.parseUnits(amount.toString(), 18);
+        }
+
+        // Detectar wallets
+        function detectWallets() {
+            const wallets = [];
+            if (window.ethereum && window.ethereum.isMetaMask) wallets.push({ name: 'MetaMask', provider: window.ethereum, icon: 'fab fa-metamask' });
+            if (window.BinanceChain) wallets.push({ name: 'Binance Wallet', provider: window.BinanceChain, icon: 'fas fa-dog' });
+            if (window.okxwallet) wallets.push({ name: 'OKX Wallet', provider: window.okxwallet, icon: 'fas fa-bolt' });
+            if (window.ethereum && !window.ethereum.isMetaMask && !window.ethereum.isBinance && !window.okxwallet) {
+                wallets.push({ name: 'Wallet compatible', provider: window.ethereum, icon: 'fas fa-wallet' });
+            }
+            return wallets;
+        }
+
+        // Mostrar selector de wallets
+        async function showWalletSelector() {
+            const wallets = detectWallets();
+            if (wallets.length === 0) {
+                alert('No se detectó ninguna wallet. Instala MetaMask, Binance Wallet u OKX Wallet.');
+                return;
+            }
+            walletSelector.innerHTML = '';
+            walletSelector.classList.remove('hidden');
+            wallets.forEach(w => {
+                const btn = document.createElement('button');
+                btn.className = 'wallet-btn';
+                btn.innerHTML = `<i class="${w.icon}"></i> ${w.name}`;
+                btn.onclick = () => connectWithWallet(w.provider);
+                walletSelector.appendChild(btn);
             });
         }
 
-        btnMembresia.addEventListener('click', () => {
-            setActiveTab(btnMembresia, [btnVault, btnInfoVault, btnArbitraje]);
-            seccionMembresia.classList.remove('hidden');
-            seccionVault.classList.add('hidden');
-            seccionInfoVault.classList.add('hidden');
-            seccionArbitraje.classList.add('hidden');
-        });
-
-        btnVault.addEventListener('click', () => {
-            setActiveTab(btnVault, [btnMembresia, btnInfoVault, btnArbitraje]);
-            seccionMembresia.classList.add('hidden');
-            seccionVault.classList.remove('hidden');
-            seccionInfoVault.classList.add('hidden');
-            seccionArbitraje.classList.add('hidden');
-            if (userAddress && contractVault) cargarDatosVault();
-        });
-
-        btnInfoVault.addEventListener('click', () => {
-            setActiveTab(btnInfoVault, [btnMembresia, btnVault, btnArbitraje]);
-            seccionMembresia.classList.add('hidden');
-            seccionVault.classList.add('hidden');
-            seccionInfoVault.classList.remove('hidden');
-            seccionArbitraje.classList.add('hidden');
-        });
-
-        btnArbitraje.addEventListener('click', () => {
-            setActiveTab(btnArbitraje, [btnMembresia, btnVault, btnInfoVault]);
-            seccionMembresia.classList.add('hidden');
-            seccionVault.classList.add('hidden');
-            seccionInfoVault.classList.add('hidden');
-            seccionArbitraje.classList.remove('hidden');
-        });
-
-        async function checkNetwork() {
-            const network = await provider.getNetwork();
-            if (network.chainId !== BSC_CHAIN_ID) {
-                try {
-                    await window.ethereum.request({ method: 'wallet_switchEthereumChain', params: [{ chainId: '0x38' }] });
-                    provider = new ethers.providers.Web3Provider(window.ethereum);
-                    return true;
-                } catch {
-                    showToast('Cambia a BSC Mainnet en tu wallet', true);
-                    return false;
+        // Cambiar a BSC Mainnet
+        async function switchToBSC(provider) {
+            try {
+                await provider.request({
+                    method: 'wallet_switchEthereumChain',
+                    params: [{ chainId: '0x38' }] // 56 en hex
+                });
+                return true;
+            } catch (switchError) {
+                if (switchError.code === 4902) {
+                    try {
+                        await provider.request({
+                            method: 'wallet_addEthereumChain',
+                            params: [{
+                                chainId: '0x38',
+                                chainName: 'BNB Smart Chain',
+                                nativeCurrency: { name: 'BNB', symbol: 'BNB', decimals: 18 },
+                                rpcUrls: ['https://bsc-dataseed.binance.org/'],
+                                blockExplorerUrls: ['https://bscscan.com/']
+                            }]
+                        });
+                        return true;
+                    } catch (addError) {
+                        return false;
+                    }
                 }
+                return false;
             }
-            return true;
         }
 
+        // Conectar con wallet seleccionada
+        async function connectWithWallet(walletProvider) {
+            try {
+                walletSelector.classList.add('hidden');
+                loading.classList.remove('hidden');
+
+                provider = new ethers.providers.Web3Provider(walletProvider);
+                await provider.send("eth_requestAccounts", []);
+                signer = provider.getSigner();
+                userAddress = await signer.getAddress();
+                const network = await provider.getNetwork();
+
+                // Verificar red
+                if (network.chainId !== BSC_CHAIN_ID) {
+                    networkError.classList.remove('hidden');
+                    networkError.innerHTML = `
+                        <p>Estás en la red incorrecta (Chain ID: ${network.chainId}). Debes estar en BSC Mainnet (Chain ID 56).</p>
+                        <button class="switch-network-btn" id="switchNetworkBtn">Cambiar a BSC Mainnet</button>
+                    `;
+                    document.getElementById('switchNetworkBtn').onclick = async () => {
+                        const switched = await switchToBSC(walletProvider);
+                        if (switched) {
+                            networkError.classList.add('hidden');
+                            // Reconectar
+                            provider = new ethers.providers.Web3Provider(walletProvider);
+                            signer = provider.getSigner();
+                            userAddress = await signer.getAddress();
+                            await initContracts();
+                        } else {
+                            showToast('No se pudo cambiar de red. Hazlo manualmente.', true);
+                        }
+                    };
+                    loading.classList.add('hidden');
+                    return;
+                }
+
+                await initContracts();
+
+            } catch (error) {
+                showToast('Error al conectar: ' + error.message, true);
+                loading.classList.add('hidden');
+            }
+        }
+
+        async function initContracts() {
+            try {
+                contractMembresia = new ethers.Contract(CONTRACT_ADDR_MEMBRESIA, abiMembresia, signer);
+                if (CONTRACT_ADDR_VAULT !== "0x...") {
+                    contractVault = new ethers.Contract(CONTRACT_ADDR_VAULT, abiVault, signer);
+                }
+                usdtContract = new ethers.Contract(USDT_ADDR, usdtAbi, signer);
+
+                conBox.classList.add('hidden');
+                seccionMembresia.classList.remove('hidden');
+                telegramLink.classList.remove('hidden');
+                whatsappLink.classList.remove('hidden');
+                refLink.value = window.location.origin + window.location.pathname + "?ref=" + userAddress;
+
+                const ownerAddr = await contractMembresia.owner();
+                isOwner = (ownerAddr.toLowerCase() === userAddress.toLowerCase());
+                if (isOwner) document.getElementById('adminSection').classList.remove('hidden');
+
+                await loadUserData();
+
+                if (!seccionVault.classList.contains('hidden') && contractVault) cargarDatosVault();
+
+                loading.classList.add('hidden');
+
+                // Event listeners de cambio de cuenta/red
+                window.ethereum.on('accountsChanged', (accounts) => {
+                    if (accounts.length === 0) {
+                        window.location.reload();
+                    } else {
+                        userAddress = accounts[0];
+                        if (contractMembresia) loadUserData();
+                    }
+                });
+                window.ethereum.on('chainChanged', () => window.location.reload());
+
+            } catch (error) {
+                showToast('Error al inicializar contratos: ' + error.message, true);
+                loading.classList.add('hidden');
+            }
+        }
+
+        btnConnect.onclick = showWalletSelector;
+
+        // ---------- FUNCIONES DE CARGA DE DATOS (originales) ----------
         async function loadRedYGanancias() {
             try {
                 const red = await contractMembresia.verDetalleRed(userAddress);
@@ -863,71 +1042,7 @@
             if (vaultFeed.children.length > 20) vaultFeed.removeChild(vaultFeed.lastChild);
         }
 
-        async function connect() {
-            if (!window.ethereum) return showToast('Instala MetaMask/OKX Wallet', true);
-            try {
-                provider = new ethers.providers.Web3Provider(window.ethereum);
-                await provider.send("eth_requestAccounts", []);
-                signer = provider.getSigner();
-                userAddress = await signer.getAddress();
-
-                if (!await checkNetwork()) return;
-
-                contractMembresia = new ethers.Contract(CONTRACT_ADDR_MEMBRESIA, abiMembresia, signer);
-                if (CONTRACT_ADDR_VAULT !== "0x...") {
-                    contractVault = new ethers.Contract(CONTRACT_ADDR_VAULT, abiVault, signer);
-                }
-                usdtContract = new ethers.Contract(USDT_ADDR, usdtAbi, signer);
-
-                conBox.classList.add('hidden');
-                seccionMembresia.classList.remove('hidden');
-                telegramLink.classList.remove('hidden');
-                whatsappLink.classList.remove('hidden');
-                refLink.value = window.location.origin + window.location.pathname + "?ref=" + userAddress;
-
-                const ownerAddr = await contractMembresia.owner();
-                isOwner = (ownerAddr.toLowerCase() === userAddress.toLowerCase());
-                if (isOwner) document.getElementById('adminSection').classList.remove('hidden');
-
-                await loadUserData();
-
-                if (!seccionVault.classList.contains('hidden') && contractVault) cargarDatosVault();
-
-                contractMembresia.on("RegistroGlobal", (usuario, patrocinador, fecha) => {
-                    showToast(`🎉 Nuevo registro: ${usuario.slice(0,6)}...${usuario.slice(-4)}`);
-                });
-                contractMembresia.on("BonoNivel3Pagado", (usuario, monto) => {
-                    showToast(`🏆 Bono nivel 3 pagado a ${usuario.slice(0,6)}...${usuario.slice(-4)}: ${ethers.utils.formatUnits(monto,18)} USDT`);
-                });
-                contractMembresia.on("RetiroExitoso", (usuario, monto) => {
-                    showToast(`💰 Retiro de ${ethers.utils.formatUnits(monto,18)} USDT por ${usuario.slice(0,6)}...${usuario.slice(-4)}`);
-                });
-                contractMembresia.on("PremiadoLider", (lider, monto) => {
-                    showToast(`🏅 Premio a líder ${lider.slice(0,6)}...${lider.slice(-4)}: ${ethers.utils.formatUnits(monto,18)} USDT`);
-                });
-                contractMembresia.on("FondoSolidaridadUsado", (beneficiado, monto, motivo) => {
-                    showToast(`🤝 Fondo solidaridad usado para ${beneficiado.slice(0,6)}...${beneficiado.slice(-4)}`);
-                });
-                contractMembresia.on("BonosRecurrentesPagados", (total, cantidad) => {
-                    showToast(`🎁 Bonos recurrentes pagados: total ${ethers.utils.formatUnits(total,18)} USDT a ${cantidad} líderes`);
-                });
-
-                if (contractVault) {
-                    contractVault.on("Deposited", (user, amount, shares, timestamp) => {
-                        agregarAlFeedVault(`📥 Depósito de ${ethers.utils.formatUnits(amount,18)} USDT por ${user.slice(0,6)}...${user.slice(-4)}`, 'deposit');
-                    });
-                    contractVault.on("WithdrawnStandard", (user, amount, shares, timestamp) => {
-                        agregarAlFeedVault(`📤 Retiro estándar de ${ethers.utils.formatUnits(amount,18)} USDT por ${user.slice(0,6)}...${user.slice(-4)}`, 'withdraw');
-                    });
-                }
-            } catch (e) {
-                showToast('Error conectando: ' + e.message, true);
-            }
-        }
-
-        btnConnect.onclick = connect;
-
-        // Botones de membresía (exactamente como en el original)
+        // ---------- BOTONES DE ACCIÓN ----------
         document.getElementById('btnApprove').onclick = async () => {
             try {
                 const tx = await usdtContract.approve(CONTRACT_ADDR_MEMBRESIA, ethers.utils.parseUnits("100", 18));
@@ -987,7 +1102,7 @@
             } catch (e) { showToast('Error: ' + e.message, true); }
         };
 
-        // Admin functions (exactamente como en el original)
+        // Admin functions
         document.getElementById('btnPausa').onclick = async () => {
             if (!isOwner || !confirm('¿Cambiar estado de pausa?')) return;
             try { await (await contractMembresia.togglePausa()).wait(); showToast('✅ Pausa cambiada'); } catch (e) { showToast('Error: ' + e.message, true); }
@@ -1042,7 +1157,7 @@
             try { await (await contractMembresia.recuperarTokenExterno(token, ethers.utils.parseUnits(cant, 18))).wait(); showToast('✅ Tokens recuperados'); } catch (e) { showToast('Error: ' + e.message, true); }
         };
 
-        // Botones del vault (igual que original)
+        // Botones del vault (si existen)
         document.getElementById('btnVaultDeposit')?.addEventListener('click', async () => {
             if (!contractVault) return showToast('Vault no desplegado aún', true);
             const amount = document.getElementById('vaultDepositAmount').value;
@@ -1087,9 +1202,12 @@
             } catch (e) { showToast('Error: ' + e.message, true); }
         });
 
+        // Auto-conectar si la wallet ya está conectada
         window.addEventListener('load', () => {
             setLanguage('es');
-            if (window.ethereum && window.ethereum.selectedAddress) connect();
+            if (window.ethereum && window.ethereum.selectedAddress) {
+                connectWithWallet(window.ethereum);
+            }
         });
     </script>
 </body>
