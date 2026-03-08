@@ -10,10 +10,10 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Chart.js (opcional, para el gráfico del vault) -->
+    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <style>
-        /* ========== ESTILOS FUTURISTAS ========== */
+        /* (mismos estilos que antes, no los repito por brevedad) */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Inter', sans-serif;
@@ -148,7 +148,6 @@
             background: rgba(0,0,0,0.4);
             backdrop-filter: blur(5px);
             flex: 0 0 auto;
-            cursor: pointer;
         }
         .node-neon:hover {
             transform: scale(1.1);
@@ -210,15 +209,6 @@
             margin-bottom: 8px;
             font-size: 0.85rem;
             word-break: break-word;
-        }
-        .comment-item {
-            background: rgba(255,255,255,0.03);
-            border-radius: 1rem;
-            padding: 8px 12px;
-            margin-top: 8px;
-            margin-left: 20px;
-            font-size: 0.8rem;
-            border-left: 2px solid #ff00ff;
         }
         .modal-neon {
             background: rgba(10,20,30,0.95);
@@ -343,7 +333,7 @@
 <body>
     <div class="neon-overlay"></div>
 
-    <!-- Botones flotantes (Telegram y WhatsApp) -->
+    <!-- Botones flotantes -->
     <a id="telegramLink" href="https://t.me/+z7wwfx0ocho1NzI5" target="_blank" class="floating-neon telegram-neon hidden">
         <i class="fab fa-telegram-plane"></i> <span>Telegram</span>
     </a>
@@ -351,7 +341,7 @@
         <i class="fab fa-whatsapp"></i> <span>WhatsApp</span>
     </a>
 
-    <!-- Modal de confirmación personalizado -->
+    <!-- Modal de confirmación -->
     <div id="confirmModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden justify-center items-center z-50 p-4">
         <div class="modal-neon p-6 w-full max-w-md text-center">
             <i class="fas fa-exclamation-triangle text-4xl text-cyan-400 mb-3"></i>
@@ -415,7 +405,7 @@
                 </div>
             </details>
 
-            <!-- Tarjetas de resumen con tooltips -->
+            <!-- Tarjetas de resumen -->
             <div class="grid grid-cols-responsive gap-3">
                 <div class="neon-card p-4 border-l-4 border-cyan-400" title="Ganancias no retiradas">
                     <p class="text-xs text-cyan-300/60 uppercase">Saldo Pendiente</p>
@@ -462,7 +452,7 @@
             <!-- Botón emergencia -->
             <button id="btnEmergencyWithdraw" class="hidden w-full btn-neon secondary !border-red-500 !text-red-500 !shadow-red-500/50 hover:!bg-red-500 hover:!text-black py-3">🚨 RETIRO DE EMERGENCIA</button>
 
-            <!-- Niveles de red (clickeables) -->
+            <!-- Niveles de red -->
             <div class="neon-card p-6 text-center">
                 <p class="text-cyan-400 font-bold mb-4" style="font-family: 'Orbitron';">📊 TUS 5 NIVELES</p>
                 <div class="flex flex-wrap justify-center gap-2">
@@ -609,7 +599,7 @@
             </div>
         </div>
 
-        <!-- SECCIÓN HISTORIAL -->
+        <!-- HISTORIAL -->
         <div id="seccionHistorial" class="hidden space-y-6">
             <div class="neon-card p-6">
                 <h2 class="text-2xl font-bold text-cyan-400 mb-4">📜 MI HISTORIAL</h2>
@@ -646,6 +636,8 @@
             "function verDetalleGanancias(address) view returns (uint256[5] memory)",
             "function usuarios(address) view returns (bool registrado, address patrocinador, uint256 saldoPendiente, uint256 totalGanado, uint256 totalRetirado, uint256 contadorDirectos, uint256 redTotal, uint256[5] conteoNiveles, uint256 cuposExtraAdmin, uint256 vencimiento, uint256[5] gananciasNiveles, bool bonoN3Reclamado, uint256 fechaRegistro, uint256 ultimaActividad, bool activo)",
             "function owner() view returns (address)",
+            "function ADMIN_ROLE() view returns (bytes32)", // Agregado para verificar roles
+            "function hasRole(bytes32,address) view returns (bool)",
             "function bonoNivel3() view returns (uint256)",
             "function bonosRecurrentesActivados() view returns (bool)",
             "function fondoSolidaridad() view returns (uint256)",
@@ -679,12 +671,12 @@
             "event BonosRecurrentesPagados(uint256 totalPagado, uint256 cantidadPersonas)"
         ];
 
-        const abiVault = []; // Vacío por ahora
+        const abiVault = [];
         const usdtAbi = ["function approve(address spender, uint256 amount) returns (bool)"];
 
         // ========== VARIABLES GLOBALES ==========
         let provider, signer, userAddress, contractMembresia, contractVault, usdtContract;
-        let isOwner = false;
+        let isAdmin = false; // Cambiamos de isOwner a isAdmin
         let toastTimeout;
         let chartInstance = null;
 
@@ -948,10 +940,6 @@
             });
         }
 
-        function updateShareLinks() {
-            // No necesario sin Firebase
-        }
-
         // ========== CONEXIÓN PRINCIPAL ==========
         async function connect() {
             if (!window.ethereum) return showToast('Instala MetaMask/OKX Wallet', true);
@@ -975,17 +963,32 @@
                 whatsappLink.classList.remove('hidden');
                 refLink.value = window.location.origin + window.location.pathname + "?ref=" + userAddress;
 
-                // Verificar owner
+                // Verificar si tiene permisos de admin (owner o ADMIN_ROLE)
                 try {
                     const ownerAddr = await contractMembresia.owner();
-                    isOwner = (ownerAddr.toLowerCase() === userAddress.toLowerCase());
-                    if (isOwner) {
+                    const isOwner = (ownerAddr.toLowerCase() === userAddress.toLowerCase());
+                    
+                    // Intentar obtener ADMIN_ROLE si existe
+                    let hasAdminRole = false;
+                    try {
+                        const adminRole = await contractMembresia.ADMIN_ROLE();
+                        hasAdminRole = await contractMembresia.hasRole(adminRole, userAddress);
+                    } catch (e) {
+                        // Si el contrato no tiene ADMIN_ROLE, ignoramos
+                        console.log("El contrato no tiene ADMIN_ROLE");
+                    }
+                    
+                    isAdmin = isOwner || hasAdminRole;
+                    
+                    if (isAdmin) {
                         document.getElementById('adminSection').classList.remove('hidden');
+                        console.log("Acceso de administrador concedido");
                     } else {
                         document.getElementById('adminSection').classList.add('hidden');
+                        console.log("No tienes permisos de administrador");
                     }
                 } catch (e) {
-                    console.error("Error al obtener owner:", e);
+                    console.error("Error al verificar permisos de admin:", e);
                 }
 
                 await loadUserData();
@@ -995,7 +998,7 @@
                     initVaultChart();
                 }
 
-                // Escuchar eventos (para actualizar datos y mostrar toasts)
+                // Escuchar eventos
                 contractMembresia.on("RegistroGlobal", (usuario, patrocinador, fecha) => {
                     if (usuario.toLowerCase() === userAddress.toLowerCase()) loadUserData();
                     showToast(`🎉 Nuevo registro: ${usuario.slice(0,6)}...${usuario.slice(-4)}`);
@@ -1167,48 +1170,57 @@
         document.getElementById('btnReloadDetails').onclick = loadRedYGanancias;
         document.getElementById('btnReloadGanancias').onclick = loadRedYGanancias;
 
-        // Botones de administración (solo si isOwner)
-        document.getElementById('btnPausa').onclick = async () => {
-            if (!isOwner) { showToast('No tienes permisos', true); return; }
+        // Botones de administración (solo si isAdmin)
+        document.getElementById('btnPausa').addEventListener('click', async () => {
+            if (!isAdmin) { showToast('No tienes permisos', true); return; }
             const confirmed = await confirmAction('Cambiar estado de pausa', '¿Estás seguro?');
             if (!confirmed) return;
             try { await (await contractMembresia.togglePausa()).wait(); showToast('✅ Pausa cambiada'); } catch (e) { showToast('Error: ' + e.message, true); }
-        };
-        document.getElementById('btnCupos').onclick = async () => {
-            if (!isOwner) { showToast('No tienes permisos', true); return; }
-            const lider = prompt('Dirección del líder:'); const cant = prompt('Cantidad de cupos:');
-            if (!lider || !cant) return;
+        });
+        document.getElementById('btnCupos').addEventListener('click', async () => {
+            if (!isAdmin) { showToast('No tienes permisos', true); return; }
+            const lider = prompt('Dirección del líder:');
+            if (!lider) return;
+            const cant = prompt('Cantidad de cupos:');
+            if (!cant) return;
             try { await (await contractMembresia.otorgarCuposExtra(lider, cant)).wait(); showToast('✅ Cupos otorgados'); } catch (e) { showToast('Error: ' + e.message, true); }
-        };
-        document.getElementById('btnPremiar').onclick = async () => {
-            if (!isOwner) { showToast('No tienes permisos', true); return; }
-            const lider = prompt('Dirección del líder:'); const monto = prompt('Monto en USDT:');
-            if (!lider || !monto) return;
+        });
+        document.getElementById('btnPremiar').addEventListener('click', async () => {
+            if (!isAdmin) { showToast('No tienes permisos', true); return; }
+            const lider = prompt('Dirección del líder:');
+            if (!lider) return;
+            const monto = prompt('Monto en USDT:');
+            if (!monto) return;
             try { await (await contractMembresia.premiarLider(lider, ethers.utils.parseUnits(monto, 18))).wait(); showToast('✅ Premio enviado'); } catch (e) { showToast('Error: ' + e.message, true); }
-        };
-        document.getElementById('btnSolidaridad').onclick = async () => {
-            if (!isOwner) { showToast('No tienes permisos', true); return; }
-            const benef = prompt('Dirección del beneficiario:'); const monto = prompt('Monto en USDT:'); const motivo = prompt('Motivo:');
-            if (!benef || !monto || !motivo) return;
+        });
+        document.getElementById('btnSolidaridad').addEventListener('click', async () => {
+            if (!isAdmin) { showToast('No tienes permisos', true); return; }
+            const benef = prompt('Dirección del beneficiario:');
+            if (!benef) return;
+            const monto = prompt('Monto en USDT:');
+            if (!monto) return;
+            const motivo = prompt('Motivo:');
+            if (!motivo) return;
             try { await (await contractMembresia.usarFondoSolidaridad(benef, ethers.utils.parseUnits(monto, 18), motivo)).wait(); showToast('✅ Fondo usado'); } catch (e) { showToast('Error: ' + e.message, true); }
-        };
-        document.getElementById('btnActualizarBono').onclick = async () => {
-            if (!isOwner) { showToast('No tienes permisos', true); return; }
+        });
+        document.getElementById('btnActualizarBono').addEventListener('click', async () => {
+            if (!isAdmin) { showToast('No tienes permisos', true); return; }
             const nuevo = prompt('Nuevo monto del bono nivel 3 (en USDT):');
             if (!nuevo) return;
             try { await (await contractMembresia.actualizarBonoNivel3(ethers.utils.parseUnits(nuevo, 18))).wait(); showToast('✅ Bono actualizado'); } catch (e) { showToast('Error: ' + e.message, true); }
-        };
-        document.getElementById('btnToggleBonosRec').onclick = async () => {
-            if (!isOwner) { showToast('No tienes permisos', true); return; }
+        });
+        document.getElementById('btnToggleBonosRec').addEventListener('click', async () => {
+            if (!isAdmin) { showToast('No tienes permisos', true); return; }
             const estado = prompt('Activar bonos recurrentes? (true/false):');
             if (estado === null) return;
             try { await (await contractMembresia.setBonosRecurrentesActivados(estado === 'true')).wait(); showToast('✅ Estado cambiado'); } catch (e) { showToast('Error: ' + e.message, true); }
-        };
-        document.getElementById('btnPagarBonosRec').onclick = async () => {
-            if (!isOwner) { showToast('No tienes permisos', true); return; }
+        });
+        document.getElementById('btnPagarBonosRec').addEventListener('click', async () => {
+            if (!isAdmin) { showToast('No tienes permisos', true); return; }
             const lista = prompt('Lista de direcciones separadas por coma:');
+            if (!lista) return;
             const monto = prompt('Monto por persona (USDT):');
-            if (!lista || !monto) return;
+            if (!monto) return;
             const direcciones = lista.split(',').map(s => s.trim()).filter(s => s !== '');
             try {
                 const tx = await contractMembresia.pagarBonosRecurrentes(direcciones, ethers.utils.parseUnits(monto, 18));
@@ -1216,13 +1228,15 @@
                 await tx.wait();
                 showToast('✅ Bonos pagados');
             } catch (e) { showToast('Error: ' + e.message, true); }
-        };
-        document.getElementById('btnRecuperar').onclick = async () => {
-            if (!isOwner) { showToast('No tienes permisos', true); return; }
-            const token = prompt('Dirección del token (no USDT):'); const cant = prompt('Cantidad:');
-            if (!token || !cant) return;
+        });
+        document.getElementById('btnRecuperar').addEventListener('click', async () => {
+            if (!isAdmin) { showToast('No tienes permisos', true); return; }
+            const token = prompt('Dirección del token (no USDT):');
+            if (!token) return;
+            const cant = prompt('Cantidad:');
+            if (!cant) return;
             try { await (await contractMembresia.recuperarTokenExterno(token, ethers.utils.parseUnits(cant, 18))).wait(); showToast('✅ Tokens recuperados'); } catch (e) { showToast('Error: ' + e.message, true); }
-        };
+        });
 
         // Botones del vault
         document.getElementById('btnVaultDeposit')?.addEventListener('click', async () => {
