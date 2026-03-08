@@ -10,15 +10,11 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Chart.js -->
+    <!-- Chart.js (opcional, para el gráfico del vault) -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <style>
         /* ========== ESTILOS FUTURISTAS ========== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Inter', sans-serif;
             background: #0a0f1f;
@@ -27,7 +23,6 @@
             overflow-x: hidden;
             position: relative;
         }
-        /* Fondo de red global (imagen semitransparente) */
         body::before {
             content: "";
             position: fixed;
@@ -42,7 +37,6 @@
             z-index: -2;
             pointer-events: none;
         }
-        /* Overlay de neón (sutil) */
         .neon-overlay {
             position: fixed;
             top: 0;
@@ -53,7 +47,6 @@
             z-index: -1;
             pointer-events: none;
         }
-        /* Contenedor principal */
         .container-neon {
             max-width: 1200px;
             margin: 0 auto;
@@ -61,7 +54,6 @@
             position: relative;
             z-index: 2;
         }
-        /* Header con glitch */
         .glitch {
             font-family: 'Orbitron', sans-serif;
             font-size: clamp(2.5rem, 8vw, 4rem);
@@ -89,7 +81,6 @@
             letter-spacing: 0.3em;
             font-size: clamp(0.7rem, 3vw, 1rem);
         }
-        /* Tarjetas con efecto de vidrio neón */
         .neon-card {
             background: rgba(10, 20, 30, 0.7);
             backdrop-filter: blur(12px);
@@ -110,7 +101,6 @@
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        /* Botones neón */
         .btn-neon {
             background: transparent;
             border: 2px solid #00ffff;
@@ -141,10 +131,9 @@
             background: #ff00ff;
             color: #0a0f1f;
         }
-        /* Nodos de red (círculos) */
         .node-neon {
-            width: 60px;
-            height: 60px;
+            width: 70px;
+            height: 70px;
             border-radius: 50%;
             display: flex;
             flex-direction: column;
@@ -159,11 +148,16 @@
             background: rgba(0,0,0,0.4);
             backdrop-filter: blur(5px);
             flex: 0 0 auto;
+            cursor: pointer;
+        }
+        .node-neon:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px currentColor;
         }
         @media (max-width: 640px) {
             .node-neon {
-                width: 50px;
-                height: 50px;
+                width: 60px;
+                height: 60px;
                 font-size: 12px;
             }
         }
@@ -178,7 +172,6 @@
             color: rgba(255,0,255,0.5);
             box-shadow: 0 0 10px rgba(255,0,255,0.2);
         }
-        /* Estadísticas con números neón */
         .stat-neon {
             font-size: clamp(1.5rem, 5vw, 2rem);
             font-weight: 900;
@@ -187,7 +180,6 @@
             line-height: 1.2;
             word-break: break-word;
         }
-        /* Tabs futuristas */
         .tab-neon {
             padding: 10px 20px;
             border-radius: 60px;
@@ -210,7 +202,6 @@
         .tab-neon:hover {
             background: rgba(0,255,255,0.2);
         }
-        /* Feed del vault */
         .feed-item-neon {
             background: rgba(0,255,255,0.05);
             border-left: 4px solid #00ffff;
@@ -220,7 +211,15 @@
             font-size: 0.85rem;
             word-break: break-word;
         }
-        /* Modal neón */
+        .comment-item {
+            background: rgba(255,255,255,0.03);
+            border-radius: 1rem;
+            padding: 8px 12px;
+            margin-top: 8px;
+            margin-left: 20px;
+            font-size: 0.8rem;
+            border-left: 2px solid #ff00ff;
+        }
         .modal-neon {
             background: rgba(10,20,30,0.95);
             backdrop-filter: blur(20px);
@@ -230,12 +229,10 @@
             max-width: 90%;
             margin: 0 auto;
         }
-        /* Tooltips (usamos title, se ven con estilo por defecto) */
         [title] {
             cursor: help;
             border-bottom: 1px dotted #00ffff;
         }
-        /* Botones flotantes */
         .floating-neon {
             position: fixed;
             bottom: 20px;
@@ -280,7 +277,6 @@
             background: currentColor;
             color: black;
         }
-        /* Enlace de invitación */
         .input-neon {
             background: rgba(0,0,0,0.6);
             border: 1px solid #00ffff;
@@ -296,7 +292,6 @@
             border-color: #ff00ff;
             box-shadow: 0 0 30px #ff00ff;
         }
-        /* Scrollbar personalizada */
         ::-webkit-scrollbar {
             width: 8px;
         }
@@ -308,7 +303,6 @@
             border-radius: 10px;
             box-shadow: 0 0 10px #00ffff;
         }
-        /* Badge de red */
         .network-badge {
             display: inline-block;
             background: rgba(0,255,255,0.2);
@@ -319,7 +313,6 @@
             color: #00ffff;
             box-shadow: 0 0 15px #00ffff;
         }
-        /* Acordeón personalizado */
         details.neon-card > summary {
             list-style: none;
             cursor: pointer;
@@ -335,7 +328,6 @@
         details.neon-card[open] {
             background: rgba(10, 20, 30, 0.8);
         }
-        /* Ajustes de grid responsivos */
         .grid-cols-responsive {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
@@ -351,7 +343,7 @@
 <body>
     <div class="neon-overlay"></div>
 
-    <!-- Botones flotantes (neón) -->
+    <!-- Botones flotantes (Telegram y WhatsApp) -->
     <a id="telegramLink" href="https://t.me/+z7wwfx0ocho1NzI5" target="_blank" class="floating-neon telegram-neon hidden">
         <i class="fab fa-telegram-plane"></i> <span>Telegram</span>
     </a>
@@ -359,7 +351,7 @@
         <i class="fab fa-whatsapp"></i> <span>WhatsApp</span>
     </a>
 
-    <!-- Modal de confirmación (neón) -->
+    <!-- Modal de confirmación personalizado -->
     <div id="confirmModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden justify-center items-center z-50 p-4">
         <div class="modal-neon p-6 w-full max-w-md text-center">
             <i class="fas fa-exclamation-triangle text-4xl text-cyan-400 mb-3"></i>
@@ -385,7 +377,7 @@
             </div>
         </header>
 
-        <!-- Tabs futuristas -->
+        <!-- Tabs -->
         <div class="flex flex-wrap justify-center gap-2 mb-6">
             <button id="btnMembresia" class="tab-neon active">MEMBRESÍA</button>
             <button id="btnVault" class="tab-neon">VAULT</button>
@@ -401,7 +393,7 @@
 
         <!-- SECCIÓN MEMBRESÍA -->
         <div id="seccionMembresia" class="space-y-6">
-            <!-- ACORDEÓN: Acerca de Milimar (información del contrato) -->
+            <!-- Acordeón: Acerca de Milimar -->
             <details class="neon-card p-0" open>
                 <summary class="px-6 py-4 text-cyan-400 font-bold text-lg flex items-center gap-2">
                     <i class="fas fa-info-circle"></i> 📘 ACERCA DE MILIMAR
@@ -423,7 +415,7 @@
                 </div>
             </details>
 
-            <!-- Tarjetas de resumen con tooltips (grid responsivo) -->
+            <!-- Tarjetas de resumen con tooltips -->
             <div class="grid grid-cols-responsive gap-3">
                 <div class="neon-card p-4 border-l-4 border-cyan-400" title="Ganancias no retiradas">
                     <p class="text-xs text-cyan-300/60 uppercase">Saldo Pendiente</p>
@@ -443,7 +435,7 @@
                 </div>
             </div>
 
-            <!-- Fondos y bonos (grid responsivo) -->
+            <!-- Fondos y bonos -->
             <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
                 <div class="neon-card p-3 text-center" title="Fondo solidaridad">
                     <p class="text-xs text-emerald-300/60">Fondo Solidaridad</p>
@@ -470,15 +462,15 @@
             <!-- Botón emergencia -->
             <button id="btnEmergencyWithdraw" class="hidden w-full btn-neon secondary !border-red-500 !text-red-500 !shadow-red-500/50 hover:!bg-red-500 hover:!text-black py-3">🚨 RETIRO DE EMERGENCIA</button>
 
-            <!-- Niveles de red -->
+            <!-- Niveles de red (clickeables) -->
             <div class="neon-card p-6 text-center">
                 <p class="text-cyan-400 font-bold mb-4" style="font-family: 'Orbitron';">📊 TUS 5 NIVELES</p>
                 <div class="flex flex-wrap justify-center gap-2">
-                    <div id="n1" class="node-neon node-empty-neon">N1<br><span class="text-[10px]">0</span></div>
-                    <div id="n2" class="node-neon node-empty-neon">N2<br><span class="text-[10px]">0</span></div>
-                    <div id="n3" class="node-neon node-empty-neon">N3<br><span class="text-[10px]">0</span></div>
-                    <div id="n4" class="node-neon node-empty-neon">N4<br><span class="text-[10px]">0</span></div>
-                    <div id="n5" class="node-neon node-empty-neon">N5<br><span class="text-[10px]">0</span></div>
+                    <div id="n1" class="node-neon node-empty-neon" data-level="1">N1<br><span class="text-[10px]">0</span></div>
+                    <div id="n2" class="node-neon node-empty-neon" data-level="2">N2<br><span class="text-[10px]">0</span></div>
+                    <div id="n3" class="node-neon node-empty-neon" data-level="3">N3<br><span class="text-[10px]">0</span></div>
+                    <div id="n4" class="node-neon node-empty-neon" data-level="4">N4<br><span class="text-[10px]">0</span></div>
+                    <div id="n5" class="node-neon node-empty-neon" data-level="5">N5<br><span class="text-[10px]">0</span></div>
                 </div>
             </div>
 
@@ -523,7 +515,7 @@
                 </div>
             </div>
 
-            <!-- Enlace de invitación + compartir -->
+            <!-- Enlace de invitación -->
             <div class="neon-card p-4 text-center">
                 <p class="text-xs text-cyan-300/60 mb-1">TU ENLACE DE INVITACIÓN</p>
                 <div class="flex flex-col sm:flex-row items-center gap-2">
@@ -531,10 +523,6 @@
                     <button id="copyLinkBtn" class="btn-neon py-2 px-4 whitespace-nowrap">Copiar</button>
                 </div>
                 <p id="copyMsg" class="text-xs text-green-400 mt-2 hidden">¡Copiado!</p>
-                <div class="flex justify-center gap-3 mt-3">
-                    <a id="shareTelegram" href="#" target="_blank" class="btn-neon text-sm py-1 px-3"><i class="fab fa-telegram"></i> Telegram</a>
-                    <a id="shareWhatsapp" href="#" target="_blank" class="btn-neon text-sm py-1 px-3"><i class="fab fa-whatsapp"></i> WhatsApp</a>
-                </div>
             </div>
 
             <!-- Tutoriales -->
@@ -597,7 +585,9 @@
                 </div>
                 <div class="neon-card p-4 mt-6">
                     <h3 class="text-cyan-400 mb-2">📢 ACTIVIDAD</h3>
-                    <div id="vaultFeed" class="space-y-2 max-h-40 overflow-y-auto"></div>
+                    <div id="vaultFeed" class="space-y-2 max-h-40 overflow-y-auto">
+                        <p class="text-white/50 text-xs">Conecta tu wallet para ver la actividad...</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -619,11 +609,13 @@
             </div>
         </div>
 
-        <!-- HISTORIAL -->
+        <!-- SECCIÓN HISTORIAL -->
         <div id="seccionHistorial" class="hidden space-y-6">
             <div class="neon-card p-6">
                 <h2 class="text-2xl font-bold text-cyan-400 mb-4">📜 MI HISTORIAL</h2>
-                <div id="historialList" class="space-y-2 max-h-96 overflow-y-auto"></div>
+                <div id="historialList" class="space-y-2 max-h-96 overflow-y-auto">
+                    <p class="text-white/50 text-xs">Conecta tu wallet para ver tu historial.</p>
+                </div>
             </div>
         </div>
 
@@ -635,7 +627,7 @@
             </div>
         </div>
 
-        <footer class="text-center text-xs text-cyan-700 mt-8">Milimar · BSC · Versión 5</footer>
+        <footer class="text-center text-xs text-cyan-700 mt-8">Milimar · BSC · Versión Básica</footer>
     </div>
 
     <script>
@@ -647,7 +639,7 @@
         const TELEGRAM_GRUPO = "https://t.me/+z7wwfx0ocho1NzI5";
         const WHATSAPP_CANAL = "https://whatsapp.com/channel/0029Vb74Mxr3LdQVgWdycV2a";
 
-        // ========== ABI COMPLETO DE MEMBRESÍA ==========
+        // ABI completo del contrato de membresía
         const abiMembresia = [
             "function consultarEstado(address) view returns (tuple(uint256 saldoPendiente, uint256 totalGanado, uint256 totalRetirado, uint256 directos, uint256 redTotal, uint256 diasRestantes, bool activo))",
             "function verDetalleRed(address) view returns (uint256[5] memory)",
@@ -687,7 +679,7 @@
             "event BonosRecurrentesPagados(uint256 totalPagado, uint256 cantidadPersonas)"
         ];
 
-        const abiVault = []; // Por ahora vacío, reemplazar cuando esté listo
+        const abiVault = []; // Vacío por ahora
         const usdtAbi = ["function approve(address spender, uint256 amount) returns (bool)"];
 
         // ========== VARIABLES GLOBALES ==========
@@ -724,13 +716,20 @@
         const btnEmergency = document.getElementById('btnEmergencyWithdraw');
         const bonoNivel3Elem = document.getElementById('bonoNivel3');
         const bonosRecurrentesElem = document.getElementById('bonosRecurrentes');
-        const shareTelegram = document.getElementById('shareTelegram');
-        const shareWhatsapp = document.getElementById('shareWhatsapp');
         const modal = document.getElementById('confirmModal');
         const modalTitle = document.getElementById('modalTitle');
         const modalMessage = document.getElementById('modalMessage');
         const modalConfirm = document.getElementById('modalConfirm');
         const modalCancel = document.getElementById('modalCancel');
+
+        // Nodos de niveles
+        const nodos = [
+            document.getElementById('n1'),
+            document.getElementById('n2'),
+            document.getElementById('n3'),
+            document.getElementById('n4'),
+            document.getElementById('n5')
+        ];
 
         // ========== FUNCIONES AUXILIARES ==========
         function showToast(msg, isError = false) {
@@ -763,7 +762,7 @@
             });
         }
 
-        // ========== FUNCIONES DE CARGA DE DATOS ==========
+        // ========== FUNCIONES DE RED ==========
         async function checkNetwork() {
             const network = await provider.getNetwork();
             if (network.chainId !== BSC_CHAIN_ID) {
@@ -779,12 +778,13 @@
             return true;
         }
 
+        // ========== FUNCIONES DE CARGA DE DATOS ==========
         async function loadRedYGanancias() {
             try {
                 const red = await contractMembresia.verDetalleRed(userAddress);
                 const ganancias = await contractMembresia.verDetalleGanancias(userAddress);
                 for (let j = 0; j < 5; j++) {
-                    const node = document.getElementById('n' + (j+1));
+                    const node = nodos[j];
                     const cantidad = red[j].toNumber();
                     node.innerHTML = `N${j+1}<br><span class="text-[10px]">${cantidad}</span>`;
                     if (cantidad > 0) {
@@ -874,7 +874,6 @@
                 return;
             }
             try {
-                // Intentar obtener eventos, pero si no hay, mostrar mensaje amigable
                 const filterRegistro = contractMembresia.filters.RegistroGlobal(userAddress);
                 const filterBono = contractMembresia.filters.BonoNivel3Pagado(userAddress);
                 const filterRetiro = contractMembresia.filters.RetiroExitoso(userAddress);
@@ -906,7 +905,7 @@
                     } else if (event.event === 'PremiadoLider') {
                         desc = `🏅 Premio como líder: ${ethers.utils.formatUnits(event.args.monto, 18)} USDT`;
                     }
-                    const fecha = new Date(event.blockNumber * 15).toLocaleDateString(); // estimado
+                    const fecha = new Date(event.blockNumber * 15).toLocaleDateString();
                     html += `<div class="feed-item-neon text-xs">${desc}<br><span class="text-white/40">${fecha}</span></div>`;
                 });
                 historialDiv.innerHTML = html;
@@ -950,11 +949,7 @@
         }
 
         function updateShareLinks() {
-            if (refLink.value) {
-                const encoded = encodeURIComponent(refLink.value);
-                shareTelegram.href = `https://t.me/share/url?url=${encoded}&text=Únete%20a%20Milimar%20con%20mi%20link%3A`;
-                shareWhatsapp.href = `https://wa.me/?text=${encoded}`;
-            }
+            // No necesario sin Firebase
         }
 
         // ========== CONEXIÓN PRINCIPAL ==========
@@ -979,11 +974,19 @@
                 telegramLink.classList.remove('hidden');
                 whatsappLink.classList.remove('hidden');
                 refLink.value = window.location.origin + window.location.pathname + "?ref=" + userAddress;
-                updateShareLinks();
 
-                const ownerAddr = await contractMembresia.owner();
-                isOwner = (ownerAddr.toLowerCase() === userAddress.toLowerCase());
-                if (isOwner) document.getElementById('adminSection').classList.remove('hidden');
+                // Verificar owner
+                try {
+                    const ownerAddr = await contractMembresia.owner();
+                    isOwner = (ownerAddr.toLowerCase() === userAddress.toLowerCase());
+                    if (isOwner) {
+                        document.getElementById('adminSection').classList.remove('hidden');
+                    } else {
+                        document.getElementById('adminSection').classList.add('hidden');
+                    }
+                } catch (e) {
+                    console.error("Error al obtener owner:", e);
+                }
 
                 await loadUserData();
 
@@ -992,7 +995,7 @@
                     initVaultChart();
                 }
 
-                // Escuchar eventos
+                // Escuchar eventos (para actualizar datos y mostrar toasts)
                 contractMembresia.on("RegistroGlobal", (usuario, patrocinador, fecha) => {
                     if (usuario.toLowerCase() === userAddress.toLowerCase()) loadUserData();
                     showToast(`🎉 Nuevo registro: ${usuario.slice(0,6)}...${usuario.slice(-4)}`);
@@ -1027,8 +1030,10 @@
                         agregarAlFeedVault(`📤 Retiro estándar de ${ethers.utils.formatUnits(amount,18)} USDT por ${user.slice(0,6)}...${user.slice(-4)}`, 'withdraw');
                     });
                 }
+
             } catch (e) {
                 showToast('Error conectando: ' + e.message, true);
+                console.error(e);
             }
         }
 
@@ -1044,7 +1049,6 @@
             }).catch(() => showToast('Error al copiar', true));
         });
 
-        // Cambio de pestañas
         function setActiveTab(active, inactives) {
             active.classList.add('active');
             inactives.forEach(btn => btn.classList.remove('active'));
@@ -1100,7 +1104,7 @@
             seccionArbitraje.classList.remove('hidden');
         });
 
-        // Botones de acción (con modal para retirar)
+        // Botones de acción (con confirmación)
         document.getElementById('btnWithdraw').onclick = async () => {
             const confirmed = await confirmAction('Retirar ganancias', '¿Estás seguro de retirar todas tus ganancias disponibles?');
             if (!confirmed) return;
@@ -1163,45 +1167,45 @@
         document.getElementById('btnReloadDetails').onclick = loadRedYGanancias;
         document.getElementById('btnReloadGanancias').onclick = loadRedYGanancias;
 
-        // Admin functions
+        // Botones de administración (solo si isOwner)
         document.getElementById('btnPausa').onclick = async () => {
-            if (!isOwner) return;
+            if (!isOwner) { showToast('No tienes permisos', true); return; }
             const confirmed = await confirmAction('Cambiar estado de pausa', '¿Estás seguro?');
             if (!confirmed) return;
             try { await (await contractMembresia.togglePausa()).wait(); showToast('✅ Pausa cambiada'); } catch (e) { showToast('Error: ' + e.message, true); }
         };
         document.getElementById('btnCupos').onclick = async () => {
-            if (!isOwner) return;
+            if (!isOwner) { showToast('No tienes permisos', true); return; }
             const lider = prompt('Dirección del líder:'); const cant = prompt('Cantidad de cupos:');
             if (!lider || !cant) return;
             try { await (await contractMembresia.otorgarCuposExtra(lider, cant)).wait(); showToast('✅ Cupos otorgados'); } catch (e) { showToast('Error: ' + e.message, true); }
         };
         document.getElementById('btnPremiar').onclick = async () => {
-            if (!isOwner) return;
+            if (!isOwner) { showToast('No tienes permisos', true); return; }
             const lider = prompt('Dirección del líder:'); const monto = prompt('Monto en USDT:');
             if (!lider || !monto) return;
             try { await (await contractMembresia.premiarLider(lider, ethers.utils.parseUnits(monto, 18))).wait(); showToast('✅ Premio enviado'); } catch (e) { showToast('Error: ' + e.message, true); }
         };
         document.getElementById('btnSolidaridad').onclick = async () => {
-            if (!isOwner) return;
+            if (!isOwner) { showToast('No tienes permisos', true); return; }
             const benef = prompt('Dirección del beneficiario:'); const monto = prompt('Monto en USDT:'); const motivo = prompt('Motivo:');
             if (!benef || !monto || !motivo) return;
             try { await (await contractMembresia.usarFondoSolidaridad(benef, ethers.utils.parseUnits(monto, 18), motivo)).wait(); showToast('✅ Fondo usado'); } catch (e) { showToast('Error: ' + e.message, true); }
         };
         document.getElementById('btnActualizarBono').onclick = async () => {
-            if (!isOwner) return;
+            if (!isOwner) { showToast('No tienes permisos', true); return; }
             const nuevo = prompt('Nuevo monto del bono nivel 3 (en USDT):');
             if (!nuevo) return;
             try { await (await contractMembresia.actualizarBonoNivel3(ethers.utils.parseUnits(nuevo, 18))).wait(); showToast('✅ Bono actualizado'); } catch (e) { showToast('Error: ' + e.message, true); }
         };
         document.getElementById('btnToggleBonosRec').onclick = async () => {
-            if (!isOwner) return;
+            if (!isOwner) { showToast('No tienes permisos', true); return; }
             const estado = prompt('Activar bonos recurrentes? (true/false):');
             if (estado === null) return;
             try { await (await contractMembresia.setBonosRecurrentesActivados(estado === 'true')).wait(); showToast('✅ Estado cambiado'); } catch (e) { showToast('Error: ' + e.message, true); }
         };
         document.getElementById('btnPagarBonosRec').onclick = async () => {
-            if (!isOwner) return;
+            if (!isOwner) { showToast('No tienes permisos', true); return; }
             const lista = prompt('Lista de direcciones separadas por coma:');
             const monto = prompt('Monto por persona (USDT):');
             if (!lista || !monto) return;
@@ -1214,7 +1218,7 @@
             } catch (e) { showToast('Error: ' + e.message, true); }
         };
         document.getElementById('btnRecuperar').onclick = async () => {
-            if (!isOwner) return;
+            if (!isOwner) { showToast('No tienes permisos', true); return; }
             const token = prompt('Dirección del token (no USDT):'); const cant = prompt('Cantidad:');
             if (!token || !cant) return;
             try { await (await contractMembresia.recuperarTokenExterno(token, ethers.utils.parseUnits(cant, 18))).wait(); showToast('✅ Tokens recuperados'); } catch (e) { showToast('Error: ' + e.message, true); }
