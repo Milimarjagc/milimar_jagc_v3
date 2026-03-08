@@ -26,7 +26,7 @@
             height: 100%;
             object-fit: cover;
             z-index: -2;
-            opacity: 0.6;
+            opacity: 0.3; /* Más oscuro */
             pointer-events: none;
         }
         .overlay {
@@ -35,7 +35,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at 30% 30%, rgba(0, 255, 255, 0.2), rgba(128, 0, 255, 0.3), #0a0a0a);
+            background: radial-gradient(circle at 30% 30%, rgba(0, 255, 255, 0.15), rgba(128, 0, 255, 0.25), #0a0a0a);
             z-index: -1;
             pointer-events: none;
         }
@@ -46,7 +46,7 @@
         }
         /* Tarjetas glassmorphism más transparentes con bordes neón */
         .glass-card {
-            background: rgba(0, 0, 0, 0.4);
+            background: rgba(0, 0, 0, 0.5);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(0, 255, 255, 0.4);
             border-radius: 1.5rem;
@@ -233,7 +233,7 @@
 </head>
 <body class="text-white antialiased p-4 min-h-screen relative">
 
-    <!-- Video de fondo galaxia/órbitas -->
+    <!-- Video de fondo galaxia/órbitas (más oscuro) -->
     <video autoplay muted loop playsinline id="bg-video" poster="https://images.pexels.com/photos/1169754/pexels-photo-1169754.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1">
         <source src="https://videos.pexels.com/video-files/1851190/1851190-uhd_2560_1440_30fps.mp4" type="video/mp4">
     </video>
@@ -594,42 +594,14 @@
                 authorize: "1. AUTORIZAR USDT",
                 activate: "2. ACTIVAR (10 USDT)",
                 renew: "RENOVAR",
-                withdraw: "RETIRAR",
-                quickTutorials: "📘 TUTORIALES RÁPIDOS",
-                contractFeatures: "📋 CARACTERÍSTICAS DEL CONTRATO",
-                feature1Title: "💰 Sistema de comisiones por niveles",
-                feature1Text: "Cuando un miembro activa o renueva su membresía, se reparte el 61% del pago entre sus 5 niveles superiores: 25% (N1), 17% (N2), 10% (N3), 6% (N4), 3% (N5).",
-                feature2Title: "🏆 Pool de Liderazgo (3%)",
-                feature2Text: "El 3% de cada activación va a un fondo común. Se distribuye periódicamente entre los líderes que hayan alcanzado nivel 3 o superior.",
-                feature3Title: "💙 Fondo de Solidaridad (1%)",
-                feature3Text: "El 1% se acumula en un fondo para ayudar a miembros en situaciones especiales o financiar actividades comunitarias.",
-                feature4Title: "🎁 Bono único por nivel 3",
-                feature4Text: "Al alcanzar 64 personas en tu red (nivel 3), recibes un bono de 5 USDT. Puedes elegir retirarlo o invertirlo en el Vault Híbrido.",
-                feature5Title: "🔗 Red de referidos automática",
-                feature5Text: "Tu red se hereda automáticamente desde MilimarV5. No necesitas volver a invitar; el sistema reconoce a tus directos y sus niveles.",
-                feature6Title: "⚙️ Requisitos para retirar",
-                feature6Text: "Debes tener al menos 4 referidos directos, saldo ≥10 USDT y membresía activa. Una vez cumplidos, puedes retirar todas las veces que quieras.",
+                withdraw: "RETIRAR"
             },
             en: {
                 connectWallet: "CONNECT WALLET",
                 authorize: "1. AUTHORIZE USDT",
                 activate: "2. ACTIVATE (10 USDT)",
                 renew: "RENEW",
-                withdraw: "WITHDRAW",
-                quickTutorials: "📘 QUICK TUTORIALS",
-                contractFeatures: "📋 CONTRACT FEATURES",
-                feature1Title: "💰 Multi-level commission system",
-                feature1Text: "When a member activates or renews, 61% of the payment is distributed among their 5 upper levels: 25% (L1), 17% (L2), 10% (L3), 6% (L4), 3% (L5).",
-                feature2Title: "🏆 Leadership Pool (3%)",
-                feature2Text: "3% of each activation goes to a common pool. It is periodically distributed among leaders who have reached level 3 or higher.",
-                feature3Title: "💙 Solidarity Fund (1%)",
-                feature3Text: "1% accumulates in a fund to help members in special situations or to finance community activities.",
-                feature4Title: "🎁 One-time level 3 bonus",
-                feature4Text: "When you reach 64 people in your network (level 3), you receive a 5 USDT bonus. You can choose to withdraw it or invest it in the Hybrid Vault.",
-                feature5Title: "🔗 Automatic referral network",
-                feature5Text: "Your network is automatically inherited from MilimarV5. You don't need to invite again; the system recognizes your directs and their levels.",
-                feature6Title: "⚙️ Withdrawal requirements",
-                feature6Text: "You must have at least 4 direct referrals, balance ≥10 USDT, and active membership. Once met, you can withdraw as many times as you want.",
+                withdraw: "WITHDRAW"
             }
         };
 
@@ -637,16 +609,11 @@
 
         function setLanguage(lang) {
             currentLang = lang;
-            // Traducir textos principales
             document.getElementById('btnConnect').innerText = translations[lang].connectWallet;
             document.getElementById('btnApprove').innerText = translations[lang].authorize;
             document.getElementById('btnJoin').innerText = translations[lang].activate;
             document.getElementById('btnRenew').innerText = translations[lang].renew;
             document.getElementById('btnWithdraw').innerText = translations[lang].withdraw;
-            // Traducir acordeones (esto es más complejo porque los textos están dentro de details)
-            // Para simplificar, se puede actualizar el contenido HTML de los acordeones, pero lo dejamos como está.
-            // Los textos ya están en español; si se desea una traducción completa, habría que reescribir el HTML dinámicamente.
-            // Por ahora, solo traducimos los botones principales.
             document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
             document.getElementById(`lang-${lang}`).classList.add('active');
         }
@@ -1019,41 +986,49 @@
             } catch (e) { showToast('Error: ' + e.message, true); }
         };
 
+        // Admin functions con console.log para depuración
         document.getElementById('btnPausa').onclick = async () => {
+            console.log('btnPausa clicked');
             if (!isOwner || !confirm('¿Cambiar estado de pausa?')) return;
             try { await (await contractMembresia.togglePausa()).wait(); showToast('✅ Pausa cambiada'); } catch (e) { showToast('Error: ' + e.message, true); }
         };
         document.getElementById('btnCupos').onclick = async () => {
+            console.log('btnCupos clicked');
             if (!isOwner) return;
             const lider = prompt('Dirección del líder:'); const cant = prompt('Cantidad de cupos:');
             if (!lider || !cant) return;
             try { await (await contractMembresia.otorgarCuposExtra(lider, cant)).wait(); showToast('✅ Cupos otorgados'); } catch (e) { showToast('Error: ' + e.message, true); }
         };
         document.getElementById('btnPremiar').onclick = async () => {
+            console.log('btnPremiar clicked');
             if (!isOwner) return;
             const lider = prompt('Dirección del líder:'); const monto = prompt('Monto en USDT:');
             if (!lider || !monto) return;
             try { await (await contractMembresia.premiarLider(lider, ethers.utils.parseUnits(monto, 18))).wait(); showToast('✅ Premio enviado'); } catch (e) { showToast('Error: ' + e.message, true); }
         };
         document.getElementById('btnSolidaridad').onclick = async () => {
+            console.log('btnSolidaridad clicked');
             if (!isOwner) return;
             const benef = prompt('Dirección del beneficiario:'); const monto = prompt('Monto en USDT:'); const motivo = prompt('Motivo:');
             if (!benef || !monto || !motivo) return;
             try { await (await contractMembresia.usarFondoSolidaridad(benef, ethers.utils.parseUnits(monto, 18), motivo)).wait(); showToast('✅ Fondo usado'); } catch (e) { showToast('Error: ' + e.message, true); }
         };
         document.getElementById('btnActualizarBono').onclick = async () => {
+            console.log('btnActualizarBono clicked');
             if (!isOwner) return;
             const nuevo = prompt('Nuevo monto del bono nivel 3 (en USDT):');
             if (!nuevo) return;
             try { await (await contractMembresia.actualizarBonoNivel3(ethers.utils.parseUnits(nuevo, 18))).wait(); showToast('✅ Bono actualizado'); } catch (e) { showToast('Error: ' + e.message, true); }
         };
         document.getElementById('btnToggleBonosRec').onclick = async () => {
+            console.log('btnToggleBonosRec clicked');
             if (!isOwner) return;
             const estado = prompt('Activar bonos recurrentes? (true/false):');
             if (estado === null) return;
             try { await (await contractMembresia.setBonosRecurrentesActivados(estado === 'true')).wait(); showToast('✅ Estado cambiado'); } catch (e) { showToast('Error: ' + e.message, true); }
         };
         document.getElementById('btnPagarBonosRec').onclick = async () => {
+            console.log('btnPagarBonosRec clicked');
             if (!isOwner) return;
             const lista = prompt('Lista de direcciones separadas por coma:');
             const monto = prompt('Monto por persona (USDT):');
@@ -1067,6 +1042,7 @@
             } catch (e) { showToast('Error: ' + e.message, true); }
         };
         document.getElementById('btnRecuperar').onclick = async () => {
+            console.log('btnRecuperar clicked');
             if (!isOwner) return;
             const token = prompt('Dirección del token (no USDT):'); const cant = prompt('Cantidad:');
             if (!token || !cant) return;
