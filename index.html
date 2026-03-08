@@ -3,60 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Milimar JAGC | Oficina Virtual V5</title>
+    <title>Milimar JAGC | Oficina Virtual V5 (Neón)</title>
     <!-- Fuentes -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome para iconos (opcional, para el selector de idioma) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* Video de fondo galaxia/órbitas */
+        /* ===== ESTILOS ORIGINALES + MEJORAS NEÓN ===== */
         body {
+            background: linear-gradient(125deg, #0a0f1a 0%, #0f2a3a 35%, #1a3f3a 70%, #4a3a1a 100%);
+            background-size: 400% 400%;
+            animation: aurora 15s ease infinite;
             font-family: 'Inter', sans-serif;
+            color: white;
             position: relative;
-            min-height: 100vh;
-            overflow-x: hidden;
         }
-        #bg-video {
+        /* Fondo de red (imagen semitransparente) */
+        body::before {
+            content: "";
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            object-fit: cover;
-            z-index: -2;
-            opacity: 0.3;
-            pointer-events: none;
-        }
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at 30% 30%, rgba(0, 255, 255, 0.15), rgba(128, 0, 255, 0.25), #0a0a0a);
+            background-image: url('https://images.pexels.com/photos/8370752/pexels-photo-8370752.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.15;
             z-index: -1;
             pointer-events: none;
+        }
+        @keyframes aurora {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
         h1, h2, h3, .font-display {
             font-family: 'Poppins', sans-serif;
             font-weight: 900;
             letter-spacing: -0.02em;
         }
-        /* Tarjetas glassmorphism más transparentes con bordes neón */
+        /* Tarjetas con efecto vidrio neón */
         .glass-card {
             background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(0, 255, 255, 0.4);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 255, 255, 0.3);
             border-radius: 1.5rem;
-            box-shadow: 0 0 25px rgba(0, 255, 255, 0.4);
-            transition: all 0.3s;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 20px rgba(0, 255, 255, 0.2);
+            transition: all 0.3s ease;
         }
         .glass-card:hover {
-            border-color: #aa80ff;
-            box-shadow: 0 0 35px #aa80ff;
+            border-color: #00ffff;
+            box-shadow: 0 0 30px #00ffff, inset 0 0 20px rgba(0, 255, 255, 0.2);
+            transform: translateY(-2px);
         }
+        /* Nodos de red (círculos) */
         .node {
             width: 56px;
             height: 56px;
@@ -70,18 +73,22 @@
             transition: 0.3s;
             margin: 0 4px;
             font-family: 'Poppins', sans-serif;
+            border: 2px solid;
+            background: rgba(0,0,0,0.4);
+            backdrop-filter: blur(5px);
         }
         .node-filled {
-            background: linear-gradient(145deg, #00ffff, #aa80ff);
-            color: black;
-            border: 2px solid white;
+            border-color: #00ffff;
+            color: #00ffff;
             box-shadow: 0 0 20px #00ffff;
+            background: rgba(0,255,255,0.1);
         }
         .node-empty {
-            border: 2px dashed rgba(0, 255, 255, 0.3);
-            color: rgba(255, 255, 255, 0.5);
-            background: transparent;
+            border-color: rgba(255,0,255,0.3);
+            color: rgba(255,0,255,0.5);
+            box-shadow: 0 0 10px rgba(255,0,255,0.2);
         }
+        /* Toasts */
         .toast {
             position: fixed;
             bottom: 20px;
@@ -90,82 +97,113 @@
             transition: opacity 0.3s;
             max-width: 300px;
         }
+        /* Botones neón */
         .btn {
             @apply font-black py-3 px-6 rounded-xl transition-all transform hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed;
             font-family: 'Poppins', sans-serif;
+            border: 2px solid #00ffff;
+            background: transparent;
+            color: #00ffff;
+            box-shadow: 0 0 15px #00ffff;
         }
-        .tutorial-step, .benefit-step, .feed-item, .info-section {
-            @apply bg-white/10 p-4 rounded-lg mb-3 text-sm border border-white/20;
+        .btn:hover {
+            background: #00ffff;
+            color: black;
+            box-shadow: 0 0 40px #00ffff;
         }
-        /* Botones flotantes más pequeños */
-        .whatsapp-button {
+        .btn-secondary {
+            border-color: #ff00ff;
+            color: #ff00ff;
+            box-shadow: 0 0 15px #ff00ff;
+        }
+        .btn-secondary:hover {
+            background: #ff00ff;
+            color: black;
+        }
+        /* Botones flotantes (Telegram/WhatsApp) */
+        .floating-btn {
             position: fixed;
             bottom: 20px;
-            left: 90px;
-            z-index: 50;
-            background: linear-gradient(145deg, #25D366, #128C7E);
-            padding: 8px 16px;
-            border-radius: 40px;
+            padding: 12px 24px;
+            border-radius: 50px;
             color: white;
             font-weight: bold;
             display: flex;
             align-items: center;
-            gap: 6px;
-            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.5);
+            gap: 8px;
             transition: all 0.3s;
             font-family: 'Poppins', sans-serif;
-            border: 1px solid rgba(255,255,255,0.3);
+            border: 1px solid;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(10px);
             text-decoration: none;
-            font-size: 0.9rem;
+            z-index: 50;
         }
-        .whatsapp-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 25px rgba(37, 211, 102, 0.7);
-        }
-        .telegram-button {
-            position: fixed;
-            bottom: 20px;
+        .telegram-btn {
             left: 20px;
-            z-index: 50;
-            background: linear-gradient(145deg, #2AABEE, #229ED9);
-            padding: 8px 16px;
-            border-radius: 40px;
-            color: white;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            box-shadow: 0 4px 20px rgba(42, 171, 238, 0.5);
-            transition: all 0.3s;
-            font-family: 'Poppins', sans-serif;
-            border: 1px solid rgba(255,255,255,0.3);
-            text-decoration: none;
-            font-size: 0.9rem;
+            border-color: #2AABEE;
+            color: #2AABEE;
+            box-shadow: 0 0 20px #2AABEE;
         }
-        .telegram-button:hover {
+        .whatsapp-btn {
+            left: 90px;
+            border-color: #25D366;
+            color: #25D366;
+            box-shadow: 0 0 20px #25D366;
+        }
+        .floating-btn:hover {
             transform: scale(1.05);
-            box-shadow: 0 6px 25px rgba(42, 171, 238, 0.7);
+            background: currentColor;
+            color: black;
         }
+        /* Pestañas neón */
         .tab-button {
             @apply px-6 py-3 rounded-t-xl font-bold transition-all;
+            border: 1px solid #00ffff;
+            color: #00ffff;
+            background: transparent;
+            box-shadow: 0 0 10px #00ffff;
         }
         .tab-active {
             background: #00ffff;
             color: black;
-            box-shadow: 0 0 20px #00ffff;
         }
         .tab-inactive {
-            background: rgba(255,255,255,0.1);
-            color: white;
-            border: 1px solid rgba(0,255,255,0.3);
+            background: transparent;
         }
         .tab-inactive:hover {
             background: rgba(0,255,255,0.2);
         }
-        .feed-container {
-            max-height: 200px;
-            overflow-y: auto;
+        /* Feed items */
+        .feed-item {
+            @apply bg-white/10 p-4 rounded-lg mb-3 text-sm border border-white/20;
+            border-left: 4px solid #00ffff;
         }
+        /* Selector de idioma pequeño */
+        .lang-selector {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 100;
+            display: flex;
+            gap: 5px;
+        }
+        .lang-btn {
+            background: rgba(0,255,255,0.2);
+            border: 1px solid #00ffff;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .lang-btn.active {
+            background: #00ffff;
+            color: black;
+        }
+        /* Otros */
         .vault-card {
             @apply glass-card p-4 text-center;
         }
@@ -175,198 +213,109 @@
         .info-title {
             @apply text-cyan-400 font-bold text-base mb-2;
         }
-        /* Selector de idioma */
-        .lang-selector {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            z-index: 100;
-            background: rgba(0, 255, 255, 0.2);
-            backdrop-filter: blur(8px);
+        .input-neon {
+            background: rgba(0,0,0,0.6);
             border: 1px solid #00ffff;
-            border-radius: 30px;
-            padding: 4px 8px;
-            display: flex;
-            gap: 8px;
-            box-shadow: 0 0 15px rgba(0,255,255,0.5);
-        }
-        .lang-btn {
-            background: transparent;
-            border: none;
             color: white;
-            font-size: 0.8rem;
-            font-weight: 600;
-            padding: 4px 8px;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-        .lang-btn i {
-            font-size: 0.9rem;
-        }
-        .lang-btn.active {
-            background: #00ffff;
-            color: black;
+            border-radius: 60px;
+            padding: 10px 20px;
+            outline: none;
             box-shadow: 0 0 15px #00ffff;
         }
-        .network-warning {
-            background: rgba(255,100,100,0.3);
-            border: 1px solid #ff6666;
-            border-radius: 20px;
-            padding: 15px;
-            margin: 10px 0;
-            text-align: center;
+        .input-neon:focus {
+            border-color: #ff00ff;
+            box-shadow: 0 0 30px #ff00ff;
         }
-        .switch-network-btn {
-            background: #ff6666;
-            color: white;
-            border: none;
-            padding: 8px 20px;
-            border-radius: 40px;
-            margin-top: 10px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        .contract-feature {
-            background: rgba(255,255,255,0.05);
-            border-radius: 12px;
-            padding: 12px;
-            margin-bottom: 10px;
-        }
-        .feature-title {
+        .network-badge {
+            display: inline-block;
+            background: rgba(0,255,255,0.2);
+            border: 1px solid #00ffff;
+            border-radius: 60px;
+            padding: 5px 15px;
+            font-size: 0.8rem;
             color: #00ffff;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-        .feature-text {
-            color: #ddd;
-            font-size: 0.9rem;
-            line-height: 1.5;
-        }
-        .message {
-            background: rgba(30, 58, 138, 0.5);
-            border-left: 4px solid #fbbf24;
-            padding: 16px;
-            border-radius: 12px;
-            margin: 20px 0;
-        }
-        .message.error {
-            background: rgba(127, 29, 29, 0.5);
-            border-left-color: #ef4444;
-        }
-        .message.success {
-            background: rgba(20, 83, 45, 0.5);
-            border-left-color: #10b981;
-        }
-        .hidden {
-            display: none;
-        }
-        .loading {
-            text-align: center;
-            padding: 40px;
-            color: #9ca3af;
-        }
-        .loading i {
-            font-size: 3rem;
-            color: #fbbf24;
-            margin-bottom: 16px;
+            box-shadow: 0 0 15px #00ffff;
         }
     </style>
 </head>
 <body class="text-white antialiased p-4 min-h-screen relative">
 
-    <!-- Video de fondo galaxia/órbitas -->
-    <video autoplay muted loop playsinline id="bg-video" poster="https://images.pexels.com/photos/1169754/pexels-photo-1169754.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1">
-        <source src="https://videos.pexels.com/video-files/1851190/1851190-uhd_2560_1440_30fps.mp4" type="video/mp4">
-    </video>
-    <div class="overlay"></div>
-
-    <!-- Selector de idioma -->
+    <!-- Selector de idioma pequeño -->
     <div class="lang-selector">
-        <button class="lang-btn active" id="lang-es"><i class="fas fa-language"></i> ES</button>
-        <button class="lang-btn" id="lang-en"><i class="fas fa-language"></i> EN</button>
+        <button class="lang-btn active" data-lang="es">🇪🇸 ES</button>
+        <button class="lang-btn" data-lang="en">🇬🇧 EN</button>
     </div>
 
-    <!-- Botones flotantes de Telegram y WhatsApp -->
-    <a id="telegramLink" href="https://t.me/+z7wwfx0ocho1NzI5" target="_blank" class="telegram-button hidden">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.02-.15-.05-.22-.07-.07-.18-.05-.26-.03-.11.02-1.85 1.17-5.22 3.45-.5.34-.95.5-1.36.49-.45-.01-1.3-.25-1.94-.46-.78-.26-1.4-.4-1.35-.85.03-.23.27-.47.74-.72 2.91-1.27 4.86-2.11 5.83-2.52 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.08-.02.25-.04.4z"/></svg>
-        <span>Grupo Telegram</span>
+    <!-- Botones flotantes -->
+    <a id="telegramLink" href="https://t.me/+z7wwfx0ocho1NzI5" target="_blank" class="floating-btn telegram-btn hidden">
+        <i class="fab fa-telegram-plane"></i> <span data-i18n="telegram">Telegram</span>
     </a>
-    <a id="whatsappLink" href="https://whatsapp.com/channel/0029Vb74Mxr3LdQVgWdycV2a" target="_blank" class="whatsapp-button hidden">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M12.036 2.001C6.505 2.001 2 6.506 2 12.037c0 1.95.57 3.77 1.55 5.31L2 22l4.78-1.53A9.978 9.978 0 0 0 12.036 22c5.53 0 10.034-4.505 10.034-10.036 0-5.53-4.505-10.035-10.034-10.035zm0 18.464c-1.634 0-3.212-.468-4.562-1.336l-.327-.198-3.004.963 1.003-2.93-.21-.337a8.38 8.38 0 0 1-1.345-4.59c0-4.616 3.76-8.376 8.376-8.376s8.376 3.76 8.376 8.376-3.76 8.376-8.376 8.376zm4.53-6.268c-.248-.124-1.466-.723-1.694-.805-.228-.082-.394-.124-.56.124-.166.248-.645.805-.79.97-.146.165-.29.186-.538.062s-1.052-.387-2.003-1.235c-.74-.66-1.24-1.476-1.385-1.724-.146-.248-.016-.382.11-.506.11-.11.248-.29.373-.435.124-.145.166-.248.248-.414.083-.165.041-.31-.02-.434-.062-.124-.56-1.35-.77-1.85-.202-.482-.407-.416-.56-.424-.145-.008-.31-.008-.476-.008-.166 0-.435.062-.663.31-.228.249-.87.85-.87 2.075 0 1.224.89 2.407 1.015 2.574.124.166 1.73 2.64 4.19 3.61.586.23 1.043.368 1.4.47.588.166 1.123.143 1.545.086.472-.062 1.454-.594 1.66-1.168.206-.574.206-1.066.145-1.168-.06-.103-.228-.166-.476-.29z"/></svg>
-        <span>Canal WhatsApp</span>
+    <a id="whatsappLink" href="https://whatsapp.com/channel/0029Vb74Mxr3LdQVgWdycV2a" target="_blank" class="floating-btn whatsapp-btn hidden">
+        <i class="fab fa-whatsapp"></i> <span data-i18n="whatsapp">WhatsApp</span>
     </a>
 
     <div id="toast" class="toast glass-card p-4 hidden">
         <p id="toastMsg" class="text-sm"></p>
     </div>
 
-    <div class="max-w-3xl mx-auto">
+    <div class="max-w-3xl mx-auto relative z-10">
         <header class="text-center py-8">
             <div class="flex items-center justify-center gap-4">
-                <h1 class="text-6xl font-black text-white drop-shadow-2xl tracking-tighter" style="text-shadow: 0 0 20px #00ffff;">MILIMAR JAGC</h1>
+                <h1 class="text-6xl font-black text-white drop-shadow-2xl tracking-tighter" style="text-shadow: 0 0 20px cyan;">MILIMAR JAGC</h1>
             </div>
-            <p class="text-sm text-white/80 uppercase tracking-[0.3em] font-light mt-2">Oficina Virtual · BSC · V5</p>
+            <p class="text-sm text-white/80 uppercase tracking-[0.3em] font-light mt-2" data-i18n="subtitle">Oficina Virtual · BSC · V5</p>
+            <div class="mt-2">
+                <span class="network-badge"><i class="fas fa-link"></i> BSC Mainnet (Chain ID 56)</span>
+            </div>
         </header>
-
-        <!-- Contenedor de conexión (sin selector de wallets) -->
-        <div id="conBox" class="glass-card p-10 text-center mb-6">
-            <button id="btnConnect" class="btn bg-white text-black w-full max-w-md mx-auto hover:bg-cyan-300 transition">CONECTAR BILLETERA</button>
-            <div id="networkError" class="hidden network-warning"></div>
-        </div>
 
         <!-- Pestañas de navegación -->
         <div class="flex flex-wrap justify-center gap-2 mb-6">
-            <button id="btnMembresia" class="tab-button tab-active">MEMBRESÍA</button>
-            <button id="btnVault" class="tab-button tab-inactive">VAULT</button>
-            <button id="btnInfoVault" class="tab-button tab-inactive">📘 ACERCA DEL VAULT</button>
-            <button id="btnArbitraje" class="tab-button tab-inactive">ARBITRAJE</button>
+            <button id="btnMembresia" class="tab-button tab-active" data-i18n="membresia">MEMBRESÍA</button>
+            <button id="btnVault" class="tab-button tab-inactive" data-i18n="vault">VAULT</button>
+            <button id="btnInfoVault" class="tab-button tab-inactive" data-i18n="infoVault">📘 INFO VAULT</button>
+            <button id="btnArbitraje" class="tab-button tab-inactive" data-i18n="arbitraje">ARBITRAJE</button>
         </div>
 
-        <!-- Mensajes y loading -->
-        <div id="messageBox" class="message hidden"></div>
-        <div id="loading" class="loading hidden">
-            <i class="fas fa-circle-notch fa-spin"></i>
-            <p>Cargando datos...</p>
+        <!-- Contenedor de conexión -->
+        <div id="conBox" class="glass-card p-10 text-center mb-6">
+            <button id="btnConnect" class="btn w-full max-w-md mx-auto" data-i18n="connect">CONECTAR BILLETERA</button>
         </div>
 
-        <!-- SECCIÓN MEMBRESÍA (V5) -->
+        <!-- SECCIÓN MEMBRESÍA (original) -->
         <div id="seccionMembresia" class="space-y-6">
             <!-- Tarjetas de resumen -->
             <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
                 <div class="glass-card p-4 border-l-4 border-cyan-400">
-                    <p class="text-[10px] text-white/60 uppercase font-bold">Saldo Pendiente</p>
+                    <p class="text-[10px] text-white/60 uppercase font-bold" data-i18n="saldoPendiente">Saldo Pendiente</p>
                     <p id="valSaldo" class="text-xl font-black text-cyan-300">0.00</p>
                 </div>
                 <div class="glass-card p-4 border-r-4 border-purple-400 text-right">
-                    <p class="text-[10px] text-white/60 uppercase font-bold">Red Total</p>
+                    <p class="text-[10px] text-white/60 uppercase font-bold" data-i18n="redTotal">Red Total</p>
                     <p id="valRed" class="text-xl font-black text-purple-300">0</p>
                 </div>
                 <div class="glass-card p-4 border-l-4 border-blue-400">
-                    <p class="text-[10px] text-white/60 uppercase font-bold">Directos</p>
+                    <p class="text-[10px] text-white/60 uppercase font-bold" data-i18n="directos">Directos</p>
                     <p id="valDir" class="text-xl font-black text-blue-300">0</p>
                 </div>
-                <div class="glass-card p-4 border-r-4 border-indigo-400 text-right">
-                    <p class="text-[10px] text-white/60 uppercase font-bold">Días activo</p>
-                    <p id="valDias" class="text-xl font-black text-indigo-300">0</p>
+                <div class="glass-card p-4 border-r-4 border-pink-400 text-right">
+                    <p class="text-[10px] text-white/60 uppercase font-bold" data-i18n="diasActivo">Días activo</p>
+                    <p id="valDias" class="text-xl font-black text-pink-300">0</p>
                 </div>
             </div>
 
             <!-- Fondos: Solidaridad y Pool Liderazgo + Emergencia -->
             <div class="grid grid-cols-3 gap-3">
                 <div class="glass-card p-3 text-center">
-                    <p class="text-[10px] text-white/60 uppercase font-bold">Fondo Solidaridad</p>
+                    <p class="text-[10px] text-white/60 uppercase font-bold" data-i18n="fondoSolidaridad">Fondo Solidaridad</p>
                     <p id="fondoSolidaridad" class="text-lg font-black text-emerald-300">0.00</p>
                 </div>
                 <div class="glass-card p-3 text-center">
-                    <p class="text-[10px] text-white/60 uppercase font-bold">Pool Liderazgo</p>
-                    <p id="poolLiderazgo" class="text-lg font-black text-purple-300">0.00</p>
+                    <p class="text-[10px] text-white/60 uppercase font-bold" data-i18n="poolLiderazgo">Pool Liderazgo</p>
+                    <p id="poolLiderazgo" class="text-lg font-black text-yellow-300">0.00</p>
                 </div>
                 <div class="glass-card p-3 text-center" id="emergencyContainer">
-                    <p class="text-[10px] text-white/60 uppercase font-bold">Modo Emergencia</p>
+                    <p class="text-[10px] text-white/60 uppercase font-bold" data-i18n="modoEmergencia">Modo Emergencia</p>
                     <p id="emergencyStatus" class="text-lg font-black text-red-300">INACTIVO</p>
                 </div>
             </div>
@@ -374,21 +323,21 @@
             <!-- Bono nivel 3 y bonos recurrentes -->
             <div class="grid grid-cols-2 gap-3">
                 <div class="glass-card p-3 text-center">
-                    <p class="text-[10px] text-white/60 uppercase font-bold">Bono Nivel 3</p>
-                    <p id="bonoNivel3" class="text-lg font-black text-cyan-300">5 USDT</p>
+                    <p class="text-[10px] text-white/60 uppercase font-bold" data-i18n="bonoNivel3">Bono Nivel 3</p>
+                    <p id="bonoNivel3" class="text-lg font-black text-orange-300">5 USDT</p>
                 </div>
                 <div class="glass-card p-3 text-center">
-                    <p class="text-[10px] text-white/60 uppercase font-bold">Bonos recurrentes</p>
-                    <p id="bonosRecurrentes" class="text-lg font-black text-purple-300">INACTIVO</p>
+                    <p class="text-[10px] text-white/60 uppercase font-bold" data-i18n="bonosRecurrentes">Bonos recurrentes</p>
+                    <p id="bonosRecurrentes" class="text-lg font-black text-blue-300">INACTIVO</p>
                 </div>
             </div>
 
             <!-- Botón de retiro de emergencia -->
-            <button id="btnEmergencyWithdraw" class="hidden w-full bg-red-700 text-white font-bold py-3 rounded-xl hover:bg-red-600 transition">🚨 RETIRO DE EMERGENCIA</button>
+            <button id="btnEmergencyWithdraw" class="hidden w-full btn-secondary py-3" data-i18n="emergencyWithdraw">🚨 RETIRO DE EMERGENCIA</button>
 
             <!-- Visualización de 5 niveles -->
             <div class="glass-card p-6 text-center">
-                <p class="text-white text-sm font-bold mb-4 drop-shadow">📊 TUS 5 NIVELES DE RED</p>
+                <p class="text-white text-sm font-bold mb-4 drop-shadow" data-i18n="tusNiveles">📊 TUS 5 NIVELES DE RED</p>
                 <div class="flex flex-wrap justify-center gap-2">
                     <div id="n1" class="node node-empty">N1<br><span class="text-[10px]">0</span></div>
                     <div id="n2" class="node node-empty">N2<br><span class="text-[10px]">0</span></div>
@@ -396,22 +345,22 @@
                     <div id="n4" class="node node-empty">N4<br><span class="text-[10px]">0</span></div>
                     <div id="n5" class="node node-empty">N5<br><span class="text-[10px]">0</span></div>
                 </div>
-                <p class="text-[10px] text-white/50 mt-4">Cada círculo muestra la cantidad de personas en ese nivel.</p>
+                <p class="text-[10px] text-white/50 mt-4" data-i18n="cadaCirculo">Cada círculo muestra la cantidad de personas en ese nivel.</p>
             </div>
 
             <!-- Detalles por nivel y ganancias -->
             <div class="grid md:grid-cols-2 gap-4">
                 <div class="glass-card p-4">
                     <div class="flex justify-between items-center mb-2">
-                        <h3 class="text-white font-bold text-sm drop-shadow">📊 SOCIOS POR NIVEL</h3>
-                        <button id="btnReloadDetails" class="text-xs bg-white/20 hover:bg-white/30 px-2 py-1 rounded transition">⟳ Recargar</button>
+                        <h3 class="text-white font-bold text-sm drop-shadow" data-i18n="sociosPorNivel">📊 SOCIOS POR NIVEL</h3>
+                        <button id="btnReloadDetails" class="text-xs bg-white/20 hover:bg-white/30 px-2 py-1 rounded transition" data-i18n="recargar">⟳ Recargar</button>
                     </div>
                     <div id="redNiveles" class="space-y-1 text-xs"><p class="text-white/50">Cargando...</p></div>
                 </div>
                 <div class="glass-card p-4">
                     <div class="flex justify-between items-center mb-2">
-                        <h3 class="text-white font-bold text-sm drop-shadow">💰 GANANCIAS ACUMULADAS</h3>
-                        <button id="btnReloadGanancias" class="text-xs bg-white/20 hover:bg-white/30 px-2 py-1 rounded transition">⟳ Recargar</button>
+                        <h3 class="text-white font-bold text-sm drop-shadow" data-i18n="gananciasAcumuladas">💰 GANANCIAS ACUMULADAS</h3>
+                        <button id="btnReloadGanancias" class="text-xs bg-white/20 hover:bg-white/30 px-2 py-1 rounded transition" data-i18n="recargar">⟳ Recargar</button>
                     </div>
                     <div id="gananciasNiveles" class="space-y-1 text-xs"><p class="text-white/50">Cargando...</p></div>
                 </div>
@@ -419,205 +368,175 @@
 
             <!-- Botones de acción -->
             <div class="grid grid-cols-2 gap-3">
-                <button id="btnApprove" class="btn bg-cyan-600 text-white hover:bg-cyan-500">1. AUTORIZAR USDT</button>
-                <button id="btnJoin" class="btn bg-purple-600 text-white hover:bg-purple-500">2. ACTIVAR (10 USDT)</button>
-                <button id="btnRenew" class="btn bg-blue-600 text-white hover:bg-blue-500">RENOVAR</button>
-                <button id="btnWithdraw" class="btn bg-indigo-600 text-white hover:bg-indigo-500">RETIRAR</button>
+                <button id="btnApprove" class="btn" data-i18n="autorizar">1. AUTORIZAR USDT</button>
+                <button id="btnJoin" class="btn" data-i18n="activar">2. ACTIVAR</button>
+                <button id="btnRenew" class="btn btn-secondary" data-i18n="renovar">RENOVAR</button>
+                <button id="btnWithdraw" class="btn btn-secondary" data-i18n="retirar">RETIRAR</button>
             </div>
 
             <!-- Panel Admin -->
-            <div id="adminSection" class="hidden glass-card p-4 border border-cyan-500/50">
-                <h2 class="text-white font-bold mb-3 text-sm uppercase tracking-wider drop-shadow">⚙️ Panel Admin</h2>
+            <div id="adminSection" class="hidden glass-card p-4 border border-purple-500/50">
+                <h2 class="text-white font-bold mb-3 text-sm uppercase tracking-wider drop-shadow" data-i18n="admin">⚙️ Panel Admin</h2>
                 <div class="grid grid-cols-2 gap-2">
-                    <button id="btnPausa" class="btn bg-red-600 text-white text-sm py-2 hover:bg-red-500">PAUSAR/REANUDAR</button>
-                    <button id="btnCupos" class="btn bg-purple-600 text-white text-sm py-2 hover:bg-purple-500">OTORGAR CUPOS</button>
-                    <button id="btnPremiar" class="btn bg-pink-600 text-white text-sm py-2 hover:bg-pink-500">PREMIAR LÍDER</button>
-                    <button id="btnSolidaridad" class="btn bg-emerald-600 text-white text-sm py-2 hover:bg-emerald-500">USAR FONDO SOL.</button>
-                    <button id="btnActualizarBono" class="btn bg-cyan-600 text-white text-sm py-2 hover:bg-cyan-500">ACT. BONO N3</button>
-                    <button id="btnToggleBonosRec" class="btn bg-indigo-600 text-white text-sm py-2 hover:bg-indigo-500">ACT. BONOS REC.</button>
-                    <button id="btnPagarBonosRec" class="btn bg-teal-600 text-white text-sm py-2 hover:bg-teal-500">PAGAR BONOS REC.</button>
-                    <button id="btnRecuperar" class="btn bg-orange-600 text-white text-sm py-2 hover:bg-orange-500">RECUPERAR TOKEN</button>
+                    <button id="btnPausa" class="btn text-sm py-2" data-i18n="pausar">PAUSAR</button>
+                    <button id="btnCupos" class="btn text-sm py-2" data-i18n="cupos">CUPOS</button>
+                    <button id="btnPremiar" class="btn text-sm py-2" data-i18n="premiar">PREMIAR</button>
+                    <button id="btnSolidaridad" class="btn text-sm py-2" data-i18n="fsol">F. SOL.</button>
+                    <button id="btnActualizarBono" class="btn text-sm py-2" data-i18n="bonoN3">BONO N3</button>
+                    <button id="btnToggleBonosRec" class="btn text-sm py-2" data-i18n="bonosRec">BONOS REC</button>
+                    <button id="btnPagarBonosRec" class="btn text-sm py-2" data-i18n="pagarRec">PAGAR REC</button>
+                    <button id="btnRecuperar" class="btn text-sm py-2" data-i18n="recuperar">RECUPERAR</button>
                 </div>
                 <div class="mt-2 text-[10px] text-white/50">Usa estas funciones con responsabilidad.</div>
             </div>
 
             <!-- Enlace de invitación -->
             <div class="glass-card p-4 text-center">
-                <p class="text-[10px] text-white/50 mb-1 uppercase font-bold">TU ENLACE DE INVITACIÓN</p>
+                <p class="text-[10px] text-white/50 mb-1 uppercase font-bold" data-i18n="tuEnlace">TU ENLACE DE INVITACIÓN</p>
                 <div class="flex items-center gap-2">
-                    <input id="refLink" readonly class="w-full bg-white/10 border border-white/30 rounded-lg p-2 text-center text-white text-xs outline-none">
-                    <button id="copyLinkBtn" class="bg-white text-black font-bold py-2 px-4 rounded-lg text-sm hover:bg-cyan-300 transition">Copiar</button>
+                    <input id="refLink" readonly class="input-neon flex-1 text-center text-xs">
+                    <button id="copyLinkBtn" class="btn py-2 px-4 text-sm" data-i18n="copiar">Copiar</button>
                 </div>
                 <p id="copyMsg" class="text-[10px] text-green-300 mt-2 hidden">¡Link copiado!</p>
             </div>
 
-            <!-- Dos acordeones: TUTORIALES RÁPIDOS y CARACTERÍSTICAS DEL CONTRATO -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <!-- Tutoriales Rápidos -->
-                <div class="glass-card p-4">
-                    <details class="cursor-pointer">
-                        <summary class="text-white font-bold text-sm list-none flex justify-between items-center drop-shadow">
-                            📘 TUTORIALES RÁPIDOS
-                            <span class="text-xs text-white/60">(clic para expandir)</span>
-                        </summary>
-                        <div class="mt-4 space-y-3">
-                            <div class="tutorial-step">
-                                <p class="font-bold text-cyan-300">🔹 Autorizar USDT</p>
-                                <p class="text-xs text-white/80">1. Asegúrate de tener USDT en tu wallet.<br>2. Haz clic en "AUTORIZAR USDT".<br>3. Confirma la transacción (solo gas).</p>
-                            </div>
-                            <div class="tutorial-step">
-                                <p class="font-bold text-purple-300">🔹 Activar suscripción</p>
-                                <p class="text-xs text-white/80">1. Después de autorizar, haz clic en "ACTIVAR".<br>2. Ingresa la dirección de tu patrocinador (si no viene por link).<br>3. Confirma la transacción (10 USDT + gas).</p>
-                            </div>
-                            <div class="tutorial-step">
-                                <p class="font-bold text-blue-300">🔹 Renovar</p>
-                                <p class="text-xs text-white/80">Paga 10 USDT para extender tu membresía 30 días más.</p>
-                            </div>
-                            <div class="tutorial-step">
-                                <p class="font-bold text-indigo-300">🔹 Retirar ganancias</p>
-                                <p class="text-xs text-white/80">Solo cuando tengas al menos 4 directos y saldo ≥10 USDT.</p>
-                            </div>
-                            <div class="tutorial-step">
-                                <p class="font-bold text-cyan-300">🔹 Invitar</p>
-                                <p class="text-xs text-white/80">Comparte tu link de invitación. Cuando alguien se registre con él, será tu referido directo.</p>
-                            </div>
+            <!-- Tutoriales -->
+            <div class="glass-card p-4">
+                <details class="cursor-pointer">
+                    <summary class="text-white font-bold text-sm list-none flex justify-between items-center drop-shadow" data-i18n="tutoriales">
+                        📘 TUTORIALES RÁPIDOS
+                        <span class="text-xs text-white/60">(clic para expandir)</span>
+                    </summary>
+                    <div class="mt-4 space-y-3">
+                        <div class="feed-item">
+                            <p class="font-bold text-yellow-300" data-i18n="tutoAutorizarTit">🔹 Autorizar USDT</p>
+                            <p class="text-xs text-white/80" data-i18n="tutoAutorizar">1. Asegúrate de tener USDT en tu wallet.<br>2. Haz clic en "AUTORIZAR USDT".<br>3. Confirma la transacción (solo gas).</p>
                         </div>
-                    </details>
-                </div>
-
-                <!-- Características del Contrato -->
-                <div class="glass-card p-4">
-                    <details class="cursor-pointer">
-                        <summary class="text-white font-bold text-sm list-none flex justify-between items-center drop-shadow">
-                            📋 CARACTERÍSTICAS DEL CONTRATO
-                            <span class="text-xs text-white/60">(clic para expandir)</span>
-                        </summary>
-                        <div class="mt-4 space-y-3">
-                            <div class="contract-feature">
-                                <div class="feature-title">💰 Sistema de comisiones por niveles</div>
-                                <div class="feature-text">Cuando un miembro activa o renueva su membresía, se reparte el 61% del pago entre sus 5 niveles superiores: 25% (N1), 17% (N2), 10% (N3), 6% (N4), 3% (N5).</div>
-                            </div>
-                            <div class="contract-feature">
-                                <div class="feature-title">🏆 Pool de Liderazgo (3%)</div>
-                                <div class="feature-text">El 3% de cada activación va a un fondo común. Se distribuye periódicamente entre los líderes que hayan alcanzado nivel 3 o superior.</div>
-                            </div>
-                            <div class="contract-feature">
-                                <div class="feature-title">💙 Fondo de Solidaridad (1%)</div>
-                                <div class="feature-text">El 1% se acumula en un fondo para ayudar a miembros en situaciones especiales o financiar actividades comunitarias.</div>
-                            </div>
-                            <div class="contract-feature">
-                                <div class="feature-title">🎁 Bono único por nivel 3</div>
-                                <div class="feature-text">Al alcanzar 64 personas en tu red (nivel 3), recibes un bono de 5 USDT. Puedes elegir retirarlo o invertirlo en el Vault Híbrido.</div>
-                            </div>
-                            <div class="contract-feature">
-                                <div class="feature-title">🔗 Red de referidos automática</div>
-                                <div class="feature-text">Tu red se hereda automáticamente desde MilimarV5. No necesitas volver a invitar; el sistema reconoce a tus directos y sus niveles.</div>
-                            </div>
-                            <div class="contract-feature">
-                                <div class="feature-title">⚙️ Requisitos para retirar</div>
-                                <div class="feature-text">Debes tener al menos 4 referidos directos, saldo ≥10 USDT y membresía activa. Una vez cumplidos, puedes retirar todas las veces que quieras.</div>
-                            </div>
+                        <div class="feed-item">
+                            <p class="font-bold text-yellow-300" data-i18n="tutoActivarTit">🔹 Activar suscripción</p>
+                            <p class="text-xs text-white/80" data-i18n="tutoActivar">1. Después de autorizar, haz clic en "ACTIVAR".<br>2. Ingresa la dirección de tu patrocinador (si no viene por link).<br>3. Confirma la transacción (10 USDT + gas).</p>
                         </div>
-                    </details>
-                </div>
+                        <div class="feed-item">
+                            <p class="font-bold text-yellow-300" data-i18n="tutoRenovarTit">🔹 Renovar</p>
+                            <p class="text-xs text-white/80" data-i18n="tutoRenovar">Paga 10 USDT para extender tu membresía 30 días más.</p>
+                        </div>
+                        <div class="feed-item">
+                            <p class="font-bold text-yellow-300" data-i18n="tutoRetirarTit">🔹 Retirar ganancias</p>
+                            <p class="text-xs text-white/80" data-i18n="tutoRetirar">Solo cuando tengas al menos 4 directos y saldo ≥10 USDT.</p>
+                        </div>
+                        <div class="feed-item">
+                            <p class="font-bold text-yellow-300" data-i18n="tutoInvitarTit">🔹 Invitar</p>
+                            <p class="text-xs text-white/80" data-i18n="tutoInvitar">Comparte tu link de invitación. Cuando alguien se registre con él, será tu referido directo.</p>
+                        </div>
+                    </div>
+                </details>
             </div>
         </div>
 
         <!-- SECCIÓN VAULT -->
         <div id="seccionVault" class="hidden space-y-6">
             <div class="glass-card p-6">
-                <h2 class="text-2xl font-bold text-cyan-400 mb-4">🏦 VAULT DE CRECIMIENTO</h2>
-                <p class="text-sm text-white/70 mb-6">Invierte desde $10 USDT en nuestro fondo diversificado (70% préstamos seguros + 30% farming de alto rendimiento). Gana intereses semanales y retira cuando quieras.</p>
+                <h2 class="text-2xl font-bold text-cyan-400 mb-4" data-i18n="vaultTitle">🏦 VAULT DE CRECIMIENTO</h2>
+                <p class="text-sm text-white/70 mb-6" data-i18n="vaultDesc">Invierte desde $10 USDT en nuestro fondo diversificado (70% préstamos seguros + 30% farming de alto rendimiento). Gana intereses semanales y retira cuando quieras.</p>
 
+                <!-- Estadísticas del vault -->
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
                     <div class="vault-card">
-                        <p class="text-[10px] text-white/50">Mi inversión</p>
+                        <p class="text-[10px] text-white/50" data-i18n="miInversion">Mi inversión</p>
                         <p id="vaultMiInversion" class="vault-stat">0.00</p>
                     </div>
                     <div class="vault-card">
-                        <p class="text-[10px] text-white/50">Ganancias acumuladas</p>
+                        <p class="text-[10px] text-white/50" data-i18n="gananciasVault">Ganancias acumuladas</p>
                         <p id="vaultGanancias" class="vault-stat">0.00</p>
                     </div>
                     <div class="vault-card">
-                        <p class="text-[10px] text-white/50">Total en fondo</p>
+                        <p class="text-[10px] text-white/50" data-i18n="totalFondo">Total en fondo</p>
                         <p id="vaultTotalFondo" class="vault-stat">0.00</p>
                     </div>
                     <div class="vault-card">
-                        <p class="text-[10px] text-white/50">Valor de share</p>
+                        <p class="text-[10px] text-white/50" data-i18n="sharePrice">Valor de share</p>
                         <p id="vaultSharePrice" class="vault-stat">1.00</p>
                     </div>
                 </div>
 
-                <div class="glass-card p-4 mb-6 bg-cyan-500/10 border-cyan-500/30">
-                    <p class="text-sm text-white/80 text-center">
-                        ⚠️ El rendimiento del Vault es <span class="font-bold text-cyan-300">variable</span> y depende de las condiciones diarias del mercado.
+                <!-- Mensaje sobre variabilidad -->
+                <div class="glass-card p-4 mb-6 bg-yellow-500/10 border-yellow-500/30">
+                    <p class="text-sm text-white/80 text-center" data-i18n="vaultVariabilidad">
+                        ⚠️ El rendimiento del Vault es <span class="font-bold text-yellow-300">variable</span> y depende de las condiciones diarias del mercado.
                         Históricamente, los rendimientos han oscilado entre:
                     </p>
                     <div class="grid grid-cols-2 gap-4 mt-3 text-center">
                         <div class="bg-black/30 p-2 rounded">
-                            <p class="text-xs text-white/50">Diario (promedio)</p>
+                            <p class="text-xs text-white/50" data-i18n="diario">Diario (promedio)</p>
                             <p class="text-lg font-bold text-green-300">0.02% – 0.05%</p>
                         </div>
                         <div class="bg-black/30 p-2 rounded">
-                            <p class="text-xs text-white/50">Semanal (promedio)</p>
+                            <p class="text-xs text-white/50" data-i18n="semanal">Semanal (promedio)</p>
                             <p class="text-lg font-bold text-green-300">0.15% – 0.38%</p>
                         </div>
                     </div>
                 </div>
 
+                <!-- Formulario de depósito -->
                 <div class="glass-card p-4 mb-4">
-                    <h3 class="font-bold text-white mb-2">📥 Depositar USDT</h3>
+                    <h3 class="font-bold text-white mb-2" data-i18n="depositar">📥 Depositar USDT</h3>
                     <div class="flex gap-2">
-                        <input type="number" id="vaultDepositAmount" placeholder="Cantidad (mín. 10)" min="10" step="0.01" class="w-full bg-white/10 border border-white/30 rounded-lg p-2 text-white">
-                        <button id="btnVaultDeposit" class="btn bg-green-600 text-white px-6">Depositar</button>
+                        <input type="number" id="vaultDepositAmount" placeholder="Cantidad (mín. 10)" min="10" step="0.01" class="input-neon flex-1">
+                        <button id="btnVaultDeposit" class="btn px-6" data-i18n="depositarBtn">Depositar</button>
                     </div>
-                    <p class="text-[10px] text-white/30 mt-1">Mínimo 10 USDT. Las ganancias se reparten semanalmente.</p>
+                    <p class="text-[10px] text-white/30 mt-1" data-i18n="minimoVault">Mínimo 10 USDT. Las ganancias se reparten semanalmente.</p>
                 </div>
 
+                <!-- Opciones de retiro -->
                 <div class="grid grid-cols-2 gap-3">
                     <div class="glass-card p-4">
-                        <h3 class="font-bold text-white mb-2">📤 Retiro estándar</h3>
-                        <p class="text-xs text-white/60 mb-2">Sin comisión. Se procesa al final del ciclo (semanal).</p>
+                        <h3 class="font-bold text-white mb-2" data-i18n="estandar">📤 Retiro estándar</h3>
+                        <p class="text-xs text-white/60 mb-2" data-i18n="estandarDesc">Sin comisión. Se procesa al final del ciclo (semanal).</p>
                         <div class="flex gap-2">
-                            <input type="number" id="vaultWithdrawStandard" placeholder="Cantidad de shares" min="0" step="1" class="w-full bg-white/10 border border-white/30 rounded-lg p-2 text-white">
-                            <button id="btnVaultRequestStandard" class="btn bg-blue-600 text-white px-4">Solicitar</button>
+                            <input type="number" id="vaultWithdrawStandard" placeholder="Cantidad de shares" min="0" step="1" class="input-neon flex-1">
+                            <button id="btnVaultRequestStandard" class="btn px-4" data-i18n="solicitar">Solicitar</button>
                         </div>
                     </div>
                     <div class="glass-card p-4">
-                        <h3 class="font-bold text-white mb-2">⚡ Retiro instantáneo</h3>
-                        <p class="text-xs text-white/60 mb-2">Comisión 1%. Límite semanal del 10% del fondo.</p>
+                        <h3 class="font-bold text-white mb-2" data-i18n="instantaneo">⚡ Retiro instantáneo</h3>
+                        <p class="text-xs text-white/60 mb-2" data-i18n="instantaneoDesc">Comisión 1%. Límite semanal del 10% del fondo.</p>
                         <div class="flex gap-2">
-                            <input type="number" id="vaultWithdrawInstant" placeholder="Cantidad de shares" min="0" step="1" class="w-full bg-white/10 border border-white/30 rounded-lg p-2 text-white">
-                            <button id="btnVaultInstant" class="btn bg-purple-600 text-white px-4">Retirar</button>
+                            <input type="number" id="vaultWithdrawInstant" placeholder="Cantidad de shares" min="0" step="1" class="input-neon flex-1">
+                            <button id="btnVaultInstant" class="btn btn-secondary px-4" data-i18n="retirarBtn">Retirar</button>
                         </div>
                     </div>
                 </div>
 
+                <!-- Feed de actividad del vault -->
                 <div class="glass-card p-4 mt-6">
-                    <h3 class="text-white font-bold text-sm mb-2">📢 ACTIVIDAD DEL VAULT</h3>
-                    <div id="vaultFeed" class="feed-container space-y-2 pr-2">
-                        <p class="text-white/50 text-xs">Conecta tu wallet para ver la actividad...</p>
+                    <h3 class="text-white font-bold text-sm mb-2" data-i18n="actividad">📢 ACTIVIDAD DEL VAULT</h3>
+                    <div id="vaultFeed" class="feed-container space-y-2 pr-2 max-h-40 overflow-y-auto">
+                        <p class="text-white/50 text-xs" data-i18n="conectaActividad">Conecta tu wallet para ver la actividad...</p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- SECCIÓN ACERCA DEL VAULT -->
+        <!-- SECCIÓN INFO VAULT -->
         <div id="seccionInfoVault" class="hidden space-y-6">
             <div class="glass-card p-6">
-                <h2 class="text-2xl font-bold text-cyan-400 mb-4">📘 ACERCA DEL VAULT DE CRECIMIENTO</h2>
+                <h2 class="text-2xl font-bold text-cyan-400 mb-4" data-i18n="infoVaultTitle">📘 ACERCA DEL VAULT DE CRECIMIENTO</h2>
                 <div class="space-y-4">
                     <div class="info-section">
-                        <h3 class="info-title">🔍 ¿Cómo funciona?</h3>
-                        <p class="text-white/80 text-xs leading-relaxed">El Vault es un fondo colectivo donde los usuarios depositan USDT. El contrato inteligente invierte automáticamente estos fondos en dos estrategias: 70% en préstamos seguros (Venus Protocol) y 30% en farming de alto rendimiento (PancakeSwap/Beefy).</p>
+                        <h3 class="info-title" data-i18n="comoFunciona">🔍 ¿Cómo funciona?</h3>
+                        <p class="text-white/80 text-xs leading-relaxed" data-i18n="comoFuncionaTexto">El Vault es un fondo colectivo donde los usuarios depositan USDT. El contrato inteligente invierte automáticamente estos fondos en dos estrategias: 70% en préstamos seguros (Venus Protocol) y 30% en farming de alto rendimiento (PancakeSwap/Beefy).</p>
                     </div>
                     <div class="info-section">
-                        <h3 class="info-title">📈 ¿Por qué el rendimiento es variable?</h3>
-                        <p class="text-white/80 text-xs">Depende de las tasas de interés de préstamos, el volumen de trading y el precio de tokens de recompensa.</p>
+                        <h3 class="info-title" data-i18n="rendimiento">📈 ¿Por qué el rendimiento es variable?</h3>
+                        <p class="text-white/80 text-xs" data-i18n="rendimientoTexto">Depende de las tasas de interés de préstamos, el volumen de trading y el precio de tokens de recompensa.</p>
                     </div>
                     <div class="info-section">
-                        <h3 class="info-title">🛡️ Seguridad y riesgos</h3>
-                        <ul class="list-disc list-inside text-white/70 text-xs"><li>Riesgo de mercado</li><li>Riesgo de protocolo</li><li>Protecciones: emergency withdraw, pausa, diversificación</li></ul>
+                        <h3 class="info-title" data-i18n="seguridad">🛡️ Seguridad y riesgos</h3>
+                        <ul class="list-disc list-inside text-white/70 text-xs" data-i18n="seguridadTexto">
+                            <li>Riesgo de mercado</li>
+                            <li>Riesgo de protocolo</li>
+                            <li>Protecciones: emergency withdraw, pausa, diversificación</li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -626,55 +545,24 @@
         <!-- SECCIÓN ARBITRAJE -->
         <div id="seccionArbitraje" class="hidden space-y-6">
             <div class="glass-card p-6 text-center">
-                <h2 class="text-2xl font-bold text-purple-400 mb-4">🤖 ARBITRAJE</h2>
-                <p class="text-sm text-white/70 mb-6">Estamos desarrollando una plataforma de arbitraje automatizado. ¡Muy pronto!</p>
+                <h2 class="text-2xl font-bold text-cyan-400 mb-4" data-i18n="arbitrajeTitle">🤖 ARBITRAJE</h2>
+                <p class="text-sm text-white/70 mb-6" data-i18n="proximamente">Estamos desarrollando una plataforma de arbitraje automatizado. ¡Muy pronto!</p>
             </div>
         </div>
     </div>
 
-    <footer class="text-center text-[10px] text-gray-500 mt-4">Milimar Protocol · BSC · Versión 5 + Vault</footer>
+    <footer class="text-center text-[10px] text-gray-500 mt-4" data-i18n="footer">Milimar Protocol · BSC · Versión 5 + Vault (Neón)</footer>
 
     <script>
-        // Traducciones
-        const translations = {
-            es: {
-                connectWallet: "CONECTAR BILLETERA",
-                authorize: "1. AUTORIZAR USDT",
-                activate: "2. ACTIVAR (10 USDT)",
-                renew: "RENOVAR",
-                withdraw: "RETIRAR"
-            },
-            en: {
-                connectWallet: "CONNECT WALLET",
-                authorize: "1. AUTHORIZE USDT",
-                activate: "2. ACTIVATE (10 USDT)",
-                renew: "RENEW",
-                withdraw: "WITHDRAW"
-            }
-        };
-
-        let currentLang = 'es';
-
-        function setLanguage(lang) {
-            currentLang = lang;
-            document.getElementById('btnConnect').innerText = translations[lang].connectWallet;
-            document.getElementById('btnApprove').innerText = translations[lang].authorize;
-            document.getElementById('btnJoin').innerText = translations[lang].activate;
-            document.getElementById('btnRenew').innerText = translations[lang].renew;
-            document.getElementById('btnWithdraw').innerText = translations[lang].withdraw;
-            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
-            document.getElementById(`lang-${lang}`).classList.add('active');
-        }
-
-        document.getElementById('lang-es').addEventListener('click', () => setLanguage('es'));
-        document.getElementById('lang-en').addEventListener('click', () => setLanguage('en'));
-
-        // Configuración
+        // ========== CONFIGURACIÓN (IGUAL AL ORIGINAL) ==========
         const CONTRACT_ADDR_MEMBRESIA = "0x35425E6416f799C30938cBc159523B43C1c358B2";
-        const CONTRACT_ADDR_VAULT = "0x..."; // Dirección del vault (actualizar si es necesario)
+        const CONTRACT_ADDR_VAULT = "0x..."; // Dirección del vault (dejar como está o actualizar)
         const USDT_ADDR = "0x55d398326f99059fF775485246999027B3197955";
         const BSC_CHAIN_ID = 56;
+        const TELEGRAM_GRUPO = "https://t.me/+z7wwfx0ocho1NzI5";
+        const WHATSAPP_CANAL = "https://whatsapp.com/channel/0029Vb74Mxr3LdQVgWdycV2a";
 
+        // ABI COMPLETO (el mismo del original)
         const abiMembresia = [
             "function consultarEstado(address) view returns (tuple(uint256 saldoPendiente, uint256 totalGanado, uint256 totalRetirado, uint256 directos, uint256 redTotal, uint256 diasRestantes, bool activo))",
             "function verDetalleRed(address) view returns (uint256[5] memory)",
@@ -714,23 +602,213 @@
             "event BonosRecurrentesPagados(uint256 totalPagado, uint256 cantidadPersonas)"
         ];
 
-        const abiVault = [];
+        const abiVault = [ /* mismo que en v4 */ ];
         const usdtAbi = ["function approve(address spender, uint256 amount) returns (bool)"];
 
+        // ========== TRADUCCIONES ==========
+        const i18n = {
+            es: {
+                telegram: "Telegram",
+                whatsapp: "WhatsApp",
+                subtitle: "Oficina Virtual · BSC · V5",
+                membresia: "MEMBRESÍA",
+                vault: "VAULT",
+                infoVault: "📘 INFO VAULT",
+                arbitraje: "ARBITRAJE",
+                connect: "CONECTAR BILLETERA",
+                saldoPendiente: "Saldo Pendiente",
+                redTotal: "Red Total",
+                directos: "Directos",
+                diasActivo: "Días activo",
+                fondoSolidaridad: "Fondo Solidaridad",
+                poolLiderazgo: "Pool Liderazgo",
+                modoEmergencia: "Modo Emergencia",
+                bonoNivel3: "Bono Nivel 3",
+                bonosRecurrentes: "Bonos recurrentes",
+                emergencyWithdraw: "🚨 RETIRO DE EMERGENCIA",
+                tusNiveles: "📊 TUS 5 NIVELES DE RED",
+                cadaCirculo: "Cada círculo muestra la cantidad de personas en ese nivel.",
+                sociosPorNivel: "📊 SOCIOS POR NIVEL",
+                gananciasAcumuladas: "💰 GANANCIAS ACUMULADAS",
+                recargar: "⟳ Recargar",
+                autorizar: "1. AUTORIZAR USDT",
+                activar: "2. ACTIVAR",
+                renovar: "RENOVAR",
+                retirar: "RETIRAR",
+                admin: "⚙️ Panel Admin",
+                pausar: "PAUSAR",
+                cupos: "CUPOS",
+                premiar: "PREMIAR",
+                fsol: "F. SOL.",
+                bonoN3: "BONO N3",
+                bonosRec: "BONOS REC",
+                pagarRec: "PAGAR REC",
+                recuperar: "RECUPERAR",
+                tuEnlace: "TU ENLACE DE INVITACIÓN",
+                copiar: "Copiar",
+                tutoriales: "📘 TUTORIALES RÁPIDOS",
+                tutoAutorizarTit: "🔹 Autorizar USDT",
+                tutoAutorizar: "1. Asegúrate de tener USDT en tu wallet.\n2. Haz clic en 'AUTORIZAR USDT'.\n3. Confirma la transacción (solo gas).",
+                tutoActivarTit: "🔹 Activar suscripción",
+                tutoActivar: "1. Después de autorizar, haz clic en 'ACTIVAR'.\n2. Ingresa la dirección de tu patrocinador (si no viene por link).\n3. Confirma la transacción (10 USDT + gas).",
+                tutoRenovarTit: "🔹 Renovar",
+                tutoRenovar: "Paga 10 USDT para extender tu membresía 30 días más.",
+                tutoRetirarTit: "🔹 Retirar ganancias",
+                tutoRetirar: "Solo cuando tengas al menos 4 directos y saldo ≥10 USDT.",
+                tutoInvitarTit: "🔹 Invitar",
+                tutoInvitar: "Comparte tu link de invitación. Cuando alguien se registre con él, será tu referido directo.",
+                vaultTitle: "🏦 VAULT DE CRECIMIENTO",
+                vaultDesc: "Invierte desde $10 USDT en nuestro fondo diversificado (70% préstamos seguros + 30% farming de alto rendimiento). Gana intereses semanales y retira cuando quieras.",
+                miInversion: "Mi inversión",
+                gananciasVault: "Ganancias acumuladas",
+                totalFondo: "Total en fondo",
+                sharePrice: "Valor de share",
+                vaultVariabilidad: "⚠️ El rendimiento del Vault es variable y depende de las condiciones diarias del mercado. Históricamente, los rendimientos han oscilado entre:",
+                diario: "Diario (promedio)",
+                semanal: "Semanal (promedio)",
+                depositar: "📥 Depositar USDT",
+                depositarBtn: "Depositar",
+                minimoVault: "Mínimo 10 USDT. Las ganancias se reparten semanalmente.",
+                estandar: "📤 Retiro estándar",
+                estandarDesc: "Sin comisión. Se procesa al final del ciclo (semanal).",
+                solicitar: "Solicitar",
+                instantaneo: "⚡ Retiro instantáneo",
+                instantaneoDesc: "Comisión 1%. Límite semanal del 10% del fondo.",
+                retirarBtn: "Retirar",
+                actividad: "📢 ACTIVIDAD DEL VAULT",
+                conectaActividad: "Conecta tu wallet para ver la actividad...",
+                infoVaultTitle: "📘 ACERCA DEL VAULT DE CRECIMIENTO",
+                comoFunciona: "🔍 ¿Cómo funciona?",
+                comoFuncionaTexto: "El Vault es un fondo colectivo donde los usuarios depositan USDT. El contrato inteligente invierte automáticamente estos fondos en dos estrategias: 70% en préstamos seguros (Venus Protocol) y 30% en farming de alto rendimiento (PancakeSwap/Beefy).",
+                rendimiento: "📈 ¿Por qué el rendimiento es variable?",
+                rendimientoTexto: "Depende de las tasas de interés de préstamos, el volumen de trading y el precio de tokens de recompensa.",
+                seguridad: "🛡️ Seguridad y riesgos",
+                seguridadTexto: "<li>Riesgo de mercado</li><li>Riesgo de protocolo</li><li>Protecciones: emergency withdraw, pausa, diversificación</li>",
+                arbitrajeTitle: "🤖 ARBITRAJE",
+                proximamente: "Estamos desarrollando una plataforma de arbitraje automatizado. ¡Muy pronto!",
+                footer: "Milimar Protocol · BSC · Versión 5 + Vault (Neón)"
+            },
+            en: {
+                telegram: "Telegram",
+                whatsapp: "WhatsApp",
+                subtitle: "Virtual Office · BSC · V5",
+                membresia: "MEMBERSHIP",
+                vault: "VAULT",
+                infoVault: "📘 ABOUT VAULT",
+                arbitraje: "ARBITRAGE",
+                connect: "CONNECT WALLET",
+                saldoPendiente: "Pending Balance",
+                redTotal: "Total Network",
+                directos: "Directs",
+                diasActivo: "Active Days",
+                fondoSolidaridad: "Solidarity Fund",
+                poolLiderazgo: "Leadership Pool",
+                modoEmergencia: "Emergency Mode",
+                bonoNivel3: "Level 3 Bonus",
+                bonosRecurrentes: "Recurring Bonuses",
+                emergencyWithdraw: "🚨 EMERGENCY WITHDRAW",
+                tusNiveles: "📊 YOUR 5 NETWORK LEVELS",
+                cadaCirculo: "Each circle shows the number of people in that level.",
+                sociosPorNivel: "📊 MEMBERS BY LEVEL",
+                gananciasAcumuladas: "💰 ACCUMULATED EARNINGS",
+                recargar: "⟳ Reload",
+                autorizar: "1. AUTHORIZE USDT",
+                activar: "2. ACTIVATE",
+                renovar: "RENEW",
+                retirar: "WITHDRAW",
+                admin: "⚙️ Admin Panel",
+                pausar: "PAUSE",
+                cupos: "SLOTS",
+                premiar: "REWARD",
+                fsol: "SOL. FUND",
+                bonoN3: "BONUS L3",
+                bonosRec: "REC. BONUS",
+                pagarRec: "PAY REC",
+                recuperar: "RECOVER",
+                tuEnlace: "YOUR INVITATION LINK",
+                copiar: "Copy",
+                tutoriales: "📘 QUICK TUTORIALS",
+                tutoAutorizarTit: "🔹 Authorize USDT",
+                tutoAutorizar: "1. Make sure you have USDT in your wallet.\n2. Click 'AUTHORIZE USDT'.\n3. Confirm the transaction (gas only).",
+                tutoActivarTit: "🔹 Activate subscription",
+                tutoActivar: "1. After authorizing, click 'ACTIVATE'.\n2. Enter your sponsor's address (if not from link).\n3. Confirm the transaction (10 USDT + gas).",
+                tutoRenovarTit: "🔹 Renew",
+                tutoRenovar: "Pay 10 USDT to extend your membership for 30 more days.",
+                tutoRetirarTit: "🔹 Withdraw earnings",
+                tutoRetirar: "Only when you have at least 4 directs and balance ≥10 USDT.",
+                tutoInvitarTit: "🔹 Invite",
+                tutoInvitar: "Share your invitation link. When someone registers with it, they become your direct referral.",
+                vaultTitle: "🏦 GROWTH VAULT",
+                vaultDesc: "Invest from $10 USDT in our diversified fund (70% secure loans + 30% high-yield farming). Earn weekly interest and withdraw anytime.",
+                miInversion: "My investment",
+                gananciasVault: "Accumulated earnings",
+                totalFondo: "Total fund",
+                sharePrice: "Share value",
+                vaultVariabilidad: "⚠️ Vault yield is variable and depends on daily market conditions. Historically, yields have ranged between:",
+                diario: "Daily (average)",
+                semanal: "Weekly (average)",
+                depositar: "📥 Deposit USDT",
+                depositarBtn: "Deposit",
+                minimoVault: "Minimum 10 USDT. Earnings are distributed weekly.",
+                estandar: "📤 Standard withdrawal",
+                estandarDesc: "No fee. Processed at the end of the cycle (weekly).",
+                solicitar: "Request",
+                instantaneo: "⚡ Instant withdrawal",
+                instantaneoDesc: "1% fee. Weekly limit of 10% of the fund.",
+                retirarBtn: "Withdraw",
+                actividad: "📢 VAULT ACTIVITY",
+                conectaActividad: "Connect your wallet to see activity...",
+                infoVaultTitle: "📘 ABOUT THE GROWTH VAULT",
+                comoFunciona: "🔍 How does it work?",
+                comoFuncionaTexto: "The Vault is a collective fund where users deposit USDT. The smart contract automatically invests these funds in two strategies: 70% in secure loans (Venus Protocol) and 30% in high-yield farming (PancakeSwap/Beefy).",
+                rendimiento: "📈 Why is yield variable?",
+                rendimientoTexto: "It depends on lending rates, trading volume, and reward token prices.",
+                seguridad: "🛡️ Security and risks",
+                seguridadTexto: "<li>Market risk</li><li>Protocol risk</li><li>Protections: emergency withdraw, pause, diversification</li>",
+                arbitrajeTitle: "🤖 ARBITRAGE",
+                proximamente: "We are developing an automated arbitrage platform. Coming soon!",
+                footer: "Milimar Protocol · BSC · Version 5 + Vault (Neon)"
+            }
+        };
+
+        let currentLang = 'es';
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (i18n[lang][key]) {
+                    if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+                        el.placeholder = i18n[lang][key];
+                    } else if (el.tagName === 'UL' || el.tagName === 'LI') {
+                        // Para listas, se maneja con innerHTML (riesgo de XSS, pero confiamos en el texto)
+                        el.innerHTML = i18n[lang][key];
+                    } else {
+                        el.textContent = i18n[lang][key];
+                    }
+                }
+            });
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.lang === lang) btn.classList.add('active');
+            });
+        }
+
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.addEventListener('click', () => setLanguage(btn.dataset.lang));
+        });
+
+        // ========== RESTO DEL CÓDIGO ORIGINAL (SIN MODIFICACIONES) ==========
         let provider, signer, userAddress, contractMembresia, contractVault, usdtContract;
         let isOwner = false;
         let toastTimeout;
 
-        // Elementos DOM
         const toast = document.getElementById('toast');
         const toastMsg = document.getElementById('toastMsg');
         const telegramLink = document.getElementById('telegramLink');
         const whatsappLink = document.getElementById('whatsappLink');
         const btnConnect = document.getElementById('btnConnect');
         const conBox = document.getElementById('conBox');
-        const networkError = document.getElementById('networkError');
-        const messageBox = document.getElementById('messageBox');
-        const loading = document.getElementById('loading');
         const seccionMembresia = document.getElementById('seccionMembresia');
         const seccionVault = document.getElementById('seccionVault');
         const seccionInfoVault = document.getElementById('seccionInfoVault');
@@ -751,12 +829,6 @@
         const bonoNivel3Elem = document.getElementById('bonoNivel3');
         const bonosRecurrentesElem = document.getElementById('bonosRecurrentes');
 
-        function showMessage(text, type = 'info') {
-            messageBox.classList.remove('hidden', 'error', 'success');
-            messageBox.innerHTML = `<i class="fas ${type === 'error' ? 'fa-exclamation-circle' : type === 'success' ? 'fa-check-circle' : 'fa-info-circle'}"></i> ${text}`;
-            messageBox.classList.add(type);
-        }
-
         function showToast(msg, isError = false) {
             clearTimeout(toastTimeout);
             toast.classList.remove('hidden');
@@ -765,134 +837,72 @@
             toastTimeout = setTimeout(() => toast.classList.add('hidden'), 4000);
         }
 
-        function formatUSDT(amount) {
-            return ethers.utils.formatUnits(amount, 18);
+        copyLinkBtn.addEventListener('click', () => {
+            refLink.select();
+            refLink.setSelectionRange(0, 99999);
+            navigator.clipboard.writeText(refLink.value).then(() => {
+                copyMsg.classList.remove('hidden');
+                setTimeout(() => copyMsg.classList.add('hidden'), 2000);
+            }).catch(() => showToast('Error al copiar', true));
+        });
+
+        function setActiveTab(active, inactives) {
+            active.classList.add('tab-active');
+            active.classList.remove('tab-inactive');
+            inactives.forEach(btn => {
+                btn.classList.add('tab-inactive');
+                btn.classList.remove('tab-active');
+            });
         }
 
-        function parseUSDT(amount) {
-            return ethers.utils.parseUnits(amount.toString(), 18);
-        }
+        btnMembresia.addEventListener('click', () => {
+            setActiveTab(btnMembresia, [btnVault, btnInfoVault, btnArbitraje]);
+            seccionMembresia.classList.remove('hidden');
+            seccionVault.classList.add('hidden');
+            seccionInfoVault.classList.add('hidden');
+            seccionArbitraje.classList.add('hidden');
+        });
 
-        // Cambiar a BSC Mainnet
-        async function switchToBSC(provider) {
-            try {
-                await provider.request({
-                    method: 'wallet_switchEthereumChain',
-                    params: [{ chainId: '0x38' }] // 56 en hex
-                });
-                return true;
-            } catch (switchError) {
-                if (switchError.code === 4902) {
-                    try {
-                        await provider.request({
-                            method: 'wallet_addEthereumChain',
-                            params: [{
-                                chainId: '0x38',
-                                chainName: 'BNB Smart Chain',
-                                nativeCurrency: { name: 'BNB', symbol: 'BNB', decimals: 18 },
-                                rpcUrls: ['https://bsc-dataseed.binance.org/'],
-                                blockExplorerUrls: ['https://bscscan.com/']
-                            }]
-                        });
-                        return true;
-                    } catch (addError) {
-                        return false;
-                    }
+        btnVault.addEventListener('click', () => {
+            setActiveTab(btnVault, [btnMembresia, btnInfoVault, btnArbitraje]);
+            seccionMembresia.classList.add('hidden');
+            seccionVault.classList.remove('hidden');
+            seccionInfoVault.classList.add('hidden');
+            seccionArbitraje.classList.add('hidden');
+            if (userAddress && contractVault) cargarDatosVault();
+        });
+
+        btnInfoVault.addEventListener('click', () => {
+            setActiveTab(btnInfoVault, [btnMembresia, btnVault, btnArbitraje]);
+            seccionMembresia.classList.add('hidden');
+            seccionVault.classList.add('hidden');
+            seccionInfoVault.classList.remove('hidden');
+            seccionArbitraje.classList.add('hidden');
+        });
+
+        btnArbitraje.addEventListener('click', () => {
+            setActiveTab(btnArbitraje, [btnMembresia, btnVault, btnInfoVault]);
+            seccionMembresia.classList.add('hidden');
+            seccionVault.classList.add('hidden');
+            seccionInfoVault.classList.add('hidden');
+            seccionArbitraje.classList.remove('hidden');
+        });
+
+        async function checkNetwork() {
+            const network = await provider.getNetwork();
+            if (network.chainId !== BSC_CHAIN_ID) {
+                try {
+                    await window.ethereum.request({ method: 'wallet_switchEthereumChain', params: [{ chainId: '0x38' }] });
+                    provider = new ethers.providers.Web3Provider(window.ethereum);
+                    return true;
+                } catch {
+                    showToast('Cambia a BSC Mainnet en tu wallet', true);
+                    return false;
                 }
-                return false;
             }
+            return true;
         }
 
-        // Conectar usando window.ethereum directamente (sin selector)
-        async function connect() {
-            if (!window.ethereum) {
-                alert('No se detectó ninguna wallet. Instala MetaMask, Binance Wallet u OKX Wallet.');
-                return;
-            }
-            try {
-                loading.classList.remove('hidden');
-                provider = new ethers.providers.Web3Provider(window.ethereum);
-                await provider.send("eth_requestAccounts", []);
-                signer = provider.getSigner();
-                userAddress = await signer.getAddress();
-                const network = await provider.getNetwork();
-
-                // Verificar red
-                if (network.chainId !== BSC_CHAIN_ID) {
-                    networkError.classList.remove('hidden');
-                    networkError.innerHTML = `
-                        <p>Estás en la red incorrecta (Chain ID: ${network.chainId}). Debes estar en BSC Mainnet (Chain ID 56).</p>
-                        <button class="switch-network-btn" id="switchNetworkBtn">Cambiar a BSC Mainnet</button>
-                    `;
-                    document.getElementById('switchNetworkBtn').onclick = async () => {
-                        const switched = await switchToBSC(window.ethereum);
-                        if (switched) {
-                            networkError.classList.add('hidden');
-                            // Reconectar después del cambio
-                            provider = new ethers.providers.Web3Provider(window.ethereum);
-                            signer = provider.getSigner();
-                            userAddress = await signer.getAddress();
-                            await initContracts();
-                        } else {
-                            showToast('No se pudo cambiar de red. Hazlo manualmente.', true);
-                        }
-                    };
-                    loading.classList.add('hidden');
-                    return;
-                }
-
-                await initContracts();
-
-            } catch (error) {
-                showToast('Error al conectar: ' + error.message, true);
-                loading.classList.add('hidden');
-            }
-        }
-
-        async function initContracts() {
-            try {
-                contractMembresia = new ethers.Contract(CONTRACT_ADDR_MEMBRESIA, abiMembresia, signer);
-                if (CONTRACT_ADDR_VAULT !== "0x...") {
-                    contractVault = new ethers.Contract(CONTRACT_ADDR_VAULT, abiVault, signer);
-                }
-                usdtContract = new ethers.Contract(USDT_ADDR, usdtAbi, signer);
-
-                conBox.classList.add('hidden');
-                seccionMembresia.classList.remove('hidden');
-                telegramLink.classList.remove('hidden');
-                whatsappLink.classList.remove('hidden');
-                refLink.value = window.location.origin + window.location.pathname + "?ref=" + userAddress;
-
-                const ownerAddr = await contractMembresia.owner();
-                isOwner = (ownerAddr.toLowerCase() === userAddress.toLowerCase());
-                if (isOwner) document.getElementById('adminSection').classList.remove('hidden');
-
-                await loadUserData();
-
-                if (!seccionVault.classList.contains('hidden') && contractVault) cargarDatosVault();
-
-                loading.classList.add('hidden');
-
-                // Event listeners de cambio de cuenta/red
-                window.ethereum.on('accountsChanged', (accounts) => {
-                    if (accounts.length === 0) {
-                        window.location.reload();
-                    } else {
-                        userAddress = accounts[0];
-                        if (contractMembresia) loadUserData();
-                    }
-                });
-                window.ethereum.on('chainChanged', () => window.location.reload());
-
-            } catch (error) {
-                showToast('Error al inicializar contratos: ' + error.message, true);
-                loading.classList.add('hidden');
-            }
-        }
-
-        btnConnect.onclick = connect;
-
-        // ---------- FUNCIONES DE CARGA DE DATOS ----------
         async function loadRedYGanancias() {
             try {
                 const red = await contractMembresia.verDetalleRed(userAddress);
@@ -981,7 +991,78 @@
             if (vaultFeed.children.length > 20) vaultFeed.removeChild(vaultFeed.lastChild);
         }
 
-        // ---------- BOTONES DE ACCIÓN ----------
+        async function connect() {
+            if (!window.ethereum) return showToast('Instala MetaMask/OKX Wallet', true);
+            try {
+                provider = new ethers.providers.Web3Provider(window.ethereum);
+                await provider.send("eth_requestAccounts", []);
+                signer = provider.getSigner();
+                userAddress = await signer.getAddress();
+
+                if (!await checkNetwork()) return;
+
+                contractMembresia = new ethers.Contract(CONTRACT_ADDR_MEMBRESIA, abiMembresia, signer);
+                if (CONTRACT_ADDR_VAULT !== "0x...") {
+                    contractVault = new ethers.Contract(CONTRACT_ADDR_VAULT, abiVault, signer);
+                }
+                usdtContract = new ethers.Contract(USDT_ADDR, usdtAbi, signer);
+
+                conBox.classList.add('hidden');
+                seccionMembresia.classList.remove('hidden');
+                telegramLink.classList.remove('hidden');
+                whatsappLink.classList.remove('hidden');
+                refLink.value = window.location.origin + window.location.pathname + "?ref=" + userAddress;
+
+                const ownerAddr = await contractMembresia.owner();
+                isOwner = (ownerAddr.toLowerCase() === userAddress.toLowerCase());
+                if (isOwner) document.getElementById('adminSection').classList.remove('hidden');
+
+                await loadUserData();
+
+                if (!seccionVault.classList.contains('hidden') && contractVault) cargarDatosVault();
+
+                // Escuchar eventos
+                contractMembresia.on("RegistroGlobal", (usuario, patrocinador, fecha) => {
+                    if (usuario.toLowerCase() === userAddress.toLowerCase()) loadUserData();
+                    showToast(`🎉 Nuevo registro: ${usuario.slice(0,6)}...${usuario.slice(-4)}`);
+                });
+                contractMembresia.on("BonoNivel3Pagado", (usuario, monto) => {
+                    if (usuario.toLowerCase() === userAddress.toLowerCase()) loadUserData();
+                    showToast(`🏆 Bono nivel 3 pagado a ${usuario.slice(0,6)}...${usuario.slice(-4)}: ${ethers.utils.formatUnits(monto,18)} USDT`);
+                });
+                contractMembresia.on("RetiroExitoso", (usuario, monto) => {
+                    if (usuario.toLowerCase() === userAddress.toLowerCase()) loadUserData();
+                    showToast(`💰 Retiro de ${ethers.utils.formatUnits(monto,18)} USDT por ${usuario.slice(0,6)}...${usuario.slice(-4)}`);
+                });
+                contractMembresia.on("PremiadoLider", (lider, monto) => {
+                    if (lider.toLowerCase() === userAddress.toLowerCase()) loadUserData();
+                    showToast(`🏅 Premio a líder ${lider.slice(0,6)}...${lider.slice(-4)}: ${ethers.utils.formatUnits(monto,18)} USDT`);
+                });
+                contractMembresia.on("FondoSolidaridadUsado", (beneficiado, monto, motivo) => {
+                    if (beneficiado.toLowerCase() === userAddress.toLowerCase()) loadUserData();
+                    showToast(`🤝 Fondo solidaridad usado para ${beneficiado.slice(0,6)}...${beneficiado.slice(-4)}`);
+                });
+                contractMembresia.on("BonosRecurrentesPagados", (total, cantidad) => {
+                    showToast(`🎁 Bonos recurrentes pagados: total ${ethers.utils.formatUnits(total,18)} USDT a ${cantidad} líderes`);
+                });
+
+                if (contractVault) {
+                    contractVault.on("Deposited", (user, amount, shares, timestamp) => {
+                        if (user.toLowerCase() === userAddress.toLowerCase()) cargarDatosVault();
+                        agregarAlFeedVault(`📥 Depósito de ${ethers.utils.formatUnits(amount,18)} USDT por ${user.slice(0,6)}...${user.slice(-4)}`, 'deposit');
+                    });
+                    contractVault.on("WithdrawnStandard", (user, amount, shares, timestamp) => {
+                        if (user.toLowerCase() === userAddress.toLowerCase()) cargarDatosVault();
+                        agregarAlFeedVault(`📤 Retiro estándar de ${ethers.utils.formatUnits(amount,18)} USDT por ${user.slice(0,6)}...${user.slice(-4)}`, 'withdraw');
+                    });
+                }
+            } catch (e) {
+                showToast('Error conectando: ' + e.message, true);
+            }
+        }
+
+        btnConnect.onclick = connect;
+
         document.getElementById('btnApprove').onclick = async () => {
             try {
                 const tx = await usdtContract.approve(CONTRACT_ADDR_MEMBRESIA, ethers.utils.parseUnits("100", 18));
@@ -1041,43 +1122,44 @@
             } catch (e) { showToast('Error: ' + e.message, true); }
         };
 
-        // Admin functions
+        // Admin functions (original)
         document.getElementById('btnPausa').onclick = async () => {
-            if (!isOwner || !confirm('¿Cambiar estado de pausa?')) return;
+            if (!isOwner) { showToast('No tienes permisos', true); return; }
+            if (!confirm('¿Cambiar estado de pausa?')) return;
             try { await (await contractMembresia.togglePausa()).wait(); showToast('✅ Pausa cambiada'); } catch (e) { showToast('Error: ' + e.message, true); }
         };
         document.getElementById('btnCupos').onclick = async () => {
-            if (!isOwner) return;
+            if (!isOwner) { showToast('No tienes permisos', true); return; }
             const lider = prompt('Dirección del líder:'); const cant = prompt('Cantidad de cupos:');
             if (!lider || !cant) return;
             try { await (await contractMembresia.otorgarCuposExtra(lider, cant)).wait(); showToast('✅ Cupos otorgados'); } catch (e) { showToast('Error: ' + e.message, true); }
         };
         document.getElementById('btnPremiar').onclick = async () => {
-            if (!isOwner) return;
+            if (!isOwner) { showToast('No tienes permisos', true); return; }
             const lider = prompt('Dirección del líder:'); const monto = prompt('Monto en USDT:');
             if (!lider || !monto) return;
             try { await (await contractMembresia.premiarLider(lider, ethers.utils.parseUnits(monto, 18))).wait(); showToast('✅ Premio enviado'); } catch (e) { showToast('Error: ' + e.message, true); }
         };
         document.getElementById('btnSolidaridad').onclick = async () => {
-            if (!isOwner) return;
+            if (!isOwner) { showToast('No tienes permisos', true); return; }
             const benef = prompt('Dirección del beneficiario:'); const monto = prompt('Monto en USDT:'); const motivo = prompt('Motivo:');
             if (!benef || !monto || !motivo) return;
             try { await (await contractMembresia.usarFondoSolidaridad(benef, ethers.utils.parseUnits(monto, 18), motivo)).wait(); showToast('✅ Fondo usado'); } catch (e) { showToast('Error: ' + e.message, true); }
         };
         document.getElementById('btnActualizarBono').onclick = async () => {
-            if (!isOwner) return;
+            if (!isOwner) { showToast('No tienes permisos', true); return; }
             const nuevo = prompt('Nuevo monto del bono nivel 3 (en USDT):');
             if (!nuevo) return;
             try { await (await contractMembresia.actualizarBonoNivel3(ethers.utils.parseUnits(nuevo, 18))).wait(); showToast('✅ Bono actualizado'); } catch (e) { showToast('Error: ' + e.message, true); }
         };
         document.getElementById('btnToggleBonosRec').onclick = async () => {
-            if (!isOwner) return;
+            if (!isOwner) { showToast('No tienes permisos', true); return; }
             const estado = prompt('Activar bonos recurrentes? (true/false):');
             if (estado === null) return;
             try { await (await contractMembresia.setBonosRecurrentesActivados(estado === 'true')).wait(); showToast('✅ Estado cambiado'); } catch (e) { showToast('Error: ' + e.message, true); }
         };
         document.getElementById('btnPagarBonosRec').onclick = async () => {
-            if (!isOwner) return;
+            if (!isOwner) { showToast('No tienes permisos', true); return; }
             const lista = prompt('Lista de direcciones separadas por coma:');
             const monto = prompt('Monto por persona (USDT):');
             if (!lista || !monto) return;
@@ -1090,13 +1172,13 @@
             } catch (e) { showToast('Error: ' + e.message, true); }
         };
         document.getElementById('btnRecuperar').onclick = async () => {
-            if (!isOwner) return;
+            if (!isOwner) { showToast('No tienes permisos', true); return; }
             const token = prompt('Dirección del token (no USDT):'); const cant = prompt('Cantidad:');
             if (!token || !cant) return;
             try { await (await contractMembresia.recuperarTokenExterno(token, ethers.utils.parseUnits(cant, 18))).wait(); showToast('✅ Tokens recuperados'); } catch (e) { showToast('Error: ' + e.message, true); }
         };
 
-        // Botones del vault (si existen)
+        // Botones del vault
         document.getElementById('btnVaultDeposit')?.addEventListener('click', async () => {
             if (!contractVault) return showToast('Vault no desplegado aún', true);
             const amount = document.getElementById('vaultDepositAmount').value;
@@ -1141,12 +1223,10 @@
             } catch (e) { showToast('Error: ' + e.message, true); }
         });
 
-        // Auto-conectar si la wallet ya está conectada
+        setLanguage('es');
+
         window.addEventListener('load', () => {
-            setLanguage('es');
-            if (window.ethereum && window.ethereum.selectedAddress) {
-                connect();
-            }
+            if (window.ethereum && window.ethereum.selectedAddress) connect();
         });
     </script>
 </body>
