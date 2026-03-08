@@ -1,67 +1,30 @@
 <!DOCTYPE html>
-<html lang="es">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>Milimar Admin Test</title>
+    <title>Admin Test</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
-    <style>
-        body {
-            background: #0a0f1f;
-            color: cyan;
-            font-family: Arial, sans-serif;
-            padding: 20px;
-        }
-        button {
-            background: transparent;
-            border: 2px solid cyan;
-            color: cyan;
-            padding: 15px;
-            margin: 5px;
-            width: 100%;
-            border-radius: 30px;
-            font-size: 18px;
-        }
-        .info {
-            border: 1px solid magenta;
-            padding: 10px;
-            margin: 10px 0;
-            color: white;
-        }
-    </style>
 </head>
-<body>
-    <h1>🧪 TEST ADMIN MILIMAR</h1>
-    <button id="connectBtn">🔌 CONECTAR WALLET</button>
-    <div id="info" class="info">Esperando conexión...</div>
-    <div id="adminPanel" style="display: none;">
-        <button id="btnOwner">🔍 VERIFICAR OWNER</button>
-        <button id="btnPausa">⏸️ PAUSAR</button>
-        <button id="btnCupos">🎫 CUPOS</button>
-        <button id="btnPremiar">🏆 PREMIAR</button>
-        <button id="btnSolidaridad">🤝 F. SOL.</button>
-        <button id="btnBonoN3">💰 BONO N3</button>
-        <button id="btnBonosRec">🔄 BONOS REC</button>
-        <button id="btnPagarRec">💸 PAGAR REC</button>
-        <button id="btnRecuperar">🔙 RECUPERAR</button>
+<body style="background:#111;color:#0ff;padding:20px;font-family:sans-serif;">
+    <h1>🧪 Test Admin Milimar</h1>
+    <button id="connectBtn" style="width:100%;padding:15px;background:transparent;border:2px solid cyan;color:cyan;border-radius:30px;">🔌 CONECTAR</button>
+    <div id="info" style="margin:20px 0;padding:10px;border:1px solid magenta;color:white;"></div>
+    <div id="adminPanel" style="display:none;">
+        <button onclick="ejecutarPausa()" style="width:100%;padding:15px;margin:5px 0;background:transparent;border:2px solid cyan;color:cyan;border-radius:30px;">⏸️ PAUSAR</button>
+        <button onclick="ejecutarCupos()" style="width:100%;padding:15px;margin:5px 0;background:transparent;border:2px solid cyan;color:cyan;border-radius:30px;">🎫 CUPOS</button>
+        <button onclick="ejecutarPremiar()" style="width:100%;padding:15px;margin:5px 0;background:transparent;border:2px solid cyan;color:cyan;border-radius:30px;">🏆 PREMIAR</button>
+        <button onclick="ejecutarSolidaridad()" style="width:100%;padding:15px;margin:5px 0;background:transparent;border:2px solid cyan;color:cyan;border-radius:30px;">🤝 F. SOL.</button>
     </div>
 
     <script>
         const CONTRACT_ADDR = "0x35425E6416f799C30938cBc159523B43C1c358B2";
-        const USDT_ADDR = "0x55d398326f99059fF775485246999027B3197955";
         const BSC_CHAIN_ID = 56;
 
-        // ABI completo con todas las funciones de admin
         const abi = [
             "function owner() view returns (address)",
             "function togglePausa() external",
             "function otorgarCuposExtra(address,uint256) external",
             "function premiarLider(address,uint256) external",
-            "function usarFondoSolidaridad(address,uint256,string memory) external",
-            "function actualizarBonoNivel3(uint256) external",
-            "function setBonosRecurrentesActivados(bool) external",
-            "function pagarBonosRecurrentes(address[],uint256) external",
-            "function recuperarTokenExterno(address,uint256) external"
+            "function usarFondoSolidaridad(address,uint256,string memory) external"
         ];
 
         let provider, signer, userAddress, contract;
@@ -70,14 +33,14 @@
         const infoDiv = document.getElementById('info');
         const adminPanel = document.getElementById('adminPanel');
 
-        function mostrarAlerta(msg) {
+        function mostrar(msg) {
             alert(msg);
-            infoDiv.innerHTML = msg;
+            infoDiv.innerText = msg;
         }
 
         connectBtn.onclick = async () => {
             if (!window.ethereum) {
-                mostrarAlerta('❌ Instala MetaMask');
+                mostrar('❌ Instala MetaMask');
                 return;
             }
             try {
@@ -86,7 +49,6 @@
                 signer = provider.getSigner();
                 userAddress = await signer.getAddress();
 
-                // Verificar red
                 const network = await provider.getNetwork();
                 if (network.chainId !== BSC_CHAIN_ID) {
                     try {
@@ -95,110 +57,69 @@
                         signer = provider.getSigner();
                         userAddress = await signer.getAddress();
                     } catch {
-                        mostrarAlerta('❌ Cambia a BSC Mainnet');
+                        mostrar('❌ Cambia a BSC Mainnet');
                         return;
                     }
                 }
 
                 contract = new ethers.Contract(CONTRACT_ADDR, abi, signer);
-                adminPanel.style.display = 'block';
-                mostrarAlerta('✅ Conectado: ' + userAddress.slice(0,6) + '...');
-
-            } catch (e) {
-                mostrarAlerta('❌ Error: ' + e.message);
-            }
-        };
-
-        // Botón verificar owner
-        document.getElementById('btnOwner').onclick = async () => {
-            if (!contract) { mostrarAlerta('Conecta primero'); return; }
-            try {
                 const owner = await contract.owner();
-                const esOwner = (owner.toLowerCase() === userAddress.toLowerCase());
-                mostrarAlerta(`Owner: ${owner}\nTu wallet: ${userAddress}\n¿Eres owner? ${esOwner ? '✅ SI' : '❌ NO'}`);
+                if (owner.toLowerCase() === userAddress.toLowerCase()) {
+                    adminPanel.style.display = 'block';
+                    mostrar('✅ Eres owner. Botones listos.');
+                } else {
+                    mostrar('❌ No eres owner');
+                }
             } catch (e) {
-                mostrarAlerta('Error: ' + e.message);
+                mostrar('❌ Error: ' + e.message);
             }
         };
 
-        // Función genérica para ejecutar transacciones con alertas
-        async function ejecutarTransaccion(funcion, ...args) {
-            if (!contract) { mostrarAlerta('Conecta primero'); return; }
+        // Funciones llamadas desde los botones (onclick)
+        window.ejecutarPausa = async function() {
+            alert('1. Click en PAUSAR');
+            if (!contract) { alert('Conecta primero'); return; }
             try {
-                mostrarAlerta('⏳ Enviando transacción...');
-                const tx = await funcion(...args);
-                mostrarAlerta('📤 Tx enviada: ' + tx.hash);
+                alert('2. Enviando transacción...');
+                const tx = await contract.togglePausa();
+                alert('3. Tx enviada: ' + tx.hash);
                 await tx.wait();
-                mostrarAlerta('✅ Transacción confirmada');
+                alert('4. ✅ Transacción confirmada');
             } catch (e) {
-                mostrarAlerta('❌ Error: ' + e.message);
+                alert('❌ Error: ' + e.message);
             }
-        }
+        };
 
-        // Asignar eventos a cada botón
-        document.getElementById('btnPausa').addEventListener('click', () => {
-            ejecutarTransaccion(contract.togglePausa);
-        });
-
-        document.getElementById('btnCupos').addEventListener('click', async () => {
-            const lider = prompt('Dirección del líder:');
+        window.ejecutarCupos = function() {
+            alert('Click en CUPOS');
+            let lider = prompt('Dirección del líder:');
             if (!lider) return;
-            const cant = prompt('Cantidad de cupos:');
+            let cant = prompt('Cantidad de cupos:');
             if (!cant) return;
-            ejecutarTransaccion(contract.otorgarCuposExtra, lider, cant);
-        });
+            alert('Llamando a otorgarCuposExtra...');
+            // Aquí iría la llamada real, pero por ahora solo probamos el flujo
+            alert('Funcionalidad no implementada en esta prueba');
+        };
 
-        document.getElementById('btnPremiar').addEventListener('click', async () => {
-            const lider = prompt('Dirección del líder:');
+        window.ejecutarPremiar = function() {
+            alert('Click en PREMIAR');
+            let lider = prompt('Dirección del líder:');
             if (!lider) return;
-            const monto = prompt('Monto en USDT:');
+            let monto = prompt('Monto en USDT:');
             if (!monto) return;
-            const montoWei = ethers.utils.parseUnits(monto, 18);
-            ejecutarTransaccion(contract.premiarLider, lider, montoWei);
-        });
+            alert('Llamando a premiarLider...');
+        };
 
-        document.getElementById('btnSolidaridad').addEventListener('click', async () => {
-            const benef = prompt('Dirección del beneficiario:');
+        window.ejecutarSolidaridad = function() {
+            alert('Click en F. SOL.');
+            let benef = prompt('Dirección del beneficiario:');
             if (!benef) return;
-            const monto = prompt('Monto en USDT:');
+            let monto = prompt('Monto en USDT:');
             if (!monto) return;
-            const motivo = prompt('Motivo:');
+            let motivo = prompt('Motivo:');
             if (!motivo) return;
-            const montoWei = ethers.utils.parseUnits(monto, 18);
-            ejecutarTransaccion(contract.usarFondoSolidaridad, benef, montoWei, motivo);
-        });
-
-        document.getElementById('btnBonoN3').addEventListener('click', async () => {
-            const nuevo = prompt('Nuevo monto del bono nivel 3 (en USDT):');
-            if (!nuevo) return;
-            const nuevoWei = ethers.utils.parseUnits(nuevo, 18);
-            ejecutarTransaccion(contract.actualizarBonoNivel3, nuevoWei);
-        });
-
-        document.getElementById('btnBonosRec').addEventListener('click', async () => {
-            const estado = prompt('Activar bonos recurrentes? (true/false):');
-            if (estado === null) return;
-            ejecutarTransaccion(contract.setBonosRecurrentesActivados, estado === 'true');
-        });
-
-        document.getElementById('btnPagarRec').addEventListener('click', async () => {
-            const lista = prompt('Lista de direcciones separadas por coma:');
-            if (!lista) return;
-            const monto = prompt('Monto por persona (USDT):');
-            if (!monto) return;
-            const direcciones = lista.split(',').map(s => s.trim()).filter(s => s !== '');
-            const montoWei = ethers.utils.parseUnits(monto, 18);
-            ejecutarTransaccion(contract.pagarBonosRecurrentes, direcciones, montoWei);
-        });
-
-        document.getElementById('btnRecuperar').addEventListener('click', async () => {
-            const token = prompt('Dirección del token (no USDT):');
-            if (!token) return;
-            const cant = prompt('Cantidad:');
-            if (!cant) return;
-            const cantWei = ethers.utils.parseUnits(cant, 18);
-            ejecutarTransaccion(contract.recuperarTokenExterno, token, cantWei);
-        });
+            alert('Llamando a usarFondoSolidaridad...');
+        };
     </script>
 </body>
 </html>
