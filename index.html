@@ -212,37 +212,6 @@
             color: black;
             box-shadow: 0 0 15px #00ffff;
         }
-        /* Selector de wallets */
-        .wallet-selector {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin: 20px 0;
-            padding: 15px;
-            background: rgba(0,0,0,0.7);
-            border-radius: 20px;
-            border: 1px solid #00ffff;
-        }
-        .wallet-btn {
-            background: rgba(0,255,255,0.1);
-            border: 1px solid #00ffff;
-            color: white;
-            padding: 12px;
-            border-radius: 40px;
-            cursor: pointer;
-            transition: 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 600;
-        }
-        .wallet-btn:hover {
-            background: rgba(0,255,255,0.3);
-            box-shadow: 0 0 20px #00ffff;
-        }
-        .wallet-btn i {
-            font-size: 1.5rem;
-        }
         .network-warning {
             background: rgba(255,100,100,0.3);
             border: 1px solid #ff6666;
@@ -343,10 +312,9 @@
             <p class="text-sm text-white/80 uppercase tracking-[0.3em] font-light mt-2">Oficina Virtual · BSC · V5</p>
         </header>
 
-        <!-- Contenedor de conexión y selector de wallets -->
+        <!-- Contenedor de conexión (sin selector de wallets) -->
         <div id="conBox" class="glass-card p-10 text-center mb-6">
             <button id="btnConnect" class="btn bg-white text-black w-full max-w-md mx-auto hover:bg-cyan-300 transition">CONECTAR BILLETERA</button>
-            <div id="walletSelector" class="hidden"></div>
             <div id="networkError" class="hidden network-warning"></div>
         </div>
 
@@ -760,7 +728,6 @@
         const whatsappLink = document.getElementById('whatsappLink');
         const btnConnect = document.getElementById('btnConnect');
         const conBox = document.getElementById('conBox');
-        const walletSelector = document.getElementById('walletSelector');
         const networkError = document.getElementById('networkError');
         const messageBox = document.getElementById('messageBox');
         const loading = document.getElementById('loading');
@@ -806,36 +773,6 @@
             return ethers.utils.parseUnits(amount.toString(), 18);
         }
 
-        // Detectar wallets
-        function detectWallets() {
-            const wallets = [];
-            if (window.ethereum && window.ethereum.isMetaMask) wallets.push({ name: 'MetaMask', provider: window.ethereum, icon: 'fab fa-metamask' });
-            if (window.BinanceChain) wallets.push({ name: 'Binance Wallet', provider: window.BinanceChain, icon: 'fas fa-dog' });
-            if (window.okxwallet) wallets.push({ name: 'OKX Wallet', provider: window.okxwallet, icon: 'fas fa-bolt' });
-            if (window.ethereum && !window.ethereum.isMetaMask && !window.ethereum.isBinance && !window.okxwallet) {
-                wallets.push({ name: 'Wallet compatible', provider: window.ethereum, icon: 'fas fa-wallet' });
-            }
-            return wallets;
-        }
-
-        // Mostrar selector de wallets
-        async function showWalletSelector() {
-            const wallets = detectWallets();
-            if (wallets.length === 0) {
-                alert('No se detectó ninguna wallet. Instala MetaMask, Binance Wallet u OKX Wallet.');
-                return;
-            }
-            walletSelector.innerHTML = '';
-            walletSelector.classList.remove('hidden');
-            wallets.forEach(w => {
-                const btn = document.createElement('button');
-                btn.className = 'wallet-btn';
-                btn.innerHTML = `<i class="${w.icon}"></i> ${w.name}`;
-                btn.onclick = () => connectWithWallet(w.provider);
-                walletSelector.appendChild(btn);
-            });
-        }
-
         // Cambiar a BSC Mainnet
         async function switchToBSC(provider) {
             try {
@@ -866,13 +803,15 @@
             }
         }
 
-        // Conectar con wallet seleccionada
-        async function connectWithWallet(walletProvider) {
+        // Conectar usando window.ethereum directamente (sin selector)
+        async function connect() {
+            if (!window.ethereum) {
+                alert('No se detectó ninguna wallet. Instala MetaMask, Binance Wallet u OKX Wallet.');
+                return;
+            }
             try {
-                walletSelector.classList.add('hidden');
                 loading.classList.remove('hidden');
-
-                provider = new ethers.providers.Web3Provider(walletProvider);
+                provider = new ethers.providers.Web3Provider(window.ethereum);
                 await provider.send("eth_requestAccounts", []);
                 signer = provider.getSigner();
                 userAddress = await signer.getAddress();
@@ -886,11 +825,11 @@
                         <button class="switch-network-btn" id="switchNetworkBtn">Cambiar a BSC Mainnet</button>
                     `;
                     document.getElementById('switchNetworkBtn').onclick = async () => {
-                        const switched = await switchToBSC(walletProvider);
+                        const switched = await switchToBSC(window.ethereum);
                         if (switched) {
                             networkError.classList.add('hidden');
-                            // Reconectar
-                            provider = new ethers.providers.Web3Provider(walletProvider);
+                            // Reconectar después del cambio
+                            provider = new ethers.providers.Web3Provider(window.ethereum);
                             signer = provider.getSigner();
                             userAddress = await signer.getAddress();
                             await initContracts();
@@ -951,9 +890,9 @@
             }
         }
 
-        btnConnect.onclick = showWalletSelector;
+        btnConnect.onclick = connect;
 
-        // ---------- FUNCIONES DE CARGA DE DATOS (originales) ----------
+        // ---------- FUNCIONES DE CARGA DE DATOS ----------
         async function loadRedYGanancias() {
             try {
                 const red = await contractMembresia.verDetalleRed(userAddress);
@@ -1206,7 +1145,7 @@
         window.addEventListener('load', () => {
             setLanguage('es');
             if (window.ethereum && window.ethereum.selectedAddress) {
-                connectWithWallet(window.ethereum);
+                connect();
             }
         });
     </script>
