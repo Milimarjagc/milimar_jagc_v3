@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Milimar JAGC | Oficina Virtual V5 · Red Global</title>
+    <title>Milimar JAGC | Red Blockchain</title>
     <!-- Fuentes -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <!-- Font Awesome -->
@@ -11,9 +11,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* Fondo con imagen de red global */
+        /* Fondo de red blockchain */
         body {
-            background: url('https://images.pexels.com/photos/15566764/pexels-photo-15566764.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1') no-repeat center center fixed;
+            background: url('https://images.pexels.com/photos/7788009/pexels-photo-7788009.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1') no-repeat center center fixed;
             background-size: cover;
             font-family: 'Inter', sans-serif;
             position: relative;
@@ -26,7 +26,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(125deg, rgba(0, 255, 255, 0.2) 0%, rgba(128, 0, 255, 0.3) 100%);
+            background: linear-gradient(125deg, rgba(0, 255, 255, 0.15) 0%, rgba(128, 0, 255, 0.2) 100%);
             pointer-events: none;
             z-index: -1;
         }
@@ -35,18 +35,18 @@
             font-weight: 900;
             letter-spacing: -0.02em;
         }
-        /* Tarjetas con efecto glass y bordes neón */
+        /* Tarjetas glassmorphism más transparentes con bordes neón */
         .glass-card {
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(0, 255, 255, 0.3);
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 255, 255, 0.4);
             border-radius: 1.5rem;
-            box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
+            box-shadow: 0 0 25px rgba(0, 255, 255, 0.4);
             transition: all 0.3s;
         }
         .glass-card:hover {
             border-color: #aa80ff;
-            box-shadow: 0 0 40px #aa80ff;
+            box-shadow: 0 0 35px #aa80ff;
         }
         /* Círculos de niveles */
         .node {
@@ -86,7 +86,7 @@
             @apply font-black py-3 px-6 rounded-xl transition-all transform hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed;
             font-family: 'Poppins', sans-serif;
         }
-        /* Botones flotantes de Telegram y WhatsApp (más pequeños) */
+        /* Botones flotantes más pequeños */
         .whatsapp-button {
             position: fixed;
             bottom: 20px;
@@ -135,7 +135,7 @@
             transform: scale(1.05);
             box-shadow: 0 6px 25px rgba(42, 171, 238, 0.7);
         }
-        /* Pestañas con colores neón */
+        /* Pestañas neón */
         .tab-button {
             @apply px-6 py-3 rounded-t-xl font-bold transition-all;
         }
@@ -202,6 +202,10 @@
             color: black;
             box-shadow: 0 0 15px #00ffff;
         }
+        /* Estilos para textos en tarjetas */
+        .glass-card p, .glass-card span {
+            color: #f0f0f0;
+        }
     </style>
 </head>
 <body class="text-white antialiased p-4 min-h-screen relative">
@@ -215,11 +219,11 @@
     <!-- Botones flotantes de Telegram y WhatsApp -->
     <a id="telegramLink" href="https://t.me/+z7wwfx0ocho1NzI5" target="_blank" class="telegram-button hidden">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.02-.15-.05-.22-.07-.07-.18-.05-.26-.03-.11.02-1.85 1.17-5.22 3.45-.5.34-.95.5-1.36.49-.45-.01-1.3-.25-1.94-.46-.78-.26-1.4-.4-1.35-.85.03-.23.27-.47.74-.72 2.91-1.27 4.86-2.11 5.83-2.52 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.08-.02.25-.04.4z"/></svg>
-        <span>Telegram</span>
+        <span data-i18n="telegram">Telegram</span>
     </a>
     <a id="whatsappLink" href="https://whatsapp.com/channel/0029Vb74Mxr3LdQVgWdycV2a" target="_blank" class="whatsapp-button hidden">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M12.036 2.001C6.505 2.001 2 6.506 2 12.037c0 1.95.57 3.77 1.55 5.31L2 22l4.78-1.53A9.978 9.978 0 0 0 12.036 22c5.53 0 10.034-4.505 10.034-10.036 0-5.53-4.505-10.035-10.034-10.035zm0 18.464c-1.634 0-3.212-.468-4.562-1.336l-.327-.198-3.004.963 1.003-2.93-.21-.337a8.38 8.38 0 0 1-1.345-4.59c0-4.616 3.76-8.376 8.376-8.376s8.376 3.76 8.376 8.376-3.76 8.376-8.376 8.376zm4.53-6.268c-.248-.124-1.466-.723-1.694-.805-.228-.082-.394-.124-.56.124-.166.248-.645.805-.79.97-.146.165-.29.186-.538.062s-1.052-.387-2.003-1.235c-.74-.66-1.24-1.476-1.385-1.724-.146-.248-.016-.382.11-.506.11-.11.248-.29.373-.435.124-.145.166-.248.248-.414.083-.165.041-.31-.02-.434-.062-.124-.56-1.35-.77-1.85-.202-.482-.407-.416-.56-.424-.145-.008-.31-.008-.476-.008-.166 0-.435.062-.663.31-.228.249-.87.85-.87 2.075 0 1.224.89 2.407 1.015 2.574.124.166 1.73 2.64 4.19 3.61.586.23 1.043.368 1.4.47.588.166 1.123.143 1.545.086.472-.062 1.454-.594 1.66-1.168.206-.574.206-1.066.145-1.168-.06-.103-.228-.166-.476-.29z"/></svg>
-        <span>WhatsApp</span>
+        <span data-i18n="whatsapp">WhatsApp</span>
     </a>
 
     <div id="toast" class="toast glass-card p-4 hidden">
@@ -231,20 +235,20 @@
             <div class="flex items-center justify-center gap-4">
                 <h1 class="text-6xl font-black text-white drop-shadow-2xl tracking-tighter" style="text-shadow: 0 0 20px #00ffff;">MILIMAR JAGC</h1>
             </div>
-            <p class="text-sm text-white/80 uppercase tracking-[0.3em] font-light mt-2">Oficina Virtual · BSC · V5</p>
+            <p class="text-sm text-white/80 uppercase tracking-[0.3em] font-light mt-2" data-i18n="subtitle">Oficina Virtual · BSC · V5</p>
         </header>
 
         <!-- Pestañas de navegación -->
         <div class="flex flex-wrap justify-center gap-2 mb-6">
-            <button id="btnMembresia" class="tab-button tab-active">MEMBRESÍA</button>
-            <button id="btnVault" class="tab-button tab-inactive">VAULT</button>
-            <button id="btnInfoVault" class="tab-button tab-inactive">📘 ACERCA DEL VAULT</button>
-            <button id="btnArbitraje" class="tab-button tab-inactive">ARBITRAJE</button>
+            <button id="btnMembresia" class="tab-button tab-active" data-i18n="membership">MEMBRESÍA</button>
+            <button id="btnVault" class="tab-button tab-inactive" data-i18n="vault">VAULT</button>
+            <button id="btnInfoVault" class="tab-button tab-inactive" data-i18n="aboutVault">📘 ACERCA DEL VAULT</button>
+            <button id="btnArbitraje" class="tab-button tab-inactive" data-i18n="arbitrage">ARBITRAJE</button>
         </div>
 
         <!-- Contenedor de conexión -->
         <div id="conBox" class="glass-card p-10 text-center mb-6">
-            <button id="btnConnect" class="btn bg-white text-black w-full max-w-md mx-auto hover:bg-cyan-300 transition">CONECTAR BILLETERA</button>
+            <button id="btnConnect" class="btn bg-white text-black w-full max-w-md mx-auto hover:bg-cyan-300 transition" data-i18n="connectWallet">CONECTAR BILLETERA</button>
         </div>
 
         <!-- SECCIÓN MEMBRESÍA (V5) -->
@@ -252,19 +256,19 @@
             <!-- Tarjetas de resumen -->
             <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
                 <div class="glass-card p-4 border-l-4 border-cyan-400">
-                    <p class="text-[10px] text-white/60 uppercase font-bold">Saldo Pendiente</p>
+                    <p class="text-[10px] text-white/60 uppercase font-bold" data-i18n="pendingBalance">Saldo Pendiente</p>
                     <p id="valSaldo" class="text-xl font-black text-cyan-300">0.00</p>
                 </div>
                 <div class="glass-card p-4 border-r-4 border-purple-400 text-right">
-                    <p class="text-[10px] text-white/60 uppercase font-bold">Red Total</p>
+                    <p class="text-[10px] text-white/60 uppercase font-bold" data-i18n="totalNetwork">Red Total</p>
                     <p id="valRed" class="text-xl font-black text-purple-300">0</p>
                 </div>
                 <div class="glass-card p-4 border-l-4 border-blue-400">
-                    <p class="text-[10px] text-white/60 uppercase font-bold">Directos</p>
+                    <p class="text-[10px] text-white/60 uppercase font-bold" data-i18n="directs">Directos</p>
                     <p id="valDir" class="text-xl font-black text-blue-300">0</p>
                 </div>
                 <div class="glass-card p-4 border-r-4 border-indigo-400 text-right">
-                    <p class="text-[10px] text-white/60 uppercase font-bold">Días activo</p>
+                    <p class="text-[10px] text-white/60 uppercase font-bold" data-i18n="daysActive">Días activo</p>
                     <p id="valDias" class="text-xl font-black text-indigo-300">0</p>
                 </div>
             </div>
@@ -272,15 +276,15 @@
             <!-- Fondos: Solidaridad y Pool Liderazgo + Emergencia -->
             <div class="grid grid-cols-3 gap-3">
                 <div class="glass-card p-3 text-center">
-                    <p class="text-[10px] text-white/60 uppercase font-bold">Fondo Solidaridad</p>
+                    <p class="text-[10px] text-white/60 uppercase font-bold" data-i18n="solidarityFund">Fondo Solidaridad</p>
                     <p id="fondoSolidaridad" class="text-lg font-black text-emerald-300">0.00</p>
                 </div>
                 <div class="glass-card p-3 text-center">
-                    <p class="text-[10px] text-white/60 uppercase font-bold">Pool Liderazgo</p>
+                    <p class="text-[10px] text-white/60 uppercase font-bold" data-i18n="leadershipPool">Pool Liderazgo</p>
                     <p id="poolLiderazgo" class="text-lg font-black text-purple-300">0.00</p>
                 </div>
                 <div class="glass-card p-3 text-center" id="emergencyContainer">
-                    <p class="text-[10px] text-white/60 uppercase font-bold">Modo Emergencia</p>
+                    <p class="text-[10px] text-white/60 uppercase font-bold" data-i18n="emergencyMode">Modo Emergencia</p>
                     <p id="emergencyStatus" class="text-lg font-black text-red-300">INACTIVO</p>
                 </div>
             </div>
@@ -288,21 +292,21 @@
             <!-- Bono nivel 3 y bonos recurrentes -->
             <div class="grid grid-cols-2 gap-3">
                 <div class="glass-card p-3 text-center">
-                    <p class="text-[10px] text-white/60 uppercase font-bold">Bono Nivel 3</p>
+                    <p class="text-[10px] text-white/60 uppercase font-bold" data-i18n="bonusLevel3">Bono Nivel 3</p>
                     <p id="bonoNivel3" class="text-lg font-black text-cyan-300">5 USDT</p>
                 </div>
                 <div class="glass-card p-3 text-center">
-                    <p class="text-[10px] text-white/60 uppercase font-bold">Bonos recurrentes</p>
+                    <p class="text-[10px] text-white/60 uppercase font-bold" data-i18n="recurringBonuses">Bonos recurrentes</p>
                     <p id="bonosRecurrentes" class="text-lg font-black text-purple-300">INACTIVO</p>
                 </div>
             </div>
 
             <!-- Botón de retiro de emergencia -->
-            <button id="btnEmergencyWithdraw" class="hidden w-full bg-red-700 text-white font-bold py-3 rounded-xl hover:bg-red-600 transition">🚨 RETIRO DE EMERGENCIA</button>
+            <button id="btnEmergencyWithdraw" class="hidden w-full bg-red-700 text-white font-bold py-3 rounded-xl hover:bg-red-600 transition" data-i18n="emergencyWithdraw">🚨 RETIRO DE EMERGENCIA</button>
 
             <!-- Visualización de 5 niveles -->
             <div class="glass-card p-6 text-center">
-                <p class="text-white text-sm font-bold mb-4 drop-shadow">📊 TUS 5 NIVELES DE RED</p>
+                <p class="text-white text-sm font-bold mb-4 drop-shadow" data-i18n="yourNetwork">📊 TUS 5 NIVELES DE RED</p>
                 <div class="flex flex-wrap justify-center gap-2">
                     <div id="n1" class="node node-empty">N1<br><span class="text-[10px]">0</span></div>
                     <div id="n2" class="node node-empty">N2<br><span class="text-[10px]">0</span></div>
@@ -310,88 +314,88 @@
                     <div id="n4" class="node node-empty">N4<br><span class="text-[10px]">0</span></div>
                     <div id="n5" class="node node-empty">N5<br><span class="text-[10px]">0</span></div>
                 </div>
-                <p class="text-[10px] text-white/50 mt-4">Cada círculo muestra la cantidad de personas en ese nivel.</p>
+                <p class="text-[10px] text-white/50 mt-4" data-i18n="circleMeaning">Cada círculo muestra la cantidad de personas en ese nivel.</p>
             </div>
 
             <!-- Detalles por nivel y ganancias -->
             <div class="grid md:grid-cols-2 gap-4">
                 <div class="glass-card p-4">
                     <div class="flex justify-between items-center mb-2">
-                        <h3 class="text-white font-bold text-sm drop-shadow">📊 SOCIOS POR NIVEL</h3>
+                        <h3 class="text-white font-bold text-sm drop-shadow" data-i18n="membersByLevel">📊 SOCIOS POR NIVEL</h3>
                         <button id="btnReloadDetails" class="text-xs bg-white/20 hover:bg-white/30 px-2 py-1 rounded transition">⟳ Recargar</button>
                     </div>
-                    <div id="redNiveles" class="space-y-1 text-xs"><p class="text-white/50">Cargando...</p></div>
+                    <div id="redNiveles" class="space-y-1 text-xs"><p class="text-white/50" data-i18n="loading">Cargando...</p></div>
                 </div>
                 <div class="glass-card p-4">
                     <div class="flex justify-between items-center mb-2">
-                        <h3 class="text-white font-bold text-sm drop-shadow">💰 GANANCIAS ACUMULADAS</h3>
+                        <h3 class="text-white font-bold text-sm drop-shadow" data-i18n="accumulatedEarnings">💰 GANANCIAS ACUMULADAS</h3>
                         <button id="btnReloadGanancias" class="text-xs bg-white/20 hover:bg-white/30 px-2 py-1 rounded transition">⟳ Recargar</button>
                     </div>
-                    <div id="gananciasNiveles" class="space-y-1 text-xs"><p class="text-white/50">Cargando...</p></div>
+                    <div id="gananciasNiveles" class="space-y-1 text-xs"><p class="text-white/50" data-i18n="loading">Cargando...</p></div>
                 </div>
             </div>
 
             <!-- Botones de acción -->
             <div class="grid grid-cols-2 gap-3">
-                <button id="btnApprove" class="btn bg-cyan-600 text-white hover:bg-cyan-500">1. AUTORIZAR USDT</button>
-                <button id="btnJoin" class="btn bg-purple-600 text-white hover:bg-purple-500">2. ACTIVAR (10 USDT)</button>
-                <button id="btnRenew" class="btn bg-blue-600 text-white hover:bg-blue-500">RENOVAR</button>
-                <button id="btnWithdraw" class="btn bg-indigo-600 text-white hover:bg-indigo-500">RETIRAR</button>
+                <button id="btnApprove" class="btn bg-cyan-600 text-white hover:bg-cyan-500" data-i18n="authorize">1. AUTORIZAR USDT</button>
+                <button id="btnJoin" class="btn bg-purple-600 text-white hover:bg-purple-500" data-i18n="activate">2. ACTIVAR (10 USDT)</button>
+                <button id="btnRenew" class="btn bg-blue-600 text-white hover:bg-blue-500" data-i18n="renew">RENOVAR</button>
+                <button id="btnWithdraw" class="btn bg-indigo-600 text-white hover:bg-indigo-500" data-i18n="withdraw">RETIRAR</button>
             </div>
 
             <!-- Panel Admin -->
             <div id="adminSection" class="hidden glass-card p-4 border border-cyan-500/50">
-                <h2 class="text-white font-bold mb-3 text-sm uppercase tracking-wider drop-shadow">⚙️ Panel Admin</h2>
+                <h2 class="text-white font-bold mb-3 text-sm uppercase tracking-wider drop-shadow" data-i18n="adminPanel">⚙️ Panel Admin</h2>
                 <div class="grid grid-cols-2 gap-2">
-                    <button id="btnPausa" class="btn bg-red-600 text-white text-sm py-2 hover:bg-red-500">PAUSAR/REANUDAR</button>
-                    <button id="btnCupos" class="btn bg-purple-600 text-white text-sm py-2 hover:bg-purple-500">OTORGAR CUPOS</button>
-                    <button id="btnPremiar" class="btn bg-pink-600 text-white text-sm py-2 hover:bg-pink-500">PREMIAR LÍDER</button>
-                    <button id="btnSolidaridad" class="btn bg-emerald-600 text-white text-sm py-2 hover:bg-emerald-500">USAR FONDO SOL.</button>
-                    <button id="btnActualizarBono" class="btn bg-cyan-600 text-white text-sm py-2 hover:bg-cyan-500">ACT. BONO N3</button>
-                    <button id="btnToggleBonosRec" class="btn bg-indigo-600 text-white text-sm py-2 hover:bg-indigo-500">ACT. BONOS REC.</button>
-                    <button id="btnPagarBonosRec" class="btn bg-teal-600 text-white text-sm py-2 hover:bg-teal-500">PAGAR BONOS REC.</button>
-                    <button id="btnRecuperar" class="btn bg-orange-600 text-white text-sm py-2 hover:bg-orange-500">RECUPERAR TOKEN</button>
+                    <button id="btnPausa" class="btn bg-red-600 text-white text-sm py-2 hover:bg-red-500" data-i18n="pause">PAUSAR/REANUDAR</button>
+                    <button id="btnCupos" class="btn bg-purple-600 text-white text-sm py-2 hover:bg-purple-500" data-i18n="grantSlots">OTORGAR CUPOS</button>
+                    <button id="btnPremiar" class="btn bg-pink-600 text-white text-sm py-2 hover:bg-pink-500" data-i18n="rewardLeader">PREMIAR LÍDER</button>
+                    <button id="btnSolidaridad" class="btn bg-emerald-600 text-white text-sm py-2 hover:bg-emerald-500" data-i18n="useSolidarity">USAR FONDO SOL.</button>
+                    <button id="btnActualizarBono" class="btn bg-cyan-600 text-white text-sm py-2 hover:bg-cyan-500" data-i18n="updateBonus">ACT. BONO N3</button>
+                    <button id="btnToggleBonosRec" class="btn bg-indigo-600 text-white text-sm py-2 hover:bg-indigo-500" data-i18n="toggleRecurring">ACT. BONOS REC.</button>
+                    <button id="btnPagarBonosRec" class="btn bg-teal-600 text-white text-sm py-2 hover:bg-teal-500" data-i18n="payRecurring">PAGAR BONOS REC.</button>
+                    <button id="btnRecuperar" class="btn bg-orange-600 text-white text-sm py-2 hover:bg-orange-500" data-i18n="recoverToken">RECUPERAR TOKEN</button>
                 </div>
-                <div class="mt-2 text-[10px] text-white/50">Usa estas funciones con responsabilidad.</div>
+                <div class="mt-2 text-[10px] text-white/50" data-i18n="adminResponsibility">Usa estas funciones con responsabilidad.</div>
             </div>
 
             <!-- Enlace de invitación -->
             <div class="glass-card p-4 text-center">
-                <p class="text-[10px] text-white/50 mb-1 uppercase font-bold">TU ENLACE DE INVITACIÓN</p>
+                <p class="text-[10px] text-white/50 mb-1 uppercase font-bold" data-i18n="inviteLink">TU ENLACE DE INVITACIÓN</p>
                 <div class="flex items-center gap-2">
                     <input id="refLink" readonly class="w-full bg-white/10 border border-white/30 rounded-lg p-2 text-center text-white text-xs outline-none">
-                    <button id="copyLinkBtn" class="bg-white text-black font-bold py-2 px-4 rounded-lg text-sm hover:bg-cyan-300 transition">Copiar</button>
+                    <button id="copyLinkBtn" class="bg-white text-black font-bold py-2 px-4 rounded-lg text-sm hover:bg-cyan-300 transition" data-i18n="copy">Copiar</button>
                 </div>
-                <p id="copyMsg" class="text-[10px] text-green-300 mt-2 hidden">¡Link copiado!</p>
+                <p id="copyMsg" class="text-[10px] text-green-300 mt-2 hidden" data-i18n="copied">¡Link copiado!</p>
             </div>
 
             <!-- Tutoriales -->
             <div class="glass-card p-4">
                 <details class="cursor-pointer">
                     <summary class="text-white font-bold text-sm list-none flex justify-between items-center drop-shadow">
-                        📘 TUTORIALES RÁPIDOS
-                        <span class="text-xs text-white/60">(clic para expandir)</span>
+                        <span data-i18n="quickTutorials">📘 TUTORIALES RÁPIDOS</span>
+                        <span class="text-xs text-white/60" data-i18n="clickToExpand">(clic para expandir)</span>
                     </summary>
                     <div class="mt-4 space-y-3">
                         <div class="tutorial-step">
-                            <p class="font-bold text-cyan-300">🔹 Autorizar USDT</p>
-                            <p class="text-xs text-white/80">1. Asegúrate de tener USDT en tu wallet.<br>2. Haz clic en "AUTORIZAR USDT".<br>3. Confirma la transacción (solo gas).</p>
+                            <p class="font-bold text-cyan-300" data-i18n="tutorialAuthorize">🔹 Autorizar USDT</p>
+                            <p class="text-xs text-white/80" data-i18n="tutorialAuthorizeText">1. Asegúrate de tener USDT en tu wallet.<br>2. Haz clic en "AUTORIZAR USDT".<br>3. Confirma la transacción (solo gas).</p>
                         </div>
                         <div class="tutorial-step">
-                            <p class="font-bold text-purple-300">🔹 Activar suscripción</p>
-                            <p class="text-xs text-white/80">1. Después de autorizar, haz clic en "ACTIVAR".<br>2. Ingresa la dirección de tu patrocinador (si no viene por link).<br>3. Confirma la transacción (10 USDT + gas).</p>
+                            <p class="font-bold text-purple-300" data-i18n="tutorialActivate">🔹 Activar suscripción</p>
+                            <p class="text-xs text-white/80" data-i18n="tutorialActivateText">1. Después de autorizar, haz clic en "ACTIVAR".<br>2. Ingresa la dirección de tu patrocinador (si no viene por link).<br>3. Confirma la transacción (10 USDT + gas).</p>
                         </div>
                         <div class="tutorial-step">
-                            <p class="font-bold text-blue-300">🔹 Renovar</p>
-                            <p class="text-xs text-white/80">Paga 10 USDT para extender tu membresía 30 días más.</p>
+                            <p class="font-bold text-blue-300" data-i18n="tutorialRenew">🔹 Renovar</p>
+                            <p class="text-xs text-white/80" data-i18n="tutorialRenewText">Paga 10 USDT para extender tu membresía 30 días más.</p>
                         </div>
                         <div class="tutorial-step">
-                            <p class="font-bold text-indigo-300">🔹 Retirar ganancias</p>
-                            <p class="text-xs text-white/80">Solo cuando tengas al menos 4 directos y saldo ≥10 USDT.</p>
+                            <p class="font-bold text-indigo-300" data-i18n="tutorialWithdraw">🔹 Retirar ganancias</p>
+                            <p class="text-xs text-white/80" data-i18n="tutorialWithdrawText">Solo cuando tengas al menos 4 directos y saldo ≥10 USDT.</p>
                         </div>
                         <div class="tutorial-step">
-                            <p class="font-bold text-cyan-300">🔹 Invitar</p>
-                            <p class="text-xs text-white/80">Comparte tu link de invitación. Cuando alguien se registre con él, será tu referido directo.</p>
+                            <p class="font-bold text-cyan-300" data-i18n="tutorialInvite">🔹 Invitar</p>
+                            <p class="text-xs text-white/80" data-i18n="tutorialInviteText">Comparte tu link de invitación. Cuando alguien se registre con él, será tu referido directo.</p>
                         </div>
                     </div>
                 </details>
@@ -401,42 +405,42 @@
         <!-- SECCIÓN VAULT (igual que en v4) -->
         <div id="seccionVault" class="hidden space-y-6">
             <div class="glass-card p-6">
-                <h2 class="text-2xl font-bold text-cyan-400 mb-4">🏦 VAULT DE CRECIMIENTO</h2>
-                <p class="text-sm text-white/70 mb-6">Invierte desde $10 USDT en nuestro fondo diversificado (70% préstamos seguros + 30% farming de alto rendimiento). Gana intereses semanales y retira cuando quieras.</p>
+                <h2 class="text-2xl font-bold text-cyan-400 mb-4" data-i18n="vaultTitle">🏦 VAULT DE CRECIMIENTO</h2>
+                <p class="text-sm text-white/70 mb-6" data-i18n="vaultDescription">Invierte desde $10 USDT en nuestro fondo diversificado (70% préstamos seguros + 30% farming de alto rendimiento). Gana intereses semanales y retira cuando quieras.</p>
 
                 <!-- Estadísticas del vault -->
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
                     <div class="vault-card">
-                        <p class="text-[10px] text-white/50">Mi inversión</p>
+                        <p class="text-[10px] text-white/50" data-i18n="myInvestment">Mi inversión</p>
                         <p id="vaultMiInversion" class="vault-stat">0.00</p>
                     </div>
                     <div class="vault-card">
-                        <p class="text-[10px] text-white/50">Ganancias acumuladas</p>
+                        <p class="text-[10px] text-white/50" data-i18n="accumulatedGains">Ganancias acumuladas</p>
                         <p id="vaultGanancias" class="vault-stat">0.00</p>
                     </div>
                     <div class="vault-card">
-                        <p class="text-[10px] text-white/50">Total en fondo</p>
+                        <p class="text-[10px] text-white/50" data-i18n="totalFund">Total en fondo</p>
                         <p id="vaultTotalFondo" class="vault-stat">0.00</p>
                     </div>
                     <div class="vault-card">
-                        <p class="text-[10px] text-white/50">Valor de share</p>
+                        <p class="text-[10px] text-white/50" data-i18n="shareValue">Valor de share</p>
                         <p id="vaultSharePrice" class="vault-stat">1.00</p>
                     </div>
                 </div>
 
                 <!-- Mensaje sobre variabilidad -->
                 <div class="glass-card p-4 mb-6 bg-cyan-500/10 border-cyan-500/30">
-                    <p class="text-sm text-white/80 text-center">
+                    <p class="text-sm text-white/80 text-center" data-i18n="variabilityWarning">
                         ⚠️ El rendimiento del Vault es <span class="font-bold text-cyan-300">variable</span> y depende de las condiciones diarias del mercado.
                         Históricamente, los rendimientos han oscilado entre:
                     </p>
                     <div class="grid grid-cols-2 gap-4 mt-3 text-center">
                         <div class="bg-black/30 p-2 rounded">
-                            <p class="text-xs text-white/50">Diario (promedio)</p>
+                            <p class="text-xs text-white/50" data-i18n="dailyAvg">Diario (promedio)</p>
                             <p class="text-lg font-bold text-green-300">0.02% – 0.05%</p>
                         </div>
                         <div class="bg-black/30 p-2 rounded">
-                            <p class="text-xs text-white/50">Semanal (promedio)</p>
+                            <p class="text-xs text-white/50" data-i18n="weeklyAvg">Semanal (promedio)</p>
                             <p class="text-lg font-bold text-green-300">0.15% – 0.38%</p>
                         </div>
                     </div>
@@ -444,39 +448,39 @@
 
                 <!-- Formulario de depósito -->
                 <div class="glass-card p-4 mb-4">
-                    <h3 class="font-bold text-white mb-2">📥 Depositar USDT</h3>
+                    <h3 class="font-bold text-white mb-2" data-i18n="deposit">📥 Depositar USDT</h3>
                     <div class="flex gap-2">
-                        <input type="number" id="vaultDepositAmount" placeholder="Cantidad (mín. 10)" min="10" step="0.01" class="w-full bg-white/10 border border-white/30 rounded-lg p-2 text-white">
-                        <button id="btnVaultDeposit" class="btn bg-green-600 text-white px-6">Depositar</button>
+                        <input type="number" id="vaultDepositAmount" placeholder="Ej: 10" min="10" step="0.01" class="w-full bg-white/10 border border-white/30 rounded-lg p-2 text-white" data-i18n-placeholder="amountMin">
+                        <button id="btnVaultDeposit" class="btn bg-green-600 text-white px-6" data-i18n="depositBtn">Depositar</button>
                     </div>
-                    <p class="text-[10px] text-white/30 mt-1">Mínimo 10 USDT. Las ganancias se reparten semanalmente.</p>
+                    <p class="text-[10px] text-white/30 mt-1" data-i18n="minDeposit">Mínimo 10 USDT. Las ganancias se reparten semanalmente.</p>
                 </div>
 
                 <!-- Opciones de retiro -->
                 <div class="grid grid-cols-2 gap-3">
                     <div class="glass-card p-4">
-                        <h3 class="font-bold text-white mb-2">📤 Retiro estándar</h3>
-                        <p class="text-xs text-white/60 mb-2">Sin comisión. Se procesa al final del ciclo (semanal).</p>
+                        <h3 class="font-bold text-white mb-2" data-i18n="standardWithdraw">📤 Retiro estándar</h3>
+                        <p class="text-xs text-white/60 mb-2" data-i18n="standardWithdrawDesc">Sin comisión. Se procesa al final del ciclo (semanal).</p>
                         <div class="flex gap-2">
                             <input type="number" id="vaultWithdrawStandard" placeholder="Cantidad de shares" min="0" step="1" class="w-full bg-white/10 border border-white/30 rounded-lg p-2 text-white">
-                            <button id="btnVaultRequestStandard" class="btn bg-blue-600 text-white px-4">Solicitar</button>
+                            <button id="btnVaultRequestStandard" class="btn bg-blue-600 text-white px-4" data-i18n="request">Solicitar</button>
                         </div>
                     </div>
                     <div class="glass-card p-4">
-                        <h3 class="font-bold text-white mb-2">⚡ Retiro instantáneo</h3>
-                        <p class="text-xs text-white/60 mb-2">Comisión 1%. Límite semanal del 10% del fondo.</p>
+                        <h3 class="font-bold text-white mb-2" data-i18n="instantWithdraw">⚡ Retiro instantáneo</h3>
+                        <p class="text-xs text-white/60 mb-2" data-i18n="instantWithdrawDesc">Comisión 1%. Límite semanal del 10% del fondo.</p>
                         <div class="flex gap-2">
                             <input type="number" id="vaultWithdrawInstant" placeholder="Cantidad de shares" min="0" step="1" class="w-full bg-white/10 border border-white/30 rounded-lg p-2 text-white">
-                            <button id="btnVaultInstant" class="btn bg-purple-600 text-white px-4">Retirar</button>
+                            <button id="btnVaultInstant" class="btn bg-purple-600 text-white px-4" data-i18n="withdraw">Retirar</button>
                         </div>
                     </div>
                 </div>
 
                 <!-- Feed de actividad del vault -->
                 <div class="glass-card p-4 mt-6">
-                    <h3 class="text-white font-bold text-sm mb-2">📢 ACTIVIDAD DEL VAULT</h3>
+                    <h3 class="text-white font-bold text-sm mb-2" data-i18n="vaultActivity">📢 ACTIVIDAD DEL VAULT</h3>
                     <div id="vaultFeed" class="feed-container space-y-2 pr-2">
-                        <p class="text-white/50 text-xs">Conecta tu wallet para ver la actividad...</p>
+                        <p class="text-white/50 text-xs" data-i18n="connectToSee">Conecta tu wallet para ver la actividad...</p>
                     </div>
                 </div>
             </div>
@@ -485,19 +489,23 @@
         <!-- SECCIÓN ACERCA DEL VAULT (informativa) -->
         <div id="seccionInfoVault" class="hidden space-y-6">
             <div class="glass-card p-6">
-                <h2 class="text-2xl font-bold text-cyan-400 mb-4">📘 ACERCA DEL VAULT DE CRECIMIENTO</h2>
+                <h2 class="text-2xl font-bold text-cyan-400 mb-4" data-i18n="aboutVaultTitle">📘 ACERCA DEL VAULT DE CRECIMIENTO</h2>
                 <div class="space-y-4">
                     <div class="info-section">
-                        <h3 class="info-title">🔍 ¿Cómo funciona?</h3>
-                        <p class="text-white/80 text-xs leading-relaxed">El Vault es un fondo colectivo donde los usuarios depositan USDT. El contrato inteligente invierte automáticamente estos fondos en dos estrategias: 70% en préstamos seguros (Venus Protocol) y 30% en farming de alto rendimiento (PancakeSwap/Beefy).</p>
+                        <h3 class="info-title" data-i18n="howItWorks">🔍 ¿Cómo funciona?</h3>
+                        <p class="text-white/80 text-xs leading-relaxed" data-i18n="howItWorksText">El Vault es un fondo colectivo donde los usuarios depositan USDT. El contrato inteligente invierte automáticamente estos fondos en dos estrategias: 70% en préstamos seguros (Venus Protocol) y 30% en farming de alto rendimiento (PancakeSwap/Beefy).</p>
                     </div>
                     <div class="info-section">
-                        <h3 class="info-title">📈 ¿Por qué el rendimiento es variable?</h3>
-                        <p class="text-white/80 text-xs">Depende de las tasas de interés de préstamos, el volumen de trading y el precio de tokens de recompensa.</p>
+                        <h3 class="info-title" data-i18n="whyVariable">📈 ¿Por qué el rendimiento es variable?</h3>
+                        <p class="text-white/80 text-xs" data-i18n="whyVariableText">Depende de las tasas de interés de préstamos, el volumen de trading y el precio de tokens de recompensa.</p>
                     </div>
                     <div class="info-section">
-                        <h3 class="info-title">🛡️ Seguridad y riesgos</h3>
-                        <ul class="list-disc list-inside text-white/70 text-xs"><li>Riesgo de mercado</li><li>Riesgo de protocolo</li><li>Protecciones: emergency withdraw, pausa, diversificación</li></ul>
+                        <h3 class="info-title" data-i18n="securityRisks">🛡️ Seguridad y riesgos</h3>
+                        <ul class="list-disc list-inside text-white/70 text-xs">
+                            <li data-i18n="riskMarket">Riesgo de mercado</li>
+                            <li data-i18n="riskProtocol">Riesgo de protocolo</li>
+                            <li data-i18n="protections">Protecciones: emergency withdraw, pausa, diversificación</li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -506,19 +514,20 @@
         <!-- SECCIÓN ARBITRAJE (próximamente) -->
         <div id="seccionArbitraje" class="hidden space-y-6">
             <div class="glass-card p-6 text-center">
-                <h2 class="text-2xl font-bold text-purple-400 mb-4">🤖 ARBITRAJE</h2>
-                <p class="text-sm text-white/70 mb-6">Estamos desarrollando una plataforma de arbitraje automatizado. ¡Muy pronto!</p>
+                <h2 class="text-2xl font-bold text-purple-400 mb-4" data-i18n="arbitrage">🤖 ARBITRAJE</h2>
+                <p class="text-sm text-white/70 mb-6" data-i18n="arbitrageDesc">Estamos desarrollando una plataforma de arbitraje automatizado. ¡Muy pronto!</p>
             </div>
         </div>
     </div>
 
-    <footer class="text-center text-[10px] text-gray-500 mt-4">Milimar Protocol · BSC · Versión 5 + Vault</footer>
+    <footer class="text-center text-[10px] text-gray-500 mt-4" data-i18n="footer">Milimar Protocol · BSC · Versión 5 + Vault</footer>
 
     <script>
         // Traducciones
         const translations = {
             es: {
-                connect: "CONECTAR BILLETERA",
+                // Generales
+                connectWallet: "CONECTAR BILLETERA",
                 pendingBalance: "Saldo Pendiente",
                 totalNetwork: "Red Total",
                 directs: "Directos",
@@ -530,26 +539,27 @@
                 active: "ACTIVO",
                 bonusLevel3: "Bono Nivel 3",
                 recurringBonuses: "Bonos recurrentes",
-                yourNetwork: "TUS 5 NIVELES DE RED",
-                membersByLevel: "SOCIOS POR NIVEL",
-                accumulatedEarnings: "GANANCIAS ACUMULADAS",
+                yourNetwork: "📊 TUS 5 NIVELES DE RED",
+                membersByLevel: "📊 SOCIOS POR NIVEL",
+                accumulatedEarnings: "💰 GANANCIAS ACUMULADAS",
                 authorize: "1. AUTORIZAR USDT",
                 activate: "2. ACTIVAR (10 USDT)",
                 renew: "RENOVAR",
                 withdraw: "RETIRAR",
                 adminPanel: "⚙️ Panel Admin",
                 pause: "PAUSAR/REANUDAR",
-                grantExtraSlots: "OTORGAR CUPOS",
+                grantSlots: "OTORGAR CUPOS",
                 rewardLeader: "PREMIAR LÍDER",
-                useSolidarityFund: "USAR FONDO SOL.",
+                useSolidarity: "USAR FONDO SOL.",
                 updateBonus: "ACT. BONO N3",
                 toggleRecurring: "ACT. BONOS REC.",
                 payRecurring: "PAGAR BONOS REC.",
                 recoverToken: "RECUPERAR TOKEN",
-                yourInviteLink: "TU ENLACE DE INVITACIÓN",
+                inviteLink: "TU ENLACE DE INVITACIÓN",
                 copy: "Copiar",
                 copied: "¡Link copiado!",
                 quickTutorials: "📘 TUTORIALES RÁPIDOS",
+                clickToExpand: "(clic para expandir)",
                 tutorialAuthorize: "🔹 Autorizar USDT",
                 tutorialAuthorizeText: "1. Asegúrate de tener USDT en tu wallet.<br>2. Haz clic en 'AUTORIZAR USDT'.<br>3. Confirma la transacción (solo gas).",
                 tutorialActivate: "🔹 Activar suscripción",
@@ -560,7 +570,19 @@
                 tutorialWithdrawText: "Solo cuando tengas al menos 4 directos y saldo ≥10 USDT.",
                 tutorialInvite: "🔹 Invitar",
                 tutorialInviteText: "Comparte tu link de invitación. Cuando alguien se registre con él, será tu referido directo.",
-                vaultTitle: "VAULT DE CRECIMIENTO",
+                loading: "Cargando...",
+                circleMeaning: "Cada círculo muestra la cantidad de personas en ese nivel.",
+                telegram: "Telegram",
+                whatsapp: "WhatsApp",
+                subtitle: "Oficina Virtual · BSC · V5",
+                membership: "MEMBRESÍA",
+                vault: "VAULT",
+                aboutVault: "📘 ACERCA DEL VAULT",
+                arbitrage: "ARBITRAJE",
+                emergencyWithdraw: "🚨 RETIRO DE EMERGENCIA",
+                adminResponsibility: "Usa estas funciones con responsabilidad.",
+                // Vault
+                vaultTitle: "🏦 VAULT DE CRECIMIENTO",
                 vaultDescription: "Invierte desde $10 USDT en nuestro fondo diversificado (70% préstamos seguros + 30% farming de alto rendimiento). Gana intereses semanales y retira cuando quieras.",
                 myInvestment: "Mi inversión",
                 accumulatedGains: "Ganancias acumuladas",
@@ -569,15 +591,18 @@
                 variabilityWarning: "⚠️ El rendimiento del Vault es <span class='font-bold text-cyan-300'>variable</span> y depende de las condiciones diarias del mercado. Históricamente, los rendimientos han oscilado entre:",
                 dailyAvg: "Diario (promedio)",
                 weeklyAvg: "Semanal (promedio)",
-                deposit: "Depositar USDT",
-                amountMin: "Cantidad (mín. 10)",
+                deposit: "📥 Depositar USDT",
+                amountMin: "Ej: 10",
+                depositBtn: "Depositar",
+                minDeposit: "Mínimo 10 USDT. Las ganancias se reparten semanalmente.",
                 standardWithdraw: "📤 Retiro estándar",
                 standardWithdrawDesc: "Sin comisión. Se procesa al final del ciclo (semanal).",
+                request: "Solicitar",
                 instantWithdraw: "⚡ Retiro instantáneo",
                 instantWithdrawDesc: "Comisión 1%. Límite semanal del 10% del fondo.",
                 vaultActivity: "📢 ACTIVIDAD DEL VAULT",
                 connectToSee: "Conecta tu wallet para ver la actividad...",
-                aboutVault: "📘 ACERCA DEL VAULT DE CRECIMIENTO",
+                aboutVaultTitle: "📘 ACERCA DEL VAULT DE CRECIMIENTO",
                 howItWorks: "🔍 ¿Cómo funciona?",
                 howItWorksText: "El Vault es un fondo colectivo donde los usuarios depositan USDT. El contrato inteligente invierte automáticamente estos fondos en dos estrategias: 70% en préstamos seguros (Venus Protocol) y 30% en farming de alto rendimiento (PancakeSwap/Beefy).",
                 whyVariable: "📈 ¿Por qué el rendimiento es variable?",
@@ -586,11 +611,11 @@
                 riskMarket: "Riesgo de mercado",
                 riskProtocol: "Riesgo de protocolo",
                 protections: "Protecciones: emergency withdraw, pausa, diversificación",
-                arbitrage: "🤖 ARBITRAJE",
-                arbitrageDesc: "Estamos desarrollando una plataforma de arbitraje automatizado. ¡Muy pronto!"
+                arbitrageDesc: "Estamos desarrollando una plataforma de arbitraje automatizado. ¡Muy pronto!",
+                footer: "Milimar Protocol · BSC · Versión 5 + Vault"
             },
             en: {
-                connect: "CONNECT WALLET",
+                connectWallet: "CONNECT WALLET",
                 pendingBalance: "Pending Balance",
                 totalNetwork: "Total Network",
                 directs: "Directs",
@@ -602,26 +627,27 @@
                 active: "ACTIVE",
                 bonusLevel3: "Level 3 Bonus",
                 recurringBonuses: "Recurring Bonuses",
-                yourNetwork: "YOUR 5 NETWORK LEVELS",
-                membersByLevel: "MEMBERS BY LEVEL",
-                accumulatedEarnings: "ACCUMULATED EARNINGS",
+                yourNetwork: "📊 YOUR 5 NETWORK LEVELS",
+                membersByLevel: "📊 MEMBERS BY LEVEL",
+                accumulatedEarnings: "💰 ACCUMULATED EARNINGS",
                 authorize: "1. AUTHORIZE USDT",
                 activate: "2. ACTIVATE (10 USDT)",
                 renew: "RENEW",
                 withdraw: "WITHDRAW",
                 adminPanel: "⚙️ Admin Panel",
                 pause: "PAUSE/RESUME",
-                grantExtraSlots: "GRANT EXTRA SLOTS",
+                grantSlots: "GRANT EXTRA SLOTS",
                 rewardLeader: "REWARD LEADER",
-                useSolidarityFund: "USE SOL. FUND",
+                useSolidarity: "USE SOL. FUND",
                 updateBonus: "UPDATE BONUS N3",
                 toggleRecurring: "TOGGLE REC. BONUS",
                 payRecurring: "PAY REC. BONUS",
                 recoverToken: "RECOVER TOKEN",
-                yourInviteLink: "YOUR INVITE LINK",
+                inviteLink: "YOUR INVITE LINK",
                 copy: "Copy",
                 copied: "Link copied!",
                 quickTutorials: "📘 QUICK TUTORIALS",
+                clickToExpand: "(click to expand)",
                 tutorialAuthorize: "🔹 Authorize USDT",
                 tutorialAuthorizeText: "1. Make sure you have USDT in your wallet.<br>2. Click 'AUTHORIZE USDT'.<br>3. Confirm the transaction (gas only).",
                 tutorialActivate: "🔹 Activate subscription",
@@ -632,7 +658,19 @@
                 tutorialWithdrawText: "Only when you have at least 4 directs and balance ≥10 USDT.",
                 tutorialInvite: "🔹 Invite",
                 tutorialInviteText: "Share your invite link. When someone registers with it, they become your direct referral.",
-                vaultTitle: "GROWTH VAULT",
+                loading: "Loading...",
+                circleMeaning: "Each circle shows the number of people at that level.",
+                telegram: "Telegram",
+                whatsapp: "WhatsApp",
+                subtitle: "Virtual Office · BSC · V5",
+                membership: "MEMBERSHIP",
+                vault: "VAULT",
+                aboutVault: "📘 ABOUT THE VAULT",
+                arbitrage: "ARBITRAGE",
+                emergencyWithdraw: "🚨 EMERGENCY WITHDRAW",
+                adminResponsibility: "Use these functions responsibly.",
+                // Vault
+                vaultTitle: "🏦 GROWTH VAULT",
                 vaultDescription: "Invest from $10 USDT in our diversified fund (70% secure loans + 30% high-yield farming). Earn weekly interest and withdraw anytime.",
                 myInvestment: "My Investment",
                 accumulatedGains: "Accumulated Gains",
@@ -641,15 +679,18 @@
                 variabilityWarning: "⚠️ Vault performance is <span class='font-bold text-cyan-300'>variable</span> and depends on daily market conditions. Historically, returns have ranged between:",
                 dailyAvg: "Daily (avg)",
                 weeklyAvg: "Weekly (avg)",
-                deposit: "Deposit USDT",
-                amountMin: "Amount (min. 10)",
+                deposit: "📥 Deposit USDT",
+                amountMin: "Ex: 10",
+                depositBtn: "Deposit",
+                minDeposit: "Min 10 USDT. Profits are distributed weekly.",
                 standardWithdraw: "📤 Standard Withdraw",
                 standardWithdrawDesc: "No fee. Processed at the end of the cycle (weekly).",
+                request: "Request",
                 instantWithdraw: "⚡ Instant Withdraw",
                 instantWithdrawDesc: "1% fee. Weekly limit of 10% of fund.",
                 vaultActivity: "📢 VAULT ACTIVITY",
                 connectToSee: "Connect your wallet to see activity...",
-                aboutVault: "📘 ABOUT THE GROWTH VAULT",
+                aboutVaultTitle: "📘 ABOUT THE GROWTH VAULT",
                 howItWorks: "🔍 How it works?",
                 howItWorksText: "The Vault is a collective fund where users deposit USDT. The smart contract automatically invests these funds in two strategies: 70% in secure loans (Venus Protocol) and 30% in high-yield farming (PancakeSwap/Beefy).",
                 whyVariable: "📈 Why is performance variable?",
@@ -658,8 +699,8 @@
                 riskMarket: "Market risk",
                 riskProtocol: "Protocol risk",
                 protections: "Protections: emergency withdraw, pause, diversification",
-                arbitrage: "🤖 ARBITRAGE",
-                arbitrageDesc: "We are developing an automated arbitrage platform. Coming soon!"
+                arbitrageDesc: "We are developing an automated arbitrage platform. Coming soon!",
+                footer: "Milimar Protocol · BSC · Version 5 + Vault"
             }
         };
 
@@ -667,9 +708,24 @@
 
         function setLanguage(lang) {
             currentLang = lang;
-            // Actualizar textos estáticos con data-i18n (necesitaríamos añadir atributos, pero por simplicidad no se implementa aquí)
-            // En su lugar, puedes modificar los textos directamente con JavaScript si lo deseas.
-            // Para este ejemplo, dejamos la funcionalidad básica de cambio de idioma en los botones.
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang] && translations[lang][key]) {
+                    if (el.tagName === 'INPUT' && el.getAttribute('type') !== 'text') {
+                        // Placeholder para inputs
+                        el.setAttribute('placeholder', translations[lang][key]);
+                    } else {
+                        el.innerHTML = translations[lang][key];
+                    }
+                }
+            });
+            // Actualizar placeholders específicos
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+                const key = el.getAttribute('data-i18n-placeholder');
+                if (translations[lang] && translations[lang][key]) {
+                    el.setAttribute('placeholder', translations[lang][key]);
+                }
+            });
             document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
             document.getElementById(`lang-${lang}`).classList.add('active');
         }
@@ -1058,41 +1114,75 @@
             } catch (e) { showToast('Error: ' + e.message, true); }
         };
 
-        // Admin functions
+        // Admin functions - corregidas para usar las funciones reales del contrato
         document.getElementById('btnPausa').onclick = async () => {
             if (!isOwner || !confirm('¿Cambiar estado de pausa?')) return;
-            try { await (await contractMembresia.togglePausa()).wait(); showToast('✅ Pausa cambiada'); } catch (e) { showToast('Error: ' + e.message, true); }
+            try {
+                const tx = await contractMembresia.togglePausa();
+                await tx.wait();
+                showToast('✅ Pausa cambiada');
+            } catch (e) { showToast('Error: ' + e.message, true); }
         };
+
         document.getElementById('btnCupos').onclick = async () => {
             if (!isOwner) return;
-            const lider = prompt('Dirección del líder:'); const cant = prompt('Cantidad de cupos:');
+            const lider = prompt('Dirección del líder:');
+            const cant = prompt('Cantidad de cupos:');
             if (!lider || !cant) return;
-            try { await (await contractMembresia.otorgarCuposExtra(lider, cant)).wait(); showToast('✅ Cupos otorgados'); } catch (e) { showToast('Error: ' + e.message, true); }
+            try {
+                const tx = await contractMembresia.otorgarCuposExtra(lider, cant);
+                await tx.wait();
+                showToast('✅ Cupos otorgados');
+            } catch (e) { showToast('Error: ' + e.message, true); }
         };
+
         document.getElementById('btnPremiar').onclick = async () => {
             if (!isOwner) return;
-            const lider = prompt('Dirección del líder:'); const monto = prompt('Monto en USDT:');
+            const lider = prompt('Dirección del líder:');
+            const monto = prompt('Monto en USDT:');
             if (!lider || !monto) return;
-            try { await (await contractMembresia.premiarLider(lider, ethers.utils.parseUnits(monto, 18))).wait(); showToast('✅ Premio enviado'); } catch (e) { showToast('Error: ' + e.message, true); }
+            try {
+                const tx = await contractMembresia.premiarLider(lider, ethers.utils.parseUnits(monto, 18));
+                await tx.wait();
+                showToast('✅ Premio enviado');
+            } catch (e) { showToast('Error: ' + e.message, true); }
         };
+
         document.getElementById('btnSolidaridad').onclick = async () => {
             if (!isOwner) return;
-            const benef = prompt('Dirección del beneficiario:'); const monto = prompt('Monto en USDT:'); const motivo = prompt('Motivo:');
+            const benef = prompt('Dirección del beneficiario:');
+            const monto = prompt('Monto en USDT:');
+            const motivo = prompt('Motivo:');
             if (!benef || !monto || !motivo) return;
-            try { await (await contractMembresia.usarFondoSolidaridad(benef, ethers.utils.parseUnits(monto, 18), motivo)).wait(); showToast('✅ Fondo usado'); } catch (e) { showToast('Error: ' + e.message, true); }
+            try {
+                const tx = await contractMembresia.usarFondoSolidaridad(benef, ethers.utils.parseUnits(monto, 18), motivo);
+                await tx.wait();
+                showToast('✅ Fondo usado');
+            } catch (e) { showToast('Error: ' + e.message, true); }
         };
+
         document.getElementById('btnActualizarBono').onclick = async () => {
             if (!isOwner) return;
             const nuevo = prompt('Nuevo monto del bono nivel 3 (en USDT):');
             if (!nuevo) return;
-            try { await (await contractMembresia.actualizarBonoNivel3(ethers.utils.parseUnits(nuevo, 18))).wait(); showToast('✅ Bono actualizado'); } catch (e) { showToast('Error: ' + e.message, true); }
+            try {
+                const tx = await contractMembresia.actualizarBonoNivel3(ethers.utils.parseUnits(nuevo, 18));
+                await tx.wait();
+                showToast('✅ Bono actualizado');
+            } catch (e) { showToast('Error: ' + e.message, true); }
         };
+
         document.getElementById('btnToggleBonosRec').onclick = async () => {
             if (!isOwner) return;
             const estado = prompt('Activar bonos recurrentes? (true/false):');
             if (estado === null) return;
-            try { await (await contractMembresia.setBonosRecurrentesActivados(estado === 'true')).wait(); showToast('✅ Estado cambiado'); } catch (e) { showToast('Error: ' + e.message, true); }
+            try {
+                const tx = await contractMembresia.setBonosRecurrentesActivados(estado === 'true');
+                await tx.wait();
+                showToast('✅ Estado cambiado');
+            } catch (e) { showToast('Error: ' + e.message, true); }
         };
+
         document.getElementById('btnPagarBonosRec').onclick = async () => {
             if (!isOwner) return;
             const lista = prompt('Lista de direcciones separadas por coma:');
@@ -1101,16 +1191,21 @@
             const direcciones = lista.split(',').map(s => s.trim()).filter(s => s !== '');
             try {
                 const tx = await contractMembresia.pagarBonosRecurrentes(direcciones, ethers.utils.parseUnits(monto, 18));
-                showToast('Pagando bonos...');
                 await tx.wait();
                 showToast('✅ Bonos pagados');
             } catch (e) { showToast('Error: ' + e.message, true); }
         };
+
         document.getElementById('btnRecuperar').onclick = async () => {
             if (!isOwner) return;
-            const token = prompt('Dirección del token (no USDT):'); const cant = prompt('Cantidad:');
+            const token = prompt('Dirección del token (no USDT):');
+            const cant = prompt('Cantidad:');
             if (!token || !cant) return;
-            try { await (await contractMembresia.recuperarTokenExterno(token, ethers.utils.parseUnits(cant, 18))).wait(); showToast('✅ Tokens recuperados'); } catch (e) { showToast('Error: ' + e.message, true); }
+            try {
+                const tx = await contractMembresia.recuperarTokenExterno(token, ethers.utils.parseUnits(cant, 18));
+                await tx.wait();
+                showToast('✅ Tokens recuperados');
+            } catch (e) { showToast('Error: ' + e.message, true); }
         };
 
         // Botones del vault (igual que v4)
