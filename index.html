@@ -1,46 +1,164 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-    <title>Admin Test</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Milimar JAGC | Admin Completo</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
+    <style>
+        body {
+            background: #0a0f1f;
+            color: #00ffff;
+            font-family: 'Courier New', monospace;
+            padding: 20px;
+            margin: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            font-size: 2rem;
+            text-shadow: 0 0 10px cyan;
+        }
+        .card {
+            background: rgba(0, 255, 255, 0.1);
+            border: 1px solid cyan;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 20px rgba(0,255,255,0.3);
+        }
+        button {
+            width: 100%;
+            padding: 15px;
+            margin: 5px 0;
+            background: transparent;
+            border: 2px solid cyan;
+            color: cyan;
+            border-radius: 60px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        button:hover {
+            background: cyan;
+            color: black;
+            box-shadow: 0 0 20px cyan;
+        }
+        .info {
+            border: 1px solid magenta;
+            border-radius: 10px;
+            padding: 10px;
+            margin: 10px 0;
+            color: white;
+            font-size: 0.9rem;
+            word-break: break-all;
+        }
+        .network-badge {
+            display: inline-block;
+            background: rgba(255,0,255,0.2);
+            border: 1px solid magenta;
+            border-radius: 60px;
+            padding: 5px 15px;
+            font-size: 0.8rem;
+            color: magenta;
+        }
+        .copy-section {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .copy-section input {
+            flex: 1;
+            background: rgba(0,0,0,0.5);
+            border: 1px solid cyan;
+            border-radius: 60px;
+            padding: 10px;
+            color: white;
+        }
+        .copy-section button {
+            width: auto;
+            padding: 10px 20px;
+        }
+    </style>
 </head>
-<body style="background:#111;color:#0ff;padding:20px;font-family:sans-serif;">
-    <h1>🧪 Test Admin Milimar</h1>
-    <button id="connectBtn" style="width:100%;padding:15px;background:transparent;border:2px solid cyan;color:cyan;border-radius:30px;">🔌 CONECTAR</button>
-    <div id="info" style="margin:20px 0;padding:10px;border:1px solid magenta;color:white;"></div>
-    <div id="adminPanel" style="display:none;">
-        <button onclick="ejecutarPausa()" style="width:100%;padding:15px;margin:5px 0;background:transparent;border:2px solid cyan;color:cyan;border-radius:30px;">⏸️ PAUSAR</button>
-        <button onclick="ejecutarCupos()" style="width:100%;padding:15px;margin:5px 0;background:transparent;border:2px solid cyan;color:cyan;border-radius:30px;">🎫 CUPOS</button>
-        <button onclick="ejecutarPremiar()" style="width:100%;padding:15px;margin:5px 0;background:transparent;border:2px solid cyan;color:cyan;border-radius:30px;">🏆 PREMIAR</button>
-        <button onclick="ejecutarSolidaridad()" style="width:100%;padding:15px;margin:5px 0;background:transparent;border:2px solid cyan;color:cyan;border-radius:30px;">🤝 F. SOL.</button>
+<body>
+    <div class="container">
+        <h1>⚙️ MILIMAR ADMIN</h1>
+        <div class="card">
+            <button id="connectBtn">🔌 CONECTAR WALLET</button>
+            <div id="info" class="info">Esperando conexión...</div>
+            <div class="network-badge">BSC Mainnet (Chain ID 56)</div>
+        </div>
+
+        <div id="adminPanel" style="display: none;">
+            <div class="card">
+                <h2>🔐 PANEL DE ADMINISTRACIÓN</h2>
+                <button id="btnPausa">⏸️ PAUSAR / REANUDAR</button>
+                <button id="btnCupos">🎫 OTORGAR CUPOS EXTRA</button>
+                <button id="btnPremiar">🏆 PREMIAR LÍDER</button>
+                <button id="btnSolidaridad">🤝 USAR FONDO SOLIDARIDAD</button>
+                <button id="btnBonoN3">💰 ACTUALIZAR BONO NIVEL 3</button>
+                <button id="btnBonosRec">🔄 ACTIVAR BONOS RECURRENTES</button>
+                <button id="btnPagarRec">💸 PAGAR BONOS RECURRENTES</button>
+                <button id="btnRecuperar">🔙 RECUPERAR TOKENS</button>
+            </div>
+        </div>
+
+        <div class="card" id="inviteSection" style="display: none;">
+            <h3>📨 TU ENLACE DE INVITACIÓN</h3>
+            <div class="copy-section">
+                <input type="text" id="refLink" readonly value="">
+                <button id="copyBtn">📋 Copiar</button>
+            </div>
+            <p id="copyMsg" style="color: lime; font-size: 0.8rem; display: none;">¡Copiado!</p>
+        </div>
     </div>
 
     <script>
+        // ========== CONFIGURACIÓN ==========
         const CONTRACT_ADDR = "0x35425E6416f799C30938cBc159523B43C1c358B2";
         const BSC_CHAIN_ID = 56;
 
+        // ABI completo (incluye todas las funciones de admin)
         const abi = [
             "function owner() view returns (address)",
             "function togglePausa() external",
             "function otorgarCuposExtra(address,uint256) external",
             "function premiarLider(address,uint256) external",
-            "function usarFondoSolidaridad(address,uint256,string memory) external"
+            "function usarFondoSolidaridad(address,uint256,string memory) external",
+            "function actualizarBonoNivel3(uint256) external",
+            "function setBonosRecurrentesActivados(bool) external",
+            "function pagarBonosRecurrentes(address[],uint256) external",
+            "function recuperarTokenExterno(address,uint256) external"
         ];
 
+        // Variables globales
         let provider, signer, userAddress, contract;
 
+        // Elementos DOM
         const connectBtn = document.getElementById('connectBtn');
         const infoDiv = document.getElementById('info');
         const adminPanel = document.getElementById('adminPanel');
+        const inviteSection = document.getElementById('inviteSection');
+        const refLink = document.getElementById('refLink');
+        const copyBtn = document.getElementById('copyBtn');
+        const copyMsg = document.getElementById('copyMsg');
 
-        function mostrar(msg) {
-            alert(msg);
-            infoDiv.innerText = msg;
+        // Función para mostrar alertas y actualizar info
+        function mostrar(mensaje, esError = false) {
+            alert(mensaje);
+            infoDiv.innerHTML = mensaje;
+            infoDiv.style.color = esError ? '#ff6666' : 'white';
         }
 
+        // ========== CONEXIÓN ==========
         connectBtn.onclick = async () => {
             if (!window.ethereum) {
-                mostrar('❌ Instala MetaMask');
+                mostrar('❌ Instala MetaMask, Binance Wallet u OKX Wallet', true);
                 return;
             }
             try {
@@ -49,6 +167,7 @@
                 signer = provider.getSigner();
                 userAddress = await signer.getAddress();
 
+                // Verificar red
                 const network = await provider.getNetwork();
                 if (network.chainId !== BSC_CHAIN_ID) {
                     try {
@@ -57,68 +176,149 @@
                         signer = provider.getSigner();
                         userAddress = await signer.getAddress();
                     } catch {
-                        mostrar('❌ Cambia a BSC Mainnet');
+                        mostrar('❌ Cambia a BSC Mainnet en tu wallet', true);
                         return;
                     }
                 }
 
                 contract = new ethers.Contract(CONTRACT_ADDR, abi, signer);
+
+                // Verificar owner
                 const owner = await contract.owner();
                 if (owner.toLowerCase() === userAddress.toLowerCase()) {
                     adminPanel.style.display = 'block';
-                    mostrar('✅ Eres owner. Botones listos.');
+                    inviteSection.style.display = 'block';
+                    refLink.value = window.location.origin + window.location.pathname + "?ref=" + userAddress;
+                    mostrar('✅ Conectado como OWNER');
                 } else {
-                    mostrar('❌ No eres owner');
+                    mostrar('❌ No eres el owner del contrato', true);
                 }
             } catch (e) {
-                mostrar('❌ Error: ' + e.message);
+                mostrar('❌ Error: ' + e.message, true);
             }
         };
 
-        // Funciones llamadas desde los botones (onclick)
-        window.ejecutarPausa = async function() {
-            alert('1. Click en PAUSAR');
-            if (!contract) { alert('Conecta primero'); return; }
+        // ========== FUNCIÓN GENÉRICA PARA EJECUTAR TRANSACCIONES ==========
+        async function ejecutar(funcion, ...args) {
+            if (!contract) { mostrar('❌ Conecta primero', true); return; }
             try {
-                alert('2. Enviando transacción...');
-                const tx = await contract.togglePausa();
-                alert('3. Tx enviada: ' + tx.hash);
+                mostrar('⏳ Enviando transacción...');
+                const tx = await funcion(...args);
+                mostrar('📤 Transacción enviada: ' + tx.hash);
                 await tx.wait();
-                alert('4. ✅ Transacción confirmada');
+                mostrar('✅ Transacción confirmada');
             } catch (e) {
-                alert('❌ Error: ' + e.message);
+                mostrar('❌ Error: ' + e.message, true);
             }
+        }
+
+        // ========== BOTONES DE ADMIN ==========
+
+        // PAUSAR
+        document.getElementById('btnPausa').onclick = () => {
+            ejecutar(contract.togglePausa);
         };
 
-        window.ejecutarCupos = function() {
-            alert('Click en CUPOS');
-            let lider = prompt('Dirección del líder:');
+        // CUPOS
+        document.getElementById('btnCupos').onclick = async () => {
+            const lider = prompt('👤 Dirección del líder:');
             if (!lider) return;
-            let cant = prompt('Cantidad de cupos:');
-            if (!cant) return;
-            alert('Llamando a otorgarCuposExtra...');
-            // Aquí iría la llamada real, pero por ahora solo probamos el flujo
-            alert('Funcionalidad no implementada en esta prueba');
+            const cant = prompt('🔢 Cantidad de cupos extra:');
+            if (!cant || isNaN(parseInt(cant))) {
+                mostrar('❌ Cantidad inválida', true);
+                return;
+            }
+            ejecutar(contract.otorgarCuposExtra, lider, parseInt(cant));
         };
 
-        window.ejecutarPremiar = function() {
-            alert('Click en PREMIAR');
-            let lider = prompt('Dirección del líder:');
+        // PREMIAR LÍDER
+        document.getElementById('btnPremiar').onclick = async () => {
+            const lider = prompt('👤 Dirección del líder:');
             if (!lider) return;
-            let monto = prompt('Monto en USDT:');
-            if (!monto) return;
-            alert('Llamando a premiarLider...');
+            const monto = prompt('💰 Monto en USDT:');
+            if (!monto || isNaN(parseFloat(monto))) {
+                mostrar('❌ Monto inválido', true);
+                return;
+            }
+            const montoWei = ethers.utils.parseUnits(monto, 18);
+            ejecutar(contract.premiarLider, lider, montoWei);
         };
 
-        window.ejecutarSolidaridad = function() {
-            alert('Click en F. SOL.');
-            let benef = prompt('Dirección del beneficiario:');
+        // USAR FONDO SOLIDARIDAD
+        document.getElementById('btnSolidaridad').onclick = async () => {
+            const benef = prompt('👤 Dirección del beneficiario:');
             if (!benef) return;
-            let monto = prompt('Monto en USDT:');
-            if (!monto) return;
-            let motivo = prompt('Motivo:');
+            const monto = prompt('💰 Monto en USDT:');
+            if (!monto || isNaN(parseFloat(monto))) {
+                mostrar('❌ Monto inválido', true);
+                return;
+            }
+            const motivo = prompt('📝 Motivo (ej: "ayuda por pérdida"):');
             if (!motivo) return;
-            alert('Llamando a usarFondoSolidaridad...');
+            const montoWei = ethers.utils.parseUnits(monto, 18);
+            ejecutar(contract.usarFondoSolidaridad, benef, montoWei, motivo);
+        };
+
+        // ACTUALIZAR BONO NIVEL 3
+        document.getElementById('btnBonoN3').onclick = async () => {
+            const nuevo = prompt('💰 Nuevo monto del bono nivel 3 (en USDT):');
+            if (!nuevo || isNaN(parseFloat(nuevo))) {
+                mostrar('❌ Monto inválido', true);
+                return;
+            }
+            const nuevoWei = ethers.utils.parseUnits(nuevo, 18);
+            ejecutar(contract.actualizarBonoNivel3, nuevoWei);
+        };
+
+        // ACTIVAR/DESACTIVAR BONOS RECURRENTES
+        document.getElementById('btnBonosRec').onclick = async () => {
+            const estado = prompt('¿Activar bonos recurrentes? (true/false):');
+            if (estado === null) return;
+            const activar = (estado.toLowerCase() === 'true');
+            ejecutar(contract.setBonosRecurrentesActivados, activar);
+        };
+
+        // PAGAR BONOS RECURRENTES
+        document.getElementById('btnPagarRec').onclick = async () => {
+            const lista = prompt('📋 Lista de direcciones separadas por coma:\nej: 0x123...,0x456...');
+            if (!lista) return;
+            const direcciones = lista.split(',').map(s => s.trim()).filter(s => s !== '');
+            if (direcciones.length === 0) {
+                mostrar('❌ Lista vacía', true);
+                return;
+            }
+            const monto = prompt('💰 Monto por persona (USDT):');
+            if (!monto || isNaN(parseFloat(monto))) {
+                mostrar('❌ Monto inválido', true);
+                return;
+            }
+            const montoWei = ethers.utils.parseUnits(monto, 18);
+            ejecutar(contract.pagarBonosRecurrentes, direcciones, montoWei);
+        };
+
+        // RECUPERAR TOKENS EXTERNOS
+        document.getElementById('btnRecuperar').onclick = async () => {
+            const token = prompt('🔗 Dirección del token a recuperar (no USDT):');
+            if (!token) return;
+            const cant = prompt('🔢 Cantidad a recuperar:');
+            if (!cant || isNaN(parseFloat(cant))) {
+                mostrar('❌ Cantidad inválida', true);
+                return;
+            }
+            const cantWei = ethers.utils.parseUnits(cant, 18);
+            ejecutar(contract.recuperarTokenExterno, token, cantWei);
+        };
+
+        // ========== COPIAR ENLACE ==========
+        copyBtn.onclick = () => {
+            refLink.select();
+            refLink.setSelectionRange(0, 99999);
+            navigator.clipboard.writeText(refLink.value).then(() => {
+                copyMsg.style.display = 'block';
+                setTimeout(() => copyMsg.style.display = 'none', 2000);
+            }).catch(() => {
+                mostrar('❌ Error al copiar', true);
+            });
         };
     </script>
 </body>
