@@ -2,16 +2,16 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>Milimar JAGC | Oficina Virtual V5 (Neón)</title>
     <!-- Fuentes -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome para iconos (opcional, para el selector de idioma) -->
+    <!-- Font Awesome para iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* ===== ESTILOS ORIGINALES + MEJORAS NEÓN ===== */
+        /* === ESTILOS ORIGINALES + MEJORAS NEÓN Y RESPONSIVE === */
         body {
             background: linear-gradient(125deg, #0a0f1a 0%, #0f2a3a 35%, #1a3f3a 70%, #4a3a1a 100%);
             background-size: 400% 400%;
@@ -19,6 +19,9 @@
             font-family: 'Inter', sans-serif;
             color: white;
             position: relative;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
         }
         /* Fondo de red (imagen semitransparente) */
         body::before {
@@ -53,6 +56,8 @@
             border-radius: 1.5rem;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 20px rgba(0, 255, 255, 0.2);
             transition: all 0.3s ease;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
         }
         .glass-card:hover {
             border-color: #00ffff;
@@ -71,7 +76,7 @@
             font-size: 14px;
             font-weight: bold;
             transition: 0.3s;
-            margin: 0 4px;
+            margin: 4px;
             font-family: 'Poppins', sans-serif;
             border: 2px solid;
             background: rgba(0,0,0,0.4);
@@ -96,20 +101,33 @@
             z-index: 1000;
             transition: opacity 0.3s;
             max-width: 300px;
+            padding: 1rem;
+            background: rgba(0,0,0,0.8);
+            border-left: 4px solid #00ffff;
+            border-radius: 1rem;
+            color: white;
         }
         /* Botones neón */
         .btn {
-            @apply font-black py-3 px-6 rounded-xl transition-all transform hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed;
+            font-weight: 900;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            transition: all 0.2s;
+            transform: scale(1);
             font-family: 'Poppins', sans-serif;
             border: 2px solid #00ffff;
             background: transparent;
             color: #00ffff;
             box-shadow: 0 0 15px #00ffff;
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
         }
         .btn:hover {
             background: #00ffff;
             color: black;
             box-shadow: 0 0 40px #00ffff;
+            transform: scale(1.05);
         }
         .btn-secondary {
             border-color: #ff00ff;
@@ -158,11 +176,15 @@
         }
         /* Pestañas neón */
         .tab-button {
-            @apply px-6 py-3 rounded-t-xl font-bold transition-all;
+            padding: 0.5rem 1rem;
+            border-radius: 0.75rem 0.75rem 0 0;
+            font-weight: bold;
+            transition: all 0.2s;
             border: 1px solid #00ffff;
             color: #00ffff;
             background: transparent;
             box-shadow: 0 0 10px #00ffff;
+            cursor: pointer;
         }
         .tab-active {
             background: #00ffff;
@@ -176,8 +198,13 @@
         }
         /* Feed items */
         .feed-item {
-            @apply bg-white/10 p-4 rounded-lg mb-3 text-sm border border-white/20;
+            background: rgba(255,255,255,0.1);
+            padding: 1rem;
+            border-radius: 0.75rem;
+            margin-bottom: 0.75rem;
+            border: 1px solid rgba(255,255,255,0.2);
             border-left: 4px solid #00ffff;
+            font-size: 0.9rem;
         }
         /* Selector de idioma pequeño */
         .lang-selector {
@@ -203,16 +230,25 @@
             background: #00ffff;
             color: black;
         }
-        /* Otros */
-        .vault-card {
-            @apply glass-card p-4 text-center;
+        /* Ajustes responsive */
+        @media (max-width: 640px) {
+            .glass-card {
+                padding: 1rem;
+            }
+            .node {
+                width: 48px;
+                height: 48px;
+                font-size: 12px;
+            }
+            .floating-btn {
+                padding: 8px 16px;
+                font-size: 0.8rem;
+            }
+            .whatsapp-btn {
+                left: 80px;
+            }
         }
-        .vault-stat {
-            @apply text-2xl font-black text-cyan-300;
-        }
-        .info-title {
-            @apply text-cyan-400 font-bold text-base mb-2;
-        }
+        /* Input neón */
         .input-neon {
             background: rgba(0,0,0,0.6);
             border: 1px solid #00ffff;
@@ -221,6 +257,7 @@
             padding: 10px 20px;
             outline: none;
             box-shadow: 0 0 15px #00ffff;
+            width: 100%;
         }
         .input-neon:focus {
             border-color: #ff00ff;
@@ -254,7 +291,7 @@
         <i class="fab fa-whatsapp"></i> <span data-i18n="whatsapp">WhatsApp</span>
     </a>
 
-    <div id="toast" class="toast glass-card p-4 hidden">
+    <div id="toast" class="toast hidden">
         <p id="toastMsg" class="text-sm"></p>
     </div>
 
@@ -433,7 +470,7 @@
             </div>
         </div>
 
-        <!-- SECCIÓN VAULT -->
+        <!-- SECCIÓN VAULT (original) -->
         <div id="seccionVault" class="hidden space-y-6">
             <div class="glass-card p-6">
                 <h2 class="text-2xl font-bold text-cyan-400 mb-4" data-i18n="vaultTitle">🏦 VAULT DE CRECIMIENTO</h2>
@@ -441,21 +478,21 @@
 
                 <!-- Estadísticas del vault -->
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
-                    <div class="vault-card">
+                    <div class="glass-card p-3 text-center">
                         <p class="text-[10px] text-white/50" data-i18n="miInversion">Mi inversión</p>
-                        <p id="vaultMiInversion" class="vault-stat">0.00</p>
+                        <p id="vaultMiInversion" class="text-2xl font-black text-cyan-300">0.00</p>
                     </div>
-                    <div class="vault-card">
+                    <div class="glass-card p-3 text-center">
                         <p class="text-[10px] text-white/50" data-i18n="gananciasVault">Ganancias acumuladas</p>
-                        <p id="vaultGanancias" class="vault-stat">0.00</p>
+                        <p id="vaultGanancias" class="text-2xl font-black text-cyan-300">0.00</p>
                     </div>
-                    <div class="vault-card">
+                    <div class="glass-card p-3 text-center">
                         <p class="text-[10px] text-white/50" data-i18n="totalFondo">Total en fondo</p>
-                        <p id="vaultTotalFondo" class="vault-stat">0.00</p>
+                        <p id="vaultTotalFondo" class="text-2xl font-black text-cyan-300">0.00</p>
                     </div>
-                    <div class="vault-card">
+                    <div class="glass-card p-3 text-center">
                         <p class="text-[10px] text-white/50" data-i18n="sharePrice">Valor de share</p>
-                        <p id="vaultSharePrice" class="vault-stat">1.00</p>
+                        <p id="vaultSharePrice" class="text-2xl font-black text-cyan-300">1.00</p>
                     </div>
                 </div>
 
@@ -522,16 +559,16 @@
             <div class="glass-card p-6">
                 <h2 class="text-2xl font-bold text-cyan-400 mb-4" data-i18n="infoVaultTitle">📘 ACERCA DEL VAULT DE CRECIMIENTO</h2>
                 <div class="space-y-4">
-                    <div class="info-section">
-                        <h3 class="info-title" data-i18n="comoFunciona">🔍 ¿Cómo funciona?</h3>
+                    <div class="feed-item">
+                        <h3 class="font-bold text-cyan-400 mb-1" data-i18n="comoFunciona">🔍 ¿Cómo funciona?</h3>
                         <p class="text-white/80 text-xs leading-relaxed" data-i18n="comoFuncionaTexto">El Vault es un fondo colectivo donde los usuarios depositan USDT. El contrato inteligente invierte automáticamente estos fondos en dos estrategias: 70% en préstamos seguros (Venus Protocol) y 30% en farming de alto rendimiento (PancakeSwap/Beefy).</p>
                     </div>
-                    <div class="info-section">
-                        <h3 class="info-title" data-i18n="rendimiento">📈 ¿Por qué el rendimiento es variable?</h3>
+                    <div class="feed-item">
+                        <h3 class="font-bold text-cyan-400 mb-1" data-i18n="rendimiento">📈 ¿Por qué el rendimiento es variable?</h3>
                         <p class="text-white/80 text-xs" data-i18n="rendimientoTexto">Depende de las tasas de interés de préstamos, el volumen de trading y el precio de tokens de recompensa.</p>
                     </div>
-                    <div class="info-section">
-                        <h3 class="info-title" data-i18n="seguridad">🛡️ Seguridad y riesgos</h3>
+                    <div class="feed-item">
+                        <h3 class="font-bold text-cyan-400 mb-1" data-i18n="seguridad">🛡️ Seguridad y riesgos</h3>
                         <ul class="list-disc list-inside text-white/70 text-xs" data-i18n="seguridadTexto">
                             <li>Riesgo de mercado</li>
                             <li>Riesgo de protocolo</li>
@@ -780,8 +817,7 @@
                 if (i18n[lang][key]) {
                     if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
                         el.placeholder = i18n[lang][key];
-                    } else if (el.tagName === 'UL' || el.tagName === 'LI') {
-                        // Para listas, se maneja con innerHTML (riesgo de XSS, pero confiamos en el texto)
+                    } else if (el.tagName === 'UL') {
                         el.innerHTML = i18n[lang][key];
                     } else {
                         el.textContent = i18n[lang][key];
