@@ -3,17 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>Milimar JAGC | Oficina Virtual BSC</title>
+    <title>Milimar JAGC | Depuración Admin</title>
     <!-- Fuentes futuristas -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <style>
-        /* ========== ESTILOS (los mismos) ========== */
+        /* (mismos estilos que antes, omito por brevedad, pero deben estar) */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Inter', sans-serif;
@@ -67,13 +65,6 @@
             line-height: 1.2;
             word-break: break-word;
         }
-        @keyframes glitch {
-            0% { text-shadow: 0.05em 0 0 rgba(255,0,100,0.3), -0.05em -0.025em 0 rgba(0,255,255,0.3); }
-            25% { text-shadow: -0.05em -0.025em 0 rgba(255,0,100,0.3), 0.025em 0.05em 0 rgba(0,255,255,0.3); }
-            50% { text-shadow: 0.025em 0.05em 0 rgba(255,0,100,0.3), 0.05em 0 0 rgba(0,255,255,0.3); }
-            75% { text-shadow: -0.025em 0 0 rgba(255,0,100,0.3), -0.025em -0.025em 0 rgba(0,255,255,0.3); }
-            100% { text-shadow: 0.05em 0 0 rgba(255,0,100,0.3), -0.05em -0.025em 0 rgba(0,255,255,0.3); }
-        }
         .subtitle-neon {
             font-family: 'Orbitron', sans-serif;
             color: #80ffff;
@@ -91,15 +82,6 @@
             animation: fadeUp 0.5s ease-out;
             width: 100%;
             overflow: hidden;
-        }
-        .neon-card:hover {
-            border-color: #00ffff;
-            box-shadow: 0 0 50px #00ffff, inset 0 0 30px #00ffff;
-            transform: translateY(-5px) scale(1.02);
-        }
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
         }
         .btn-neon {
             background: transparent;
@@ -127,173 +109,6 @@
             color: #ff00ff;
             box-shadow: 0 0 15px #ff00ff;
         }
-        .btn-neon.secondary:hover {
-            background: #ff00ff;
-            color: #0a0f1f;
-        }
-        .node-neon {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            font-weight: bold;
-            transition: 0.3s;
-            margin: 4px;
-            font-family: 'Orbitron', sans-serif;
-            border: 2px solid;
-            background: rgba(0,0,0,0.4);
-            backdrop-filter: blur(5px);
-            flex: 0 0 auto;
-            cursor: pointer;
-        }
-        .node-neon:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 30px currentColor;
-        }
-        @media (max-width: 640px) {
-            .node-neon {
-                width: 60px;
-                height: 60px;
-                font-size: 12px;
-            }
-        }
-        .node-filled-neon {
-            border-color: #00ffff;
-            color: #00ffff;
-            box-shadow: 0 0 20px #00ffff;
-            background: rgba(0,255,255,0.1);
-        }
-        .node-empty-neon {
-            border-color: rgba(255,0,255,0.3);
-            color: rgba(255,0,255,0.5);
-            box-shadow: 0 0 10px rgba(255,0,255,0.2);
-        }
-        .stat-neon {
-            font-size: clamp(1.5rem, 5vw, 2rem);
-            font-weight: 900;
-            color: #00ffff;
-            text-shadow: 0 0 20px #00ffff;
-            line-height: 1.2;
-            word-break: break-word;
-        }
-        .tab-neon {
-            padding: 10px 20px;
-            border-radius: 60px;
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 600;
-            transition: 0.3s;
-            cursor: pointer;
-            background: transparent;
-            border: 1px solid #00ffff;
-            color: #00ffff;
-            box-shadow: 0 0 10px #00ffff;
-            font-size: clamp(0.7rem, 2vw, 1rem);
-            white-space: nowrap;
-        }
-        .tab-neon.active {
-            background: #00ffff;
-            color: #0a0f1f;
-            box-shadow: 0 0 30px #00ffff;
-        }
-        .tab-neon:hover {
-            background: rgba(0,255,255,0.2);
-        }
-        .feed-item-neon {
-            background: rgba(0,255,255,0.05);
-            border-left: 4px solid #00ffff;
-            border-radius: 1rem;
-            padding: 12px;
-            margin-bottom: 8px;
-            font-size: 0.85rem;
-            word-break: break-word;
-        }
-        .modal-neon {
-            background: rgba(10,20,30,0.95);
-            backdrop-filter: blur(20px);
-            border: 2px solid #00ffff;
-            border-radius: 2rem;
-            box-shadow: 0 0 100px #00ffff;
-            max-width: 90%;
-            margin: 0 auto;
-        }
-        [title] {
-            cursor: help;
-            border-bottom: 1px dotted #00ffff;
-        }
-        .floating-neon {
-            position: fixed;
-            bottom: 20px;
-            z-index: 100;
-            padding: 10px 20px;
-            border-radius: 60px;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: 0.3s;
-            font-family: 'Orbitron', sans-serif;
-            border: 1px solid;
-            background: rgba(0,0,0,0.5);
-            backdrop-filter: blur(10px);
-            text-decoration: none;
-            font-size: 0.9rem;
-        }
-        .telegram-neon {
-            left: 20px;
-            border-color: #2AABEE;
-            color: #2AABEE;
-            box-shadow: 0 0 20px #2AABEE;
-        }
-        .whatsapp-neon {
-            left: 90px;
-            border-color: #25D366;
-            color: #25D366;
-            box-shadow: 0 0 20px #25D366;
-        }
-        @media (max-width: 640px) {
-            .floating-neon {
-                padding: 8px 12px;
-                font-size: 0.8rem;
-            }
-            .whatsapp-neon {
-                left: 80px;
-            }
-        }
-        .floating-neon:hover {
-            transform: scale(1.1);
-            background: currentColor;
-            color: black;
-        }
-        .input-neon {
-            background: rgba(0,0,0,0.6);
-            border: 1px solid #00ffff;
-            color: white;
-            border-radius: 60px;
-            padding: 10px 20px;
-            outline: none;
-            box-shadow: 0 0 15px #00ffff;
-            width: 100%;
-            font-size: 0.9rem;
-        }
-        .input-neon:focus {
-            border-color: #ff00ff;
-            box-shadow: 0 0 30px #ff00ff;
-        }
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #0a0f1f;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #00ffff;
-            border-radius: 10px;
-            box-shadow: 0 0 10px #00ffff;
-        }
         .network-badge {
             display: inline-block;
             background: rgba(0,255,255,0.2);
@@ -304,30 +119,11 @@
             color: #00ffff;
             box-shadow: 0 0 15px #00ffff;
         }
-        details.neon-card > summary {
-            list-style: none;
-            cursor: pointer;
-            font-weight: bold;
-            color: #00ffff;
-            padding: 1rem;
-            border-radius: 2rem;
-            transition: 0.3s;
-        }
-        details.neon-card > summary::-webkit-details-marker {
-            display: none;
-        }
-        details.neon-card[open] {
-            background: rgba(10, 20, 30, 0.8);
-        }
-        .grid-cols-responsive {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 0.75rem;
-        }
-        @media (max-width: 640px) {
-            .grid-cols-responsive {
-                grid-template-columns: repeat(2, 1fr);
-            }
+        .admin-debug {
+            border: 2px solid #ff00ff;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 1rem;
         }
     </style>
 </head>
@@ -335,165 +131,39 @@
     <div class="neon-overlay"></div>
 
     <!-- Botones flotantes -->
-    <a id="telegramLink" href="https://t.me/+z7wwfx0ocho1NzI5" target="_blank" class="floating-neon telegram-neon hidden">
-        <i class="fab fa-telegram-plane"></i> <span>Telegram</span>
-    </a>
-    <a id="whatsappLink" href="https://whatsapp.com/channel/0029Vb74Mxr3LdQVgWdycV2a" target="_blank" class="floating-neon whatsapp-neon hidden">
-        <i class="fab fa-whatsapp"></i> <span>WhatsApp</span>
-    </a>
+    <a id="telegramLink" href="https://t.me/+z7wwfx0ocho1NzI5" target="_blank" class="floating-neon telegram-neon hidden">...</a>
+    <a id="whatsappLink" href="https://whatsapp.com/channel/0029Vb74Mxr3LdQVgWdycV2a" target="_blank" class="floating-neon whatsapp-neon hidden">...</a>
 
-    <!-- Modal de confirmación -->
-    <div id="confirmModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden justify-center items-center z-50 p-4">
-        <div class="modal-neon p-6 w-full max-w-md text-center">
-            <i class="fas fa-exclamation-triangle text-4xl text-cyan-400 mb-3"></i>
-            <h3 id="modalTitle" class="text-xl font-bold text-cyan-400 mb-3" style="font-family: 'Orbitron';">¿Confirmar?</h3>
-            <p id="modalMessage" class="text-white/80 mb-4 text-sm"></p>
-            <div class="flex gap-3 justify-center">
-                <button id="modalConfirm" class="btn-neon text-sm py-2 px-4">SÍ</button>
-                <button id="modalCancel" class="btn-neon secondary text-sm py-2 px-4">NO</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="toast" class="fixed bottom-20 right-5 neon-card p-3 hidden z-50 max-w-xs">
-        <p id="toastMsg" class="text-sm"></p>
-    </div>
+    <div id="toast" class="fixed bottom-20 right-5 neon-card p-3 hidden z-50 max-w-xs"></div>
 
     <div class="container-neon">
         <header class="text-center py-6">
             <h1 class="glitch">MILIMAR JAGC</h1>
-            <p class="subtitle-neon mt-2">OFICINA VIRTUAL · BSC</p>
+            <p class="subtitle-neon mt-2">DEPURACIÓN ADMIN</p>
             <div class="mt-2">
                 <span class="network-badge"><i class="fas fa-link"></i> BSC Mainnet (Chain ID 56)</span>
             </div>
         </header>
-
-        <!-- Tabs -->
-        <div class="flex flex-wrap justify-center gap-2 mb-6">
-            <button id="btnMembresia" class="tab-neon active">MEMBRESÍA</button>
-            <button id="btnVault" class="tab-neon">VAULT</button>
-            <button id="btnInfoVault" class="tab-neon">📘 INFO VAULT</button>
-            <button id="btnHistorial" class="tab-neon">📜 HISTORIAL</button>
-            <button id="btnArbitraje" class="tab-neon">ARBITRAJE</button>
-        </div>
 
         <!-- Conexión -->
         <div id="conBox" class="neon-card p-8 text-center mb-6">
             <button id="btnConnect" class="btn-neon text-xl py-4 px-8 max-w-md mx-auto block">CONECTAR BILLETERA</button>
         </div>
 
-        <!-- SECCIÓN MEMBRESÍA -->
-        <div id="seccionMembresia" class="space-y-6">
-            <!-- Acordeón: Acerca de Milimar -->
-            <details class="neon-card p-0" open>
-                <summary class="px-6 py-4 text-cyan-400 font-bold text-lg flex items-center gap-2">
-                    <i class="fas fa-info-circle"></i> 📘 ACERCA DE MILIMAR
-                    <span class="ml-auto text-sm opacity-60">(clic para expandir)</span>
-                </summary>
-                <div class="p-6 pt-0 text-sm text-white/80 leading-relaxed border-t border-cyan-500/30">
-                    <p class="mb-2">
-                        <strong>Milimar</strong> es un contrato inteligente en Binance Smart Chain que gestiona un sistema de membresías y recompensas en red. 
-                        Los participantes activan su membresía pagando 10 USDT y pueden invitar a otros, construyendo una red de hasta 5 niveles.
-                        El contrato distribuye automáticamente las ganancias según las reglas predefinidas: comisiones por referidos directos, bonos por niveles y pool de liderazgo.
-                        Además, cuenta con un fondo de solidaridad y mecanismos de emergencia para proteger los fondos.
-                    </p>
-                    <p class="mb-2">
-                        <i class="fas fa-shield-alt text-cyan-400"></i> <strong>Seguridad:</strong> El contrato ha sido auditado y cuenta con pausa de emergencia, retiro de emergencia y límites de transacciones.
-                    </p>
-                    <p>
-                        <i class="fas fa-link text-cyan-400"></i> <strong>Red:</strong> BSC Mainnet (Chain ID 56) · Contrato de membresía: <span class="text-cyan-300 text-xs break-all">0x35425E6416f799C30938cBc159523B43C1c358B2</span>
-                    </p>
+        <!-- Panel de depuración -->
+        <div id="mainPanel" class="hidden space-y-6">
+            <div class="neon-card p-6">
+                <h2 class="text-2xl font-bold text-purple-400 mb-4">🔍 DEPURACIÓN ADMIN</h2>
+                <div class="grid grid-cols-1 gap-3">
+                    <button id="btnCheckOwner" class="btn-neon">🔍 Verificar Owner</button>
+                    <button id="btnTestPausa" class="btn-neon secondary">🛑 Probar PAUSAR (sin permiso)</button>
                 </div>
-            </details>
-
-            <!-- Tarjetas de resumen -->
-            <div class="grid grid-cols-responsive gap-3">
-                <div class="neon-card p-4 border-l-4 border-cyan-400" title="Ganancias no retiradas">
-                    <p class="text-xs text-cyan-300/60 uppercase">Saldo Pendiente</p>
-                    <p id="valSaldo" class="stat-neon">0.00</p>
-                </div>
-                <div class="neon-card p-4 border-r-4 border-purple-400 text-right" title="Total en tu red">
-                    <p class="text-xs text-purple-300/60 uppercase">Red Total</p>
-                    <p id="valRed" class="stat-neon text-purple-400">0</p>
-                </div>
-                <div class="neon-card p-4 border-l-4 border-blue-400" title="Directos">
-                    <p class="text-xs text-blue-300/60 uppercase">Directos</p>
-                    <p id="valDir" class="stat-neon text-blue-400">0</p>
-                </div>
-                <div class="neon-card p-4 border-r-4 border-pink-400 text-right" title="Días activo">
-                    <p class="text-xs text-pink-300/60 uppercase">Días activo</p>
-                    <p id="valDias" class="stat-neon text-pink-400">0</p>
-                </div>
+                <div id="debugInfo" class="mt-4 p-3 bg-purple-900/30 rounded text-xs"></div>
             </div>
 
-            <!-- Fondos y bonos -->
-            <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
-                <div class="neon-card p-3 text-center" title="Fondo solidaridad">
-                    <p class="text-xs text-emerald-300/60">Fondo Solidaridad</p>
-                    <p id="fondoSolidaridad" class="text-lg font-black text-emerald-300">0.00</p>
-                </div>
-                <div class="neon-card p-3 text-center" title="Pool liderazgo">
-                    <p class="text-xs text-yellow-300/60">Pool Liderazgo</p>
-                    <p id="poolLiderazgo" class="text-lg font-black text-yellow-300">0.00</p>
-                </div>
-                <div class="neon-card p-3 text-center" id="emergencyContainer" title="Modo emergencia">
-                    <p class="text-xs text-red-300/60">Modo Emergencia</p>
-                    <p id="emergencyStatus" class="text-lg font-black text-red-300">INACTIVO</p>
-                </div>
-                <div class="neon-card p-3 text-center" title="Bono nivel 3">
-                    <p class="text-xs text-orange-300/60">Bono Nivel 3</p>
-                    <p id="bonoNivel3" class="text-lg font-black text-orange-300">5 USDT</p>
-                </div>
-                <div class="neon-card p-3 text-center" title="Bonos recurrentes">
-                    <p class="text-xs text-cyan-300/60">Bonos recurrentes</p>
-                    <p id="bonosRecurrentes" class="text-lg font-black text-cyan-300">INACTIVO</p>
-                </div>
-            </div>
-
-            <!-- Botón emergencia -->
-            <button id="btnEmergencyWithdraw" class="hidden w-full btn-neon secondary !border-red-500 !text-red-500 !shadow-red-500/50 hover:!bg-red-500 hover:!text-black py-3">🚨 RETIRO DE EMERGENCIA</button>
-
-            <!-- Niveles de red -->
-            <div class="neon-card p-6 text-center">
-                <p class="text-cyan-400 font-bold mb-4" style="font-family: 'Orbitron';">📊 TUS 5 NIVELES</p>
-                <div class="flex flex-wrap justify-center gap-2">
-                    <div id="n1" class="node-neon node-empty-neon" data-level="1">N1<br><span class="text-[10px]">0</span></div>
-                    <div id="n2" class="node-neon node-empty-neon" data-level="2">N2<br><span class="text-[10px]">0</span></div>
-                    <div id="n3" class="node-neon node-empty-neon" data-level="3">N3<br><span class="text-[10px]">0</span></div>
-                    <div id="n4" class="node-neon node-empty-neon" data-level="4">N4<br><span class="text-[10px]">0</span></div>
-                    <div id="n5" class="node-neon node-empty-neon" data-level="5">N5<br><span class="text-[10px]">0</span></div>
-                </div>
-            </div>
-
-            <!-- Detalles por nivel -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="neon-card p-4">
-                    <div class="flex justify-between items-center mb-2 flex-wrap gap-2">
-                        <h3 class="text-cyan-400 font-bold">📊 SOCIOS POR NIVEL</h3>
-                        <button id="btnReloadDetails" class="btn-neon text-xs py-1 px-3">⟳ Recargar</button>
-                    </div>
-                    <div id="redNiveles" class="space-y-1 text-xs"></div>
-                </div>
-                <div class="neon-card p-4">
-                    <div class="flex justify-between items-center mb-2 flex-wrap gap-2">
-                        <h3 class="text-purple-400 font-bold">💰 GANANCIAS</h3>
-                        <button id="btnReloadGanancias" class="btn-neon text-xs py-1 px-3">⟳ Recargar</button>
-                    </div>
-                    <div id="gananciasNiveles" class="space-y-1 text-xs"></div>
-                </div>
-            </div>
-
-            <!-- Botones de acción -->
-            <div class="grid grid-cols-2 gap-3">
-                <button id="btnApprove" class="btn-neon">1. AUTORIZAR USDT</button>
-                <button id="btnJoin" class="btn-neon">2. ACTIVAR</button>
-                <button id="btnRenew" class="btn-neon secondary">RENOVAR</button>
-                <button id="btnWithdraw" class="btn-neon secondary">RETIRAR</button>
-            </div>
-
-            <!-- Panel Admin -->
+            <!-- Panel Admin original (con alertas) -->
             <div id="adminSection" class="hidden neon-card p-4 border border-purple-500/50">
-                <h2 class="text-purple-400 font-bold mb-3 text-center">⚙️ ADMIN</h2>
+                <h2 class="text-purple-400 font-bold mb-3 text-center">⚙️ ADMIN (CON ALERTAS)</h2>
                 <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
                     <button id="btnPausa" class="btn-neon text-sm py-2">PAUSAR</button>
                     <button id="btnCupos" class="btn-neon text-sm py-2">CUPOS</button>
@@ -505,774 +175,264 @@
                     <button id="btnRecuperar" class="btn-neon text-sm py-2">RECUPERAR</button>
                 </div>
             </div>
-
-            <!-- Enlace de invitación -->
-            <div class="neon-card p-4 text-center">
-                <p class="text-xs text-cyan-300/60 mb-1">TU ENLACE DE INVITACIÓN</p>
-                <div class="flex flex-col sm:flex-row items-center gap-2">
-                    <input id="refLink" readonly class="input-neon flex-1">
-                    <button id="copyLinkBtn" class="btn-neon py-2 px-4 whitespace-nowrap">Copiar</button>
-                </div>
-                <p id="copyMsg" class="text-xs text-green-400 mt-2 hidden">¡Copiado!</p>
-            </div>
-
-            <!-- Tutoriales -->
-            <div class="neon-card p-4">
-                <details class="cursor-pointer">
-                    <summary class="text-cyan-400 font-bold list-none flex justify-between items-center">
-                        📘 TUTORIALES <span class="text-xs opacity-60">(clic)</span>
-                    </summary>
-                    <div class="mt-4 space-y-2 text-sm">
-                        <div class="p-3 bg-cyan-950/30 rounded border border-cyan-500/30">🔹 Autorizar USDT: Asegúrate de tener USDT y haz clic en "AUTORIZAR".</div>
-                        <div class="p-3 bg-cyan-950/30 rounded border border-cyan-500/30">🔹 Activar: Después de autorizar, haz clic en "ACTIVAR" e ingresa tu patrocinador.</div>
-                        <div class="p-3 bg-cyan-950/30 rounded border border-cyan-500/30">🔹 Renovar: Paga 10 USDT para extender 30 días.</div>
-                        <div class="p-3 bg-cyan-950/30 rounded border border-cyan-500/30">🔹 Retirar: Mínimo 4 directos y saldo ≥10 USDT.</div>
-                    </div>
-                </details>
-            </div>
         </div>
-
-        <!-- SECCIÓN VAULT -->
-        <div id="seccionVault" class="hidden space-y-6">
-            <div class="neon-card p-6">
-                <h2 class="text-2xl font-bold text-cyan-400 mb-4" style="font-family: 'Orbitron';">🏦 VAULT DE CRECIMIENTO</h2>
-                <canvas id="vaultChart" style="height: 200px; width: 100%;" class="mb-6"></canvas>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
-                    <div class="neon-card p-3 text-center">
-                        <p class="text-xs text-white/50">Mi inversión</p>
-                        <p id="vaultMiInversion" class="stat-neon">0.00</p>
-                    </div>
-                    <div class="neon-card p-3 text-center">
-                        <p class="text-xs text-white/50">Ganancias</p>
-                        <p id="vaultGanancias" class="stat-neon">0.00</p>
-                    </div>
-                    <div class="neon-card p-3 text-center">
-                        <p class="text-xs text-white/50">Total fondo</p>
-                        <p id="vaultTotalFondo" class="stat-neon">0.00</p>
-                    </div>
-                    <div class="neon-card p-3 text-center">
-                        <p class="text-xs text-white/50">Share price</p>
-                        <p id="vaultSharePrice" class="stat-neon">1.00</p>
-                    </div>
-                </div>
-                <div class="neon-card p-4 mb-4">
-                    <h3 class="text-cyan-400 mb-2">📥 Depositar</h3>
-                    <div class="flex flex-col sm:flex-row gap-2">
-                        <input type="number" id="vaultDepositAmount" placeholder="Cantidad (mín. 10)" class="input-neon flex-1">
-                        <button id="btnVaultDeposit" class="btn-neon whitespace-nowrap">Depositar</button>
-                    </div>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    <div class="neon-card p-4">
-                        <h3 class="text-cyan-400 mb-2">📤 Estándar</h3>
-                        <input type="number" id="vaultWithdrawStandard" placeholder="Shares" class="input-neon w-full mb-2">
-                        <button id="btnVaultRequestStandard" class="btn-neon w-full">Solicitar</button>
-                    </div>
-                    <div class="neon-card p-4">
-                        <h3 class="text-purple-400 mb-2">⚡ Instantáneo</h3>
-                        <input type="number" id="vaultWithdrawInstant" placeholder="Shares" class="input-neon w-full mb-2">
-                        <button id="btnVaultInstant" class="btn-neon secondary w-full">Retirar</button>
-                    </div>
-                </div>
-                <div class="neon-card p-4 mt-6">
-                    <h3 class="text-cyan-400 mb-2">📢 ACTIVIDAD</h3>
-                    <div id="vaultFeed" class="space-y-2 max-h-40 overflow-y-auto">
-                        <p class="text-white/50 text-xs">Conecta tu wallet para ver la actividad...</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- INFO VAULT -->
-        <div id="seccionInfoVault" class="hidden space-y-6">
-            <div class="neon-card p-6">
-                <h2 class="text-2xl font-bold text-cyan-400 mb-4">📘 ACERCA DEL VAULT</h2>
-                <div class="space-y-4">
-                    <div class="p-4 bg-cyan-950/30 rounded border border-cyan-500/30">
-                        <h3 class="text-cyan-400 font-bold">🔍 ¿Cómo funciona?</h3>
-                        <p class="text-sm">Fondo colectivo que invierte en préstamos (70%) y farming (30%).</p>
-                    </div>
-                    <div class="p-4 bg-cyan-950/30 rounded border border-cyan-500/30">
-                        <h3 class="text-cyan-400 font-bold">📈 Rendimiento variable</h3>
-                        <p class="text-sm">Depende del mercado. Histórico: 0.02-0.05% diario.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- HISTORIAL -->
-        <div id="seccionHistorial" class="hidden space-y-6">
-            <div class="neon-card p-6">
-                <h2 class="text-2xl font-bold text-cyan-400 mb-4">📜 MI HISTORIAL</h2>
-                <div id="historialList" class="space-y-2 max-h-96 overflow-y-auto">
-                    <p class="text-white/50 text-xs">Conecta tu wallet para ver tu historial.</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- ARBITRAJE -->
-        <div id="seccionArbitraje" class="hidden space-y-6">
-            <div class="neon-card p-6 text-center">
-                <h2 class="text-2xl font-bold text-cyan-400 mb-4">🤖 ARBITRAJE</h2>
-                <p class="text-lg">Próximamente...</p>
-            </div>
-        </div>
-
-        <footer class="text-center text-xs text-cyan-700 mt-8">Milimar · BSC · Versión Básica</footer>
     </div>
 
     <script>
         // ========== CONFIGURACIÓN ==========
         const CONTRACT_ADDR_MEMBRESIA = "0x35425E6416f799C30938cBc159523B43C1c358B2";
-        const CONTRACT_ADDR_VAULT = "0x..."; // Reemplazar cuando esté listo
         const USDT_ADDR = "0x55d398326f99059fF775485246999027B3197955";
         const BSC_CHAIN_ID = 56;
-        const TELEGRAM_GRUPO = "https://t.me/+z7wwfx0ocho1NzI5";
-        const WHATSAPP_CANAL = "https://whatsapp.com/channel/0029Vb74Mxr3LdQVgWdycV2a";
 
-        // ABI completo del contrato de membresía
+        // ABI (dejamos solo lo necesario para esta prueba)
         const abiMembresia = [
-            "function consultarEstado(address) view returns (tuple(uint256 saldoPendiente, uint256 totalGanado, uint256 totalRetirado, uint256 directos, uint256 redTotal, uint256 diasRestantes, bool activo))",
-            "function verDetalleRed(address) view returns (uint256[5] memory)",
-            "function verDetalleGanancias(address) view returns (uint256[5] memory)",
-            "function usuarios(address) view returns (bool registrado, address patrocinador, uint256 saldoPendiente, uint256 totalGanado, uint256 totalRetirado, uint256 contadorDirectos, uint256 redTotal, uint256[5] conteoNiveles, uint256 cuposExtraAdmin, uint256 vencimiento, uint256[5] gananciasNiveles, bool bonoN3Reclamado, uint256 fechaRegistro, uint256 ultimaActividad, bool activo)",
             "function owner() view returns (address)",
-            "function bonoNivel3() view returns (uint256)",
-            "function bonosRecurrentesActivados() view returns (bool)",
-            "function fondoSolidaridad() view returns (uint256)",
-            "function poolLiderazgo() view returns (uint256)",
-            "function emergencyMode() view returns (bool)",
+            "function togglePausa() external",
+            "function otorgarCuposExtra(address,uint256) external",
+            "function premiarLider(address,uint256) external",
+            "function usarFondoSolidaridad(address,uint256,string memory) external",
+            "function actualizarBonoNivel3(uint256) external",
+            "function setBonosRecurrentesActivados(bool) external",
+            "function pagarBonosRecurrentes(address[],uint256) external",
+            "function recuperarTokenExterno(address,uint256) external",
+            "function consultarEstado(address) view returns (tuple(uint256 saldoPendiente, uint256 totalGanado, uint256 totalRetirado, uint256 directos, uint256 redTotal, uint256 diasRestantes, bool activo))",
             "function unirse(address) external",
             "function renovarSuscripcion() external",
             "function retirarGanancias() external",
-            "function emergencyWithdraw() external",
-            "function actualizarPrecio(uint256) external",
-            "function actualizarMinRetiro(uint256) external",
-            "function actualizarMaxRetiro(uint256) external",
-            "function actualizarMinDirectos(uint256) external",
-            "function actualizarBonoNivel3(uint256) external",
-            "function setBonosRecurrentesActivados(bool) external",
-            "function otorgarCuposExtra(address,uint256) external",
-            "function togglePausa() external",
-            "function premiarLider(address,uint256) external",
-            "function usarFondoSolidaridad(address,uint256,string memory) external",
-            "function cambiarBilleteraEmpresa(address) external",
-            "function reemplazarUsuario(address,address) external",
-            "function recuperarTokenExterno(address,uint256) external",
-            "function activateEmergencyMode() external",
-            "function pagarBonosRecurrentes(address[],uint256) external",
-            "event RegistroGlobal(address indexed usuario, address indexed patrocinador, uint256 fecha)",
-            "event BonoNivel3Alcanzado(address indexed usuario, uint256 fecha)",
-            "event BonoNivel3Pagado(address indexed usuario, uint256 monto)",
-            "event RetiroExitoso(address indexed usuario, uint256 monto)",
-            "event PremiadoLider(address indexed lider, uint256 monto)",
-            "event FondoSolidaridadUsado(address indexed beneficiado, uint256 monto, string motivo)",
-            "event BonosRecurrentesPagados(uint256 totalPagado, uint256 cantidadPersonas)"
+            "function emergencyWithdraw() external"
         ];
 
-        const abiVault = [];
         const usdtAbi = ["function approve(address spender, uint256 amount) returns (bool)"];
 
-        // ========== VARIABLES GLOBALES ==========
-        let provider, signer, userAddress, contractMembresia, contractVault, usdtContract;
+        // ========== VARIABLES ==========
+        let provider, signer, userAddress, contractMembresia, usdtContract;
         let isOwner = false;
-        let toastTimeout;
-        let chartInstance = null;
 
-        // Elementos DOM
-        const toast = document.getElementById('toast');
-        const toastMsg = document.getElementById('toastMsg');
-        const telegramLink = document.getElementById('telegramLink');
-        const whatsappLink = document.getElementById('whatsappLink');
+        // Elementos
         const btnConnect = document.getElementById('btnConnect');
         const conBox = document.getElementById('conBox');
-        const seccionMembresia = document.getElementById('seccionMembresia');
-        const seccionVault = document.getElementById('seccionVault');
-        const seccionInfoVault = document.getElementById('seccionInfoVault');
-        const seccionHistorial = document.getElementById('seccionHistorial');
-        const seccionArbitraje = document.getElementById('seccionArbitraje');
-        const btnMembresia = document.getElementById('btnMembresia');
-        const btnVault = document.getElementById('btnVault');
-        const btnInfoVault = document.getElementById('btnInfoVault');
-        const btnHistorial = document.getElementById('btnHistorial');
-        const btnArbitraje = document.getElementById('btnArbitraje');
-        const vaultFeed = document.getElementById('vaultFeed');
-        const copyLinkBtn = document.getElementById('copyLinkBtn');
-        const refLink = document.getElementById('refLink');
-        const copyMsg = document.getElementById('copyMsg');
-        const fondoElem = document.getElementById('fondoSolidaridad');
-        const poolElem = document.getElementById('poolLiderazgo');
-        const emergencyStatus = document.getElementById('emergencyStatus');
-        const emergencyContainer = document.getElementById('emergencyContainer');
-        const btnEmergency = document.getElementById('btnEmergencyWithdraw');
-        const bonoNivel3Elem = document.getElementById('bonoNivel3');
-        const bonosRecurrentesElem = document.getElementById('bonosRecurrentes');
-        const modal = document.getElementById('confirmModal');
-        const modalTitle = document.getElementById('modalTitle');
-        const modalMessage = document.getElementById('modalMessage');
-        const modalConfirm = document.getElementById('modalConfirm');
-        const modalCancel = document.getElementById('modalCancel');
+        const mainPanel = document.getElementById('mainPanel');
+        const adminSection = document.getElementById('adminSection');
+        const debugInfo = document.getElementById('debugInfo');
+        const btnCheckOwner = document.getElementById('btnCheckOwner');
+        const btnTestPausa = document.getElementById('btnTestPausa');
 
-        // Nodos de niveles
-        const nodos = [
-            document.getElementById('n1'),
-            document.getElementById('n2'),
-            document.getElementById('n3'),
-            document.getElementById('n4'),
-            document.getElementById('n5')
-        ];
-
-        // ========== FUNCIONES AUXILIARES ==========
-        function showToast(msg, isError = false) {
-            clearTimeout(toastTimeout);
-            toast.classList.remove('hidden');
-            toastMsg.innerText = msg;
-            toast.style.backgroundColor = isError ? 'rgba(127,29,29,0.9)' : 'rgba(6,78,59,0.9)';
-            toastTimeout = setTimeout(() => toast.classList.add('hidden'), 4000);
+        // Función para mostrar alertas (móvil amigable)
+        function showAlert(msg) {
+            alert(msg);
         }
 
-        function confirmAction(title, message) {
-            return new Promise((resolve) => {
-                modalTitle.innerText = title;
-                modalMessage.innerText = message;
-                modal.style.display = 'flex';
-                const onConfirm = () => {
-                    modal.style.display = 'none';
-                    modalConfirm.removeEventListener('click', onConfirm);
-                    modalCancel.removeEventListener('click', onCancel);
-                    resolve(true);
-                };
-                const onCancel = () => {
-                    modal.style.display = 'none';
-                    modalConfirm.removeEventListener('click', onConfirm);
-                    modalCancel.removeEventListener('click', onCancel);
-                    resolve(false);
-                };
-                modalConfirm.addEventListener('click', onConfirm);
-                modalCancel.addEventListener('click', onCancel);
-            });
+        // Función para mostrar en el área de depuración
+        function logDebug(msg) {
+            debugInfo.innerHTML += msg + '<br>';
         }
 
-        // ========== FUNCIONES DE RED ==========
-        async function checkNetwork() {
-            const network = await provider.getNetwork();
-            if (network.chainId !== BSC_CHAIN_ID) {
-                try {
-                    await window.ethereum.request({ method: 'wallet_switchEthereumChain', params: [{ chainId: '0x38' }] });
-                    provider = new ethers.providers.Web3Provider(window.ethereum);
-                    return true;
-                } catch {
-                    showToast('Cambia a BSC Mainnet en tu wallet', true);
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        // ========== FUNCIONES DE CARGA DE DATOS ==========
-        async function loadRedYGanancias() {
-            try {
-                const red = await contractMembresia.verDetalleRed(userAddress);
-                const ganancias = await contractMembresia.verDetalleGanancias(userAddress);
-                for (let j = 0; j < 5; j++) {
-                    const node = nodos[j];
-                    const cantidad = red[j].toNumber();
-                    node.innerHTML = `N${j+1}<br><span class="text-[10px]">${cantidad}</span>`;
-                    if (cantidad > 0) {
-                        node.classList.add('node-filled-neon');
-                        node.classList.remove('node-empty-neon');
-                    } else {
-                        node.classList.add('node-empty-neon');
-                        node.classList.remove('node-filled-neon');
-                    }
-                }
-                let redHtml = '', ganHtml = '';
-                for (let j = 0; j < 5; j++) {
-                    redHtml += `<div class="flex justify-between"><span>Nivel ${j+1}:</span><span class="font-bold">${red[j].toString()}</span></div>`;
-                    ganHtml += `<div class="flex justify-between"><span>Nivel ${j+1}:</span><span class="font-bold">${ethers.utils.formatUnits(ganancias[j], 18)} USDT</span></div>`;
-                }
-                document.getElementById('redNiveles').innerHTML = redHtml;
-                document.getElementById('gananciasNiveles').innerHTML = ganHtml;
-            } catch (e) {
-                document.getElementById('redNiveles').innerHTML = '<p class="text-red-400">Error al cargar</p>';
-                document.getElementById('gananciasNiveles').innerHTML = '<p class="text-red-400">Error al cargar</p>';
-                showToast('Error al cargar detalles de red', true);
-            }
-        }
-
-        async function loadUserData() {
-            try {
-                const estado = await contractMembresia.consultarEstado(userAddress);
-                document.getElementById('valSaldo').innerText = ethers.utils.formatUnits(estado.saldoPendiente, 18);
-                document.getElementById('valDir').innerText = estado.directos.toString();
-                document.getElementById('valRed').innerText = estado.redTotal.toString();
-                document.getElementById('valDias').innerText = estado.diasRestantes.toString();
-
-                await loadRedYGanancias();
-
-                const fondo = await contractMembresia.fondoSolidaridad();
-                fondoElem.innerText = ethers.utils.formatUnits(fondo, 18) + ' USDT';
-                const pool = await contractMembresia.poolLiderazgo();
-                poolElem.innerText = ethers.utils.formatUnits(pool, 18) + ' USDT';
-                const emergency = await contractMembresia.emergencyMode();
-                emergencyStatus.innerText = emergency ? 'ACTIVO' : 'INACTIVO';
-                if (emergency) {
-                    emergencyContainer.classList.add('border-2', 'border-red-500');
-                    btnEmergency.classList.remove('hidden');
-                } else {
-                    emergencyContainer.classList.remove('border-2', 'border-red-500');
-                    btnEmergency.classList.add('hidden');
-                }
-
-                const bonoN3 = await contractMembresia.bonoNivel3();
-                bonoNivel3Elem.innerText = ethers.utils.formatUnits(bonoN3, 18) + ' USDT';
-                const bonosRec = await contractMembresia.bonosRecurrentesActivados();
-                bonosRecurrentesElem.innerText = bonosRec ? 'ACTIVO' : 'INACTIVO';
-            } catch (e) {
-                console.error(e);
-                showToast('Error al cargar datos del usuario', true);
-            }
-        }
-
-        async function cargarDatosVault() {
-            if (!contractVault || !userAddress) return;
-            try {
-                const miInversion = await contractVault.balanceOf(userAddress);
-                const ganancias = await contractVault.pendingRewards(userAddress);
-                const totalAssets = await contractVault.totalAssets();
-                const sharePrice = await contractVault.sharePrice();
-                document.getElementById('vaultMiInversion').innerText = ethers.utils.formatUnits(miInversion, 18);
-                document.getElementById('vaultGanancias').innerText = ethers.utils.formatUnits(ganancias, 18);
-                document.getElementById('vaultTotalFondo').innerText = ethers.utils.formatUnits(totalAssets, 18);
-                document.getElementById('vaultSharePrice').innerText = ethers.utils.formatUnits(sharePrice, 18);
-            } catch (e) {
-                console.error("Error cargando vault:", e);
-            }
-        }
-
-        function agregarAlFeedVault(mensaje, tipo = 'info') {
-            const item = document.createElement('div');
-            item.className = `feed-item-neon ${tipo === 'deposit' ? 'border-green-500' : tipo === 'withdraw' ? 'border-yellow-500' : 'border-blue-500'}`;
-            item.innerHTML = `<p class="text-xs text-white/80">${mensaje}</p>`;
-            vaultFeed.prepend(item);
-            if (vaultFeed.children.length > 20) vaultFeed.removeChild(vaultFeed.lastChild);
-        }
-
-        async function cargarHistorial() {
-            const historialDiv = document.getElementById('historialList');
-            if (!contractMembresia || !userAddress) {
-                historialDiv.innerHTML = '<p class="text-white/50 text-xs">Conecta tu wallet para ver tu historial.</p>';
+        // ========== CONEXIÓN ==========
+        async function connect() {
+            if (!window.ethereum) {
+                showAlert('Instala MetaMask/OKX Wallet');
                 return;
             }
-            try {
-                const filterRegistro = contractMembresia.filters.RegistroGlobal(userAddress);
-                const filterBono = contractMembresia.filters.BonoNivel3Pagado(userAddress);
-                const filterRetiro = contractMembresia.filters.RetiroExitoso(userAddress);
-                const filterPremio = contractMembresia.filters.PremiadoLider(userAddress);
-                
-                const [registros, bonos, retiros, premios] = await Promise.all([
-                    contractMembresia.queryFilter(filterRegistro, 0, 'latest').catch(() => []),
-                    contractMembresia.queryFilter(filterBono, 0, 'latest').catch(() => []),
-                    contractMembresia.queryFilter(filterRetiro, 0, 'latest').catch(() => []),
-                    contractMembresia.queryFilter(filterPremio, 0, 'latest').catch(() => [])
-                ]);
-                
-                const todos = [...registros, ...bonos, ...retiros, ...premios];
-                todos.sort((a,b) => b.blockNumber - a.blockNumber);
-                
-                if (todos.length === 0) {
-                    historialDiv.innerHTML = '<p class="text-white/50 text-xs">No hay transacciones aún. Cuando realices operaciones, aparecerán aquí.</p>';
-                    return;
-                }
-                let html = '';
-                todos.forEach(event => {
-                    let desc = '';
-                    if (event.event === 'RegistroGlobal') {
-                        desc = `📝 Registro en el sistema (bloque ${event.blockNumber})`;
-                    } else if (event.event === 'BonoNivel3Pagado') {
-                        desc = `🏆 Bono nivel 3 recibido: ${ethers.utils.formatUnits(event.args.monto, 18)} USDT`;
-                    } else if (event.event === 'RetiroExitoso') {
-                        desc = `💰 Retiro de ganancias: ${ethers.utils.formatUnits(event.args.monto, 18)} USDT`;
-                    } else if (event.event === 'PremiadoLider') {
-                        desc = `🏅 Premio como líder: ${ethers.utils.formatUnits(event.args.monto, 18)} USDT`;
-                    }
-                    const fecha = new Date(event.blockNumber * 15).toLocaleDateString();
-                    html += `<div class="feed-item-neon text-xs">${desc}<br><span class="text-white/40">${fecha}</span></div>`;
-                });
-                historialDiv.innerHTML = html;
-            } catch (e) {
-                console.error('Error cargando historial:', e);
-                historialDiv.innerHTML = '<p class="text-yellow-400 text-xs">No se pudo cargar el historial. Intenta más tarde.</p>';
-            }
-        }
-
-        function initVaultChart() {
-            const ctx = document.getElementById('vaultChart').getContext('2d');
-            if (chartInstance) chartInstance.destroy();
-            const labels = [];
-            const data = [];
-            for (let i = 29; i >= 0; i--) {
-                const date = new Date();
-                date.setDate(date.getDate() - i);
-                labels.push(date.toLocaleDateString().slice(0,5));
-                data.push(1 + (Math.random() * 0.1 - 0.05));
-            }
-            chartInstance = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Precio del Share (USDT)',
-                        data: data,
-                        borderColor: '#00ffff',
-                        backgroundColor: 'rgba(0,255,255,0.1)',
-                        tension: 0.3,
-                        fill: true
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    scales: { y: { grid: { color: '#ffffff20' }, ticks: { color: '#ccc' } } }
-                }
-            });
-        }
-
-        // ========== CONEXIÓN PRINCIPAL ==========
-        async function connect() {
-            if (!window.ethereum) return showToast('Instala MetaMask/OKX Wallet', true);
             try {
                 provider = new ethers.providers.Web3Provider(window.ethereum);
                 await provider.send("eth_requestAccounts", []);
                 signer = provider.getSigner();
                 userAddress = await signer.getAddress();
 
-                if (!await checkNetwork()) return;
+                // Verificar red
+                const network = await provider.getNetwork();
+                if (network.chainId !== BSC_CHAIN_ID) {
+                    try {
+                        await window.ethereum.request({ method: 'wallet_switchEthereumChain', params: [{ chainId: '0x38' }] });
+                        provider = new ethers.providers.Web3Provider(window.ethereum);
+                        signer = provider.getSigner();
+                        userAddress = await signer.getAddress();
+                    } catch {
+                        showAlert('Cambia a BSC Mainnet en tu wallet');
+                        return;
+                    }
+                }
 
                 contractMembresia = new ethers.Contract(CONTRACT_ADDR_MEMBRESIA, abiMembresia, signer);
-                if (CONTRACT_ADDR_VAULT !== "0x...") {
-                    contractVault = new ethers.Contract(CONTRACT_ADDR_VAULT, abiVault, signer);
-                }
                 usdtContract = new ethers.Contract(USDT_ADDR, usdtAbi, signer);
 
                 conBox.classList.add('hidden');
-                seccionMembresia.classList.remove('hidden');
-                telegramLink.classList.remove('hidden');
-                whatsappLink.classList.remove('hidden');
-                refLink.value = window.location.origin + window.location.pathname + "?ref=" + userAddress;
+                mainPanel.classList.remove('hidden');
 
-                // Verificar si es owner (simple)
+                // Verificar owner
                 try {
                     const ownerAddr = await contractMembresia.owner();
                     isOwner = (ownerAddr.toLowerCase() === userAddress.toLowerCase());
                     if (isOwner) {
-                        document.getElementById('adminSection').classList.remove('hidden');
-                        console.log("Eres el owner, panel admin visible");
+                        adminSection.classList.remove('hidden');
+                        showAlert('✅ Eres el owner. Panel admin visible.');
                     } else {
-                        document.getElementById('adminSection').classList.add('hidden');
-                        console.log("No eres el owner");
+                        showAlert('❌ No eres el owner. El panel admin no se mostrará.');
                     }
                 } catch (e) {
-                    console.error("Error al obtener owner:", e);
-                }
-
-                await loadUserData();
-
-                if (!seccionVault.classList.contains('hidden') && contractVault) {
-                    cargarDatosVault();
-                    initVaultChart();
-                }
-
-                // Escuchar eventos
-                contractMembresia.on("RegistroGlobal", (usuario, patrocinador, fecha) => {
-                    if (usuario.toLowerCase() === userAddress.toLowerCase()) loadUserData();
-                    showToast(`🎉 Nuevo registro: ${usuario.slice(0,6)}...${usuario.slice(-4)}`);
-                });
-                contractMembresia.on("BonoNivel3Pagado", (usuario, monto) => {
-                    if (usuario.toLowerCase() === userAddress.toLowerCase()) loadUserData();
-                    showToast(`🏆 Bono nivel 3 pagado a ${usuario.slice(0,6)}...${usuario.slice(-4)}: ${ethers.utils.formatUnits(monto,18)} USDT`);
-                });
-                contractMembresia.on("RetiroExitoso", (usuario, monto) => {
-                    if (usuario.toLowerCase() === userAddress.toLowerCase()) loadUserData();
-                    showToast(`💰 Retiro de ${ethers.utils.formatUnits(monto,18)} USDT por ${usuario.slice(0,6)}...${usuario.slice(-4)}`);
-                });
-                contractMembresia.on("PremiadoLider", (lider, monto) => {
-                    if (lider.toLowerCase() === userAddress.toLowerCase()) loadUserData();
-                    showToast(`🏅 Premio a líder ${lider.slice(0,6)}...${lider.slice(-4)}: ${ethers.utils.formatUnits(monto,18)} USDT`);
-                });
-                contractMembresia.on("FondoSolidaridadUsado", (beneficiado, monto, motivo) => {
-                    if (beneficiado.toLowerCase() === userAddress.toLowerCase()) loadUserData();
-                    showToast(`🤝 Fondo solidaridad usado para ${beneficiado.slice(0,6)}...${beneficiado.slice(-4)}`);
-                });
-                contractMembresia.on("BonosRecurrentesPagados", (total, cantidad) => {
-                    showToast(`🎁 Bonos recurrentes pagados: total ${ethers.utils.formatUnits(total,18)} USDT a ${cantidad} líderes`);
-                });
-
-                if (contractVault) {
-                    contractVault.on("Deposited", (user, amount, shares, timestamp) => {
-                        if (user.toLowerCase() === userAddress.toLowerCase()) cargarDatosVault();
-                        agregarAlFeedVault(`📥 Depósito de ${ethers.utils.formatUnits(amount,18)} USDT por ${user.slice(0,6)}...${user.slice(-4)}`, 'deposit');
-                    });
-                    contractVault.on("WithdrawnStandard", (user, amount, shares, timestamp) => {
-                        if (user.toLowerCase() === userAddress.toLowerCase()) cargarDatosVault();
-                        agregarAlFeedVault(`📤 Retiro estándar de ${ethers.utils.formatUnits(amount,18)} USDT por ${user.slice(0,6)}...${user.slice(-4)}`, 'withdraw');
-                    });
+                    showAlert('Error al obtener owner: ' + e.message);
                 }
 
             } catch (e) {
-                showToast('Error conectando: ' + e.message, true);
-                console.error(e);
+                showAlert('Error conectando: ' + e.message);
             }
         }
 
-        // ========== EVENTOS DE UI ==========
         btnConnect.onclick = connect;
 
-        copyLinkBtn.addEventListener('click', () => {
-            refLink.select();
-            refLink.setSelectionRange(0, 99999);
-            navigator.clipboard.writeText(refLink.value).then(() => {
-                copyMsg.classList.remove('hidden');
-                setTimeout(() => copyMsg.classList.add('hidden'), 2000);
-            }).catch(() => showToast('Error al copiar', true));
-        });
-
-        function setActiveTab(active, inactives) {
-            active.classList.add('active');
-            inactives.forEach(btn => btn.classList.remove('active'));
-        }
-
-        btnMembresia.addEventListener('click', () => {
-            setActiveTab(btnMembresia, [btnVault, btnInfoVault, btnHistorial, btnArbitraje]);
-            seccionMembresia.classList.remove('hidden');
-            seccionVault.classList.add('hidden');
-            seccionInfoVault.classList.add('hidden');
-            seccionHistorial.classList.add('hidden');
-            seccionArbitraje.classList.add('hidden');
-        });
-
-        btnVault.addEventListener('click', () => {
-            setActiveTab(btnVault, [btnMembresia, btnInfoVault, btnHistorial, btnArbitraje]);
-            seccionMembresia.classList.add('hidden');
-            seccionVault.classList.remove('hidden');
-            seccionInfoVault.classList.add('hidden');
-            seccionHistorial.classList.add('hidden');
-            seccionArbitraje.classList.add('hidden');
-            if (userAddress && contractVault) {
-                cargarDatosVault();
-                initVaultChart();
+        // Botón verificar owner
+        btnCheckOwner.onclick = async () => {
+            if (!contractMembresia) { showAlert('Conecta primero'); return; }
+            try {
+                const ownerAddr = await contractMembresia.owner();
+                showAlert(`Owner del contrato: ${ownerAddr}\nTu wallet: ${userAddress}\n¿Coinciden? ${ownerAddr.toLowerCase() === userAddress.toLowerCase() ? 'SÍ' : 'NO'}`);
+            } catch (e) {
+                showAlert('Error: ' + e.message);
             }
-        });
-
-        btnInfoVault.addEventListener('click', () => {
-            setActiveTab(btnInfoVault, [btnMembresia, btnVault, btnHistorial, btnArbitraje]);
-            seccionMembresia.classList.add('hidden');
-            seccionVault.classList.add('hidden');
-            seccionInfoVault.classList.remove('hidden');
-            seccionHistorial.classList.add('hidden');
-            seccionArbitraje.classList.add('hidden');
-        });
-
-        btnHistorial.addEventListener('click', () => {
-            setActiveTab(btnHistorial, [btnMembresia, btnVault, btnInfoVault, btnArbitraje]);
-            seccionMembresia.classList.add('hidden');
-            seccionVault.classList.add('hidden');
-            seccionInfoVault.classList.add('hidden');
-            seccionHistorial.classList.remove('hidden');
-            seccionArbitraje.classList.add('hidden');
-            if (userAddress && contractMembresia) cargarHistorial();
-        });
-
-        btnArbitraje.addEventListener('click', () => {
-            setActiveTab(btnArbitraje, [btnMembresia, btnVault, btnInfoVault, btnHistorial]);
-            seccionMembresia.classList.add('hidden');
-            seccionVault.classList.add('hidden');
-            seccionInfoVault.classList.add('hidden');
-            seccionHistorial.classList.add('hidden');
-            seccionArbitraje.classList.remove('hidden');
-        });
-
-        // Botones de acción (con confirmación)
-        document.getElementById('btnWithdraw').onclick = async () => {
-            const confirmed = await confirmAction('Retirar ganancias', '¿Estás seguro de retirar todas tus ganancias disponibles?');
-            if (!confirmed) return;
-            try {
-                const tx = await contractMembresia.retirarGanancias();
-                showToast('Retirando...');
-                await tx.wait();
-                showToast('✅ Retiro exitoso');
-                await loadUserData();
-            } catch (e) { showToast('Error: ' + e.message, true); }
         };
 
-        btnEmergency.onclick = async () => {
-            const confirmed = await confirmAction('RETIRO DE EMERGENCIA', '¿Estás seguro? Esta acción retirará todos tus fondos y desactivará tu membresía.');
-            if (!confirmed) return;
+        // Botón probar togglePausa (aunque no sea owner, para ver si la función existe)
+        btnTestPausa.onclick = async () => {
+            if (!contractMembresia) { showAlert('Conecta primero'); return; }
             try {
-                const tx = await contractMembresia.emergencyWithdraw();
-                showToast('Procesando retiro de emergencia...');
-                await tx.wait();
-                showToast('✅ Retiro de emergencia completado');
-                await loadUserData();
-            } catch (e) { showToast('Error: ' + e.message, true); }
+                // Intentamos llamar a togglePausa, pero solo estimamos, no firmamos
+                const gasEstimate = await contractMembresia.estimateGas.togglePausa();
+                showAlert(`✅ La función togglePausa existe. Gas estimado: ${gasEstimate.toString()}`);
+            } catch (e) {
+                showAlert(`❌ Error al estimar gas: ${e.message}. Probablemente la función no existe o requiere permisos.`);
+            }
         };
 
-        document.getElementById('btnApprove').onclick = async () => {
-            try {
-                const tx = await usdtContract.approve(CONTRACT_ADDR_MEMBRESIA, ethers.utils.parseUnits("100", 18));
-                showToast('Autorizando...');
-                await tx.wait();
-                showToast('✅ USDT autorizado');
-            } catch (e) { showToast('Error: ' + e.message, true); }
-        };
-
-        document.getElementById('btnJoin').onclick = async () => {
-            try {
-                const urlParams = new URLSearchParams(window.location.search);
-                let sponsor = urlParams.get('ref');
-                if (!sponsor || sponsor === userAddress) {
-                    sponsor = prompt('Dirección del patrocinador:');
-                    if (!sponsor) return;
-                }
-                const tx = await contractMembresia.unirse(sponsor);
-                showToast('Activando...');
-                await tx.wait();
-                showToast('✅ Registro exitoso');
-                await loadUserData();
-            } catch (e) { showToast('Error: ' + e.message, true); }
-        };
-
-        document.getElementById('btnRenew').onclick = async () => {
-            try {
-                const tx = await contractMembresia.renovarSuscripcion();
-                showToast('Renovando...');
-                await tx.wait();
-                showToast('✅ Suscripción renovada');
-                await loadUserData();
-            } catch (e) { showToast('Error: ' + e.message, true); }
-        };
-
-        document.getElementById('btnReloadDetails').onclick = loadRedYGanancias;
-        document.getElementById('btnReloadGanancias').onclick = loadRedYGanancias;
-
-        // Botones de administración (solo si isOwner)
+        // ========== BOTONES DE ADMIN (con alertas) ==========
         document.getElementById('btnPausa').onclick = async () => {
-            if (!isOwner) { showToast('No tienes permisos', true); return; }
-            const confirmed = await confirmAction('Cambiar estado de pausa', '¿Estás seguro?');
-            if (!confirmed) return;
-            try { await (await contractMembresia.togglePausa()).wait(); showToast('✅ Pausa cambiada'); } catch (e) { showToast('Error: ' + e.message, true); }
+            if (!isOwner) { showAlert('No tienes permisos'); return; }
+            if (!confirm('¿Ejecutar togglePausa?')) return;
+            try {
+                showAlert('Enviando transacción...');
+                const tx = await contractMembresia.togglePausa();
+                showAlert('Transacción enviada: ' + tx.hash);
+                await tx.wait();
+                showAlert('✅ Pausa cambiada');
+            } catch (e) {
+                showAlert('Error: ' + e.message);
+            }
         };
+
         document.getElementById('btnCupos').onclick = async () => {
-            if (!isOwner) { showToast('No tienes permisos', true); return; }
+            if (!isOwner) { showAlert('No tienes permisos'); return; }
             const lider = prompt('Dirección del líder:');
             if (!lider) return;
             const cant = prompt('Cantidad de cupos:');
             if (!cant) return;
-            try { await (await contractMembresia.otorgarCuposExtra(lider, cant)).wait(); showToast('✅ Cupos otorgados'); } catch (e) { showToast('Error: ' + e.message, true); }
+            try {
+                const tx = await contractMembresia.otorgarCuposExtra(lider, cant);
+                showAlert('Tx enviada: ' + tx.hash);
+                await tx.wait();
+                showAlert('✅ Cupos otorgados');
+            } catch (e) {
+                showAlert('Error: ' + e.message);
+            }
         };
+
         document.getElementById('btnPremiar').onclick = async () => {
-            if (!isOwner) { showToast('No tienes permisos', true); return; }
+            if (!isOwner) { showAlert('No tienes permisos'); return; }
             const lider = prompt('Dirección del líder:');
             if (!lider) return;
             const monto = prompt('Monto en USDT:');
             if (!monto) return;
-            try { await (await contractMembresia.premiarLider(lider, ethers.utils.parseUnits(monto, 18))).wait(); showToast('✅ Premio enviado'); } catch (e) { showToast('Error: ' + e.message, true); }
+            try {
+                const montoWei = ethers.utils.parseUnits(monto, 18);
+                const tx = await contractMembresia.premiarLider(lider, montoWei);
+                showAlert('Tx enviada: ' + tx.hash);
+                await tx.wait();
+                showAlert('✅ Premio enviado');
+            } catch (e) {
+                showAlert('Error: ' + e.message);
+            }
         };
+
         document.getElementById('btnSolidaridad').onclick = async () => {
-            if (!isOwner) { showToast('No tienes permisos', true); return; }
+            if (!isOwner) { showAlert('No tienes permisos'); return; }
             const benef = prompt('Dirección del beneficiario:');
             if (!benef) return;
             const monto = prompt('Monto en USDT:');
             if (!monto) return;
             const motivo = prompt('Motivo:');
             if (!motivo) return;
-            try { await (await contractMembresia.usarFondoSolidaridad(benef, ethers.utils.parseUnits(monto, 18), motivo)).wait(); showToast('✅ Fondo usado'); } catch (e) { showToast('Error: ' + e.message, true); }
+            try {
+                const montoWei = ethers.utils.parseUnits(monto, 18);
+                const tx = await contractMembresia.usarFondoSolidaridad(benef, montoWei, motivo);
+                showAlert('Tx enviada: ' + tx.hash);
+                await tx.wait();
+                showAlert('✅ Fondo usado');
+            } catch (e) {
+                showAlert('Error: ' + e.message);
+            }
         };
+
         document.getElementById('btnActualizarBono').onclick = async () => {
-            if (!isOwner) { showToast('No tienes permisos', true); return; }
+            if (!isOwner) { showAlert('No tienes permisos'); return; }
             const nuevo = prompt('Nuevo monto del bono nivel 3 (en USDT):');
             if (!nuevo) return;
-            try { await (await contractMembresia.actualizarBonoNivel3(ethers.utils.parseUnits(nuevo, 18))).wait(); showToast('✅ Bono actualizado'); } catch (e) { showToast('Error: ' + e.message, true); }
+            try {
+                const nuevoWei = ethers.utils.parseUnits(nuevo, 18);
+                const tx = await contractMembresia.actualizarBonoNivel3(nuevoWei);
+                showAlert('Tx enviada: ' + tx.hash);
+                await tx.wait();
+                showAlert('✅ Bono actualizado');
+            } catch (e) {
+                showAlert('Error: ' + e.message);
+            }
         };
+
         document.getElementById('btnToggleBonosRec').onclick = async () => {
-            if (!isOwner) { showToast('No tienes permisos', true); return; }
+            if (!isOwner) { showAlert('No tienes permisos'); return; }
             const estado = prompt('Activar bonos recurrentes? (true/false):');
             if (estado === null) return;
-            try { await (await contractMembresia.setBonosRecurrentesActivados(estado === 'true')).wait(); showToast('✅ Estado cambiado'); } catch (e) { showToast('Error: ' + e.message, true); }
+            try {
+                const tx = await contractMembresia.setBonosRecurrentesActivados(estado === 'true');
+                showAlert('Tx enviada: ' + tx.hash);
+                await tx.wait();
+                showAlert('✅ Estado cambiado');
+            } catch (e) {
+                showAlert('Error: ' + e.message);
+            }
         };
+
         document.getElementById('btnPagarBonosRec').onclick = async () => {
-            if (!isOwner) { showToast('No tienes permisos', true); return; }
+            if (!isOwner) { showAlert('No tienes permisos'); return; }
             const lista = prompt('Lista de direcciones separadas por coma:');
             if (!lista) return;
             const monto = prompt('Monto por persona (USDT):');
             if (!monto) return;
             const direcciones = lista.split(',').map(s => s.trim()).filter(s => s !== '');
             try {
-                const tx = await contractMembresia.pagarBonosRecurrentes(direcciones, ethers.utils.parseUnits(monto, 18));
-                showToast('Pagando bonos...');
+                const montoWei = ethers.utils.parseUnits(monto, 18);
+                const tx = await contractMembresia.pagarBonosRecurrentes(direcciones, montoWei);
+                showAlert('Tx enviada: ' + tx.hash);
                 await tx.wait();
-                showToast('✅ Bonos pagados');
-            } catch (e) { showToast('Error: ' + e.message, true); }
+                showAlert('✅ Bonos pagados');
+            } catch (e) {
+                showAlert('Error: ' + e.message);
+            }
         };
+
         document.getElementById('btnRecuperar').onclick = async () => {
-            if (!isOwner) { showToast('No tienes permisos', true); return; }
+            if (!isOwner) { showAlert('No tienes permisos'); return; }
             const token = prompt('Dirección del token (no USDT):');
             if (!token) return;
             const cant = prompt('Cantidad:');
             if (!cant) return;
-            try { await (await contractMembresia.recuperarTokenExterno(token, ethers.utils.parseUnits(cant, 18))).wait(); showToast('✅ Tokens recuperados'); } catch (e) { showToast('Error: ' + e.message, true); }
+            try {
+                const cantWei = ethers.utils.parseUnits(cant, 18);
+                const tx = await contractMembresia.recuperarTokenExterno(token, cantWei);
+                showAlert('Tx enviada: ' + tx.hash);
+                await tx.wait();
+                showAlert('✅ Tokens recuperados');
+            } catch (e) {
+                showAlert('Error: ' + e.message);
+            }
         };
-
-        // Botones del vault
-        document.getElementById('btnVaultDeposit')?.addEventListener('click', async () => {
-            if (!contractVault) return showToast('Vault no desplegado aún', true);
-            const amount = document.getElementById('vaultDepositAmount').value;
-            if (!amount || parseFloat(amount) < 10) return showToast('Monto mínimo 10 USDT', true);
-            try {
-                const amountWei = ethers.utils.parseUnits(amount, 18);
-                const approveTx = await usdtContract.approve(CONTRACT_ADDR_VAULT, amountWei);
-                await approveTx.wait();
-                const tx = await contractVault.deposit(amountWei);
-                showToast('Depositando...');
-                await tx.wait();
-                showToast('✅ Depósito exitoso');
-                cargarDatosVault();
-            } catch (e) { showToast('Error: ' + e.message, true); }
-        });
-
-        document.getElementById('btnVaultRequestStandard')?.addEventListener('click', async () => {
-            if (!contractVault) return showToast('Vault no desplegado aún', true);
-            const shares = document.getElementById('vaultWithdrawStandard').value;
-            if (!shares || parseFloat(shares) <= 0) return showToast('Cantidad inválida', true);
-            try {
-                const sharesWei = ethers.utils.parseUnits(shares, 18);
-                const tx = await contractVault.requestStandardWithdraw(sharesWei);
-                showToast('Solicitando retiro estándar...');
-                await tx.wait();
-                showToast('✅ Solicitud registrada');
-                cargarDatosVault();
-            } catch (e) { showToast('Error: ' + e.message, true); }
-        });
-
-        document.getElementById('btnVaultInstant')?.addEventListener('click', async () => {
-            if (!contractVault) return showToast('Vault no desplegado aún', true);
-            const shares = document.getElementById('vaultWithdrawInstant').value;
-            if (!shares || parseFloat(shares) <= 0) return showToast('Cantidad inválida', true);
-            try {
-                const sharesWei = ethers.utils.parseUnits(shares, 18);
-                const tx = await contractVault.instantWithdraw(sharesWei);
-                showToast('Retirando instantáneamente...');
-                await tx.wait();
-                showToast('✅ Retiro instantáneo completado');
-                cargarDatosVault();
-            } catch (e) { showToast('Error: ' + e.message, true); }
-        });
-
-        // Inicializar
-        window.addEventListener('load', () => {
-            if (window.ethereum && window.ethereum.selectedAddress) connect();
-        });
     </script>
 </body>
 </html>
